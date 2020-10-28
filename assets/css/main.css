@@ -1,0 +1,439 @@
+/* ======================================== */
+/* ======================================== */
+/* ======== MAIN */
+
+:root {
+    --lightBlack: #262931;
+}
+
+@font-face {
+    font-family: 'retrogaming';
+    src: url('../../ressources/fonts/retro_gaming.woff2') format('woff2'),
+           url('../../ressources/fonts/retro_gaming.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-size: 1em;
+    background-color: var(--lightBlack);
+}
+
+button,
+input {
+    font-family: sans-serif;
+}
+
+button:active,
+button:focus,
+input:active,
+input:focus {
+    outline: 0 !important;
+}
+
+a {
+    color: lightcoral;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.red {
+    color: #AA6373;
+}
+
+.green {
+    color: #7FB285
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== CONTAINER */
+
+#container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0 32vw;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    background-color: white;
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== HEADER */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black;
+    color: white;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    padding: 2vh;
+}
+
+header button {
+    background: var(--lightBlack);
+    color: white;
+    border-radius: 30%;
+    padding: 1vh;
+    border: 2px solid var(--lightBlack);
+    font-size: 0.5em;
+    min-width: 3vw;
+}
+
+header button:hover {
+    border: 2px solid white;
+}
+
+#volumeButton,
+#optionButton {
+    visibility: hidden;
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== START SCREEN + FOOTER */
+
+#startScreen {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    flex-direction: column;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+#startScreen img {
+    height: 25vh;
+}
+
+#startScreen h1 {
+    font-size: 1.5em;
+    border-top: 1px solid black;
+    border-bottom: 1px solid  black;
+    padding: 0.8vh 0 0.5vh 0;
+}
+
+#nameHero {
+    padding: 0vh;
+    width: 30vw;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid black;
+    text-align: center;
+    color: var(--grey);
+    font-size: 1.5em;
+    margin: 4vh 0;
+}
+
+#nameHero:focus {
+    outline: 0;
+}
+
+#startScreen button {
+    background: black;
+    color: white;
+    font-size: 1.5em;
+    padding: 1.5vh;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    width: 20vw; 
+}
+
+#startScreen button:hover {
+    color: lightcoral;
+}
+
+#displayTip {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 0 2vw;
+}
+
+#displayTip em {
+    padding: 2vh;
+}
+
+#footer {
+    font-size: 0.8em;
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== GAME SCREEN  */
+
+#gameScreen {
+    display: none;
+    flex-direction: column;
+    padding: 1vh 0;
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+#gameContent {
+    flex-grow: 1;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    padding: 1vh 0.5vw;
+}
+
+#containerImage {
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#containerImage img {
+    min-height: 15vh;
+    max-height: 25vh;
+}
+
+#gameMessage {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 2vh;
+}
+
+#gameMessage p {
+    font-size: 2em;
+}
+
+#gameMessage .bigger {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+#gameMessage button {
+    background: black;
+    color: white;
+    font-size: 2em;
+    padding: 1.5vh;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    margin: 1vh;
+    width: 20vw; 
+}
+
+#gameMessage button:hover {
+    color: lightcoral;
+}
+
+#heroStatus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#heroStatus img {
+    width: 24px;
+    padding-right: 0.5vw;
+}
+
+.heroStatusLine {
+    display: flex;
+    padding: 0.8vh 0;
+}
+
+.heroStatusBlock {
+    display: flex;
+    align-items: center;
+    padding: 0 1vh;
+}
+
+#listActions {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.listActionsLine {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#listAction button {
+    background: black;
+    color: white;
+    font-size: 1em;
+    padding: 1.5vh;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    margin: 1vh;
+    min-width: 15vw;
+    min-height: 8vh;
+}
+
+#listAction button:hover {
+    color: lightblue;
+    background: var(--lightBlack);
+}
+
+#listAction button:disabled  {
+    opacity: 0.5;
+}
+
+#listAction button:disabled:hover  {
+    color : white;
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== POPUP */
+
+#containerPopup {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+    z-index: 1;
+    font-size: 1.1em;
+}
+
+#containerPopup:target {
+    display: block;
+}
+
+#containerPopup div {
+    display: none;
+    background: var(--lightBlack);
+    color: white;
+    padding: 2vh;
+    position: relative;
+    width: 50vw;
+    border-radius: 10px;
+    text-align: center;
+    margin: auto auto;
+}
+
+#containerPopup h1 {
+    border-bottom: 2px solid white;
+    font-size: 1.5em;
+    margin: 0 0 2vh 0;
+}
+
+#containerPopup ul {
+    text-align: justify !important;
+    list-style: square;
+    margin: 0;
+    padding: 0 2vh 0 3vh;
+}
+
+#containerPopup .noListStyle {
+    list-style: none !important;
+}
+
+#containerPopup li {
+    padding: 0.5vh 0;
+}
+
+#containerPopup button {
+    background: white;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 1.5vh;
+    border: 0;
+    border-bottom: 5px solid white;
+    margin: 1vh;
+    min-width: 25vw;
+}
+
+#containerPopup button:hover {
+    border-bottom: 5px solid lightcoral;
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== MOBILE */
+
+@media(max-width: 1024px) {
+    html,
+    body {
+        font-size: 0.9em;
+    }
+
+    #container {
+        margin: 0;
+        border: 0;
+    }
+
+    header {
+        font-size: 1.5em;
+    }
+
+    header button {
+        background: var(--lightBlack);
+        border-radius: 25%;
+        padding: 0.2vh;
+        border: 1px solid white;
+        font-size: 1em;
+        min-width: 7vw;
+    }
+    
+    header button:hover {
+        border: 0;
+    }
+
+    #heroStatus {
+        padding: 0.8vh 0;
+    }
+
+    .heroStatusLine {
+        padding: 0.5vh 0;
+    }
+
+    #gameScreen {
+        padding: 0;
+    }
+
+    #gameContent {
+        padding: 1vh 5vw;
+    }
+
+    #containerImage img {
+        max-width: 95vw;
+    }
+
+    #startScreen button,
+    #gameMessage button {
+        min-width: 50vw;
+    }
+
+    #nameHero {
+        width: 80vw;
+    }
+
+    #listAction button {
+        min-width: 40vw;
+    }
+
+    #containerPopup div {
+        width: 85vw;
+    }
+
+    #containerPopup button {
+        min-width: 65vw;
+    }
+}

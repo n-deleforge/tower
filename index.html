@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html id="htmlTag">
+
+<head>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title"></title>
+    <link rel="stylesheet" href="assets/css/main.min.css">
+    <link rel="icon" href="assets/images/favicon.ico" rel="icon" type="image/x-icon">
+</head>
+
+<body>
+    <div id="container">
+        <header>
+            <button id="volumeButton">🔊</button>
+            <span id="headerTitle"></span>
+            <button id="optionButton">🔧</button>
+        </header>
+
+        <!-- Start screen -->
+        <div id="startScreen">
+            <img src="assets/images/special/tower.png">
+            <h1 id="startScreenTitle"></h1>
+                <label id="nameHeroLabel"></label>
+                <input type="text" id="nameHero" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
+                <button id="startGame"></button>
+                <p id="displayTip"></p>
+                <p id="footer"></p>
+        </div>
+        <!-- // Start screen -->
+
+        <!-- Game screen -->
+        <div id="gameScreen">
+            <div id="heroStatus">
+                <div class="heroStatusLine">
+                    <div class="heroStatusBlock" id="name"></div>
+                    <div class="heroStatusBlock" id="xp"></div>
+                </div>
+                <div class="heroStatusLine">
+                    <div class="heroStatusBlock" id="health"></div>
+                    <div class="heroStatusBlock" id="strength"></div>
+                    <div class="heroStatusBlock" id="shield"></div>
+                </div>
+                <div class="heroStatusLine">
+                    <div class="heroStatusBlock" id="potion"></div>
+                    <div class="heroStatusBlock" id="magic"></div>
+                    <div class="heroStatusBlock" id="escape"></div>
+                </div>
+            </div>
+
+            <div id="gameContent"></div>
+    
+            <div id="listAction">
+                <div class="listActionsLine">
+                    <button class="action" id="move"></button>
+                    <button class="action" id="useHeal"></button>
+                </div>
+                <div class="listActionsLine">
+                    <button class="action" id="openChest"></button>
+                    <button class="action" id="closeChest"></button>
+                </div>
+                <div class="listActionsLine">
+                    <button class="action" id="useAttack"></button>
+                    <button class="action" id="useMagic"></button>
+                    <button class="action" id="useEscape"></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="gameMessage"></div>
+    </div>
+    <!-- // Game screen -->
+
+    <!-- Popup list -->
+    <div id="containerPopup">
+        <div id="optionMenu">
+            <h1 id="optionMenuTitle"></h1>
+            <button id="openInfoMenu"></button>
+            <button id="openStatsMenu"></button>
+            <button id="confirmRestart"></button>
+            <button id="confirmTotalRestart"></button>
+            <button id="closeOptionMenu"></button>
+        </div>
+
+        <div id="statsMenu">
+            <h1 id="statsMenuTitle"></h1>
+            <ul id="listStats"></ul>
+            <button id="closeStatsMenu"></button>
+        </div>
+
+        <div id="infoMenu">
+            <h1 id="infoMenuTitle"></h1>
+            <ul id="infoMenuContent"></ul>
+            <button id="closeInfoMenu"></button>
+        </div>
+    </div>
+    <!-- // Popup list -->
+
+    <!-- Sounds list -->
+    <audio preload id="soundAttack">
+        <source src="assets/sounds/attack.ogg" type="audio/ogg">
+        <source src="assets/sounds/attack.mp3" type="audio/mp3">
+        </audio>
+    <audio preload id="soundMagic">
+        <source src="assets/sounds/magic.ogg" type="audio/ogg">
+        <source src="assets/sounds/magic.mp3" type="audio/mp3">
+    </audio>
+    <audio preload id="soundEscape">
+        <source src="assets/sounds/escape.ogg" type="audio/ogg">       
+        <source src="assets/sounds/escape.mp3" type="audio/mp3">
+        </audio>
+    <audio preload id="soundChest">
+        <source src="assets/sounds/openChest.ogg" type="audio/ogg">
+        <source src="assets/sounds/openChest.mp3" type="audio/mp3">
+    </audio>
+    <audio preload id="soundHeal">
+        <source src="assets/sounds/heal.ogg" type="audio/ogg">
+        <source src="assets/sounds/heal.mp3" type="audio/mp3">
+    </audio>
+    <audio preload id="soundRoom">
+        <source src="assets/sounds/room.ogg" type="audio/ogg">
+        <source src="assets/sounds/room.mp3" type="audio/mp3">
+    </audio>
+    <audio preload id="soundFloor">
+        <source src="ressassetsources/sounds/floor.ogg" type="audio/ogg">
+        <source src="assets/sounds/floor.mp3" type="audio/mp3">
+    </audio>
+    <audio preload id="soundBossFight">
+        <source src="assets/sounds/bossFight.ogg" type="audio/ogg">
+        <source src="assets/sounds/bossFight.mp3" type="audio/mp3">
+    </audio>
+    <!-- // Sounds list -->
+
+    <script src="assets/js/main.min.js"></script>
+</body>
+</html>
