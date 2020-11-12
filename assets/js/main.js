@@ -696,7 +696,7 @@ function specialEvt(evt) {
 
     // }
 
-    game.events.currentEvent = get("#gameContent").innerHTML;
+    saveContent();
 }
 
 // =================================================
@@ -712,7 +712,8 @@ function heal() {
         game.stats.healUsed++;
 
         get("#gameContent").innerHTML += '<hr><p class="green">' + language.app.healing + '</p>';
-        game.events.currentEvent = get("#gameContent").innerHTML;
+
+        saveContent();
     }
 }
 
@@ -721,7 +722,8 @@ function noEvent() {
     game.events.lastAction = "noEvent";
 
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/noEvent.png" alt=""></div><p>' + language.app.noEvent + '.</p>';
-    game.events.currentEvent = get("#gameContent").innerHTML;
+    
+    saveContent();
 }
 
 // ===> When meeting a spirit
@@ -809,7 +811,7 @@ function spirit() {
         get("#gameContent").innerHTML += '<p class="green">' + language.app.spiritWater_part2 + ' <strong>' + settings.bonusSpirit.health + '</strong> ' + singularPlural(settings.bonusSpirit.health, language.app.point_singular, language.app.point_plural) + '.</p>';
     }
 
-    game.events.currentEvent = get("#gameContent").innerHTML;
+    saveContent();
 }
 
 // =================================================
@@ -823,7 +825,8 @@ function chest() {
 
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/chest.png" alt=""></div>';
     get("#gameContent").innerHTML += '<p>' + language.app.chest + ' !</p>';
-    game.events.currentEvent = get("#gameContent").innerHTML;
+
+    saveContent();
 }
 
 // ===> When opening a chest
@@ -877,7 +880,7 @@ function openChest() {
         if (game.character.itemLimit == game.character.heal) get("#gameContent").innerHTML += '<p>' + language.app.chestLimit + '.</p>';
     }
 
-    game.events.currentEvent = get("#gameContent").innerHTML;
+    saveContent();
 }
 
 // ===> When avoiding a chest
@@ -889,7 +892,8 @@ function closeChest() {
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/chest.png" alt=""></div>';
     get("#gameContent").innerHTML += '<p>' + language.app.chest + ' !</p>';
     get("#gameContent").innerHTML += '<p>' + language.app.chest_notOpened + '.</p>';
-    game.events.currentEvent = get("#gameContent").innerHTML;
+
+    saveContent();
 }
 
 // =================================================
@@ -911,7 +915,8 @@ function fight(mode) {
     else get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + language.app.fightStart + '</p>';
     
     get("#gameContent").innerHTML += '<p>' + language.app.health + ' : <strong>' + game.events.monster[0] + '</strong> / ' + language.app.strength + ' : <strong>'  + game.events.monster[1] + '</strong></p>';
-    game.events.currentEvent = get("#gameContent").innerHTML;
+    
+    saveContent();
 }
 
 // ===> Choose a monster
@@ -968,7 +973,7 @@ function attack() {
     // XP message only displayed if stil alive
     if (game.character.health > 0) get("#gameContent").innerHTML += '<p class="green">' + language.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + singularPlural(xp, language.app.point_singular, language.app.point_plural) + language.app.fightWin_part4 + ".</p>";
     
-    game.events.currentEvent = get("#gameContent").innerHTML;
+    saveContent();
 }
 
 // ===> When using magic
@@ -993,7 +998,7 @@ function magic() {
 
         get("#gameContent").innerHTML += '<p class="green">' + language.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + singularPlural(xp, language.app.point_singular, language.app.point_plural) + language.app.fightWin_part4 + ".</p>";
         
-        game.events.currentEvent = get("#gameContent").innerHTML;
+        saveContent();
     }
 }
 
@@ -1008,7 +1013,7 @@ function runAway() {
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/monsters/' + game.events.monster[3] + '.png" alt="' + game.events.monster[2] + '"></div>';
         get("#gameContent").innerHTML += '<p>' + language.app.fightEscape + '.</p>';
         
-        game.events.currentEvent = get("#gameContent").innerHTML;
+        saveContent();
     }
 }
 
@@ -1113,12 +1118,12 @@ function changeDisplay(mode) {
 
     // Screen message
     if (mode == "displayMessage") {
-        get('~header')[0].style.display = "none";
+        get('~header').style.display = "none";
         get('#gameScreen').style.display = "none";
         get('#gameMessage').style.display = "flex";
     }
     if (mode == "hideMessage") {
-        get('~header')[0].style.display = "flex";
+        get('~header').style.display = "flex";
         get('#gameScreen').style.display = "flex";
         get('#gameMessage').style.display = "none";
     }
@@ -1199,7 +1204,7 @@ function singularPlural(nb, singular, plural) {
     return singular;
 } 
 
-// ===> >Reset all character data
+// ===> Reset all character data
 function resetData() {
     game.core.ongoing = false;
     game.stats.totalGame++;
@@ -1221,6 +1226,11 @@ function resetData() {
     game.bonus.lvlShield = settings.basicStats.bonusLvlShield;
 
     storage("set", "TOWER-gameSettings", JSON.stringify(game))
+}
+
+// ===> Save the content of the app 
+function saveContent() {
+    game.events.currentEvent = get("#gameContent").innerHTML;
 }
 
 // =================================================
