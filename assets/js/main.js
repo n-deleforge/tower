@@ -19,10 +19,12 @@ let settings = {
         'magic' : 0,
         'escape' : 0,
         'score' : 0,
-        'itemLimit' : 5,
-        'lvlHealth' : 20,
-        'lvlStrength' : 2, 
-        'lvlShield' : 0, 
+        'itemLimit' : 5
+    },
+    'bonusLvl' : {
+        'health' : 20,
+        'strength' : 2, 
+        'shield' : 0, 
     },
     'bonusSpirit' : {
         'health' : 5,
@@ -31,7 +33,9 @@ let settings = {
     },
     'refreshDisplay' : null,
     'mobileDevice' : /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
-    'messageDisplay' : 1000
+    'messageDisplay' : 1000,
+    'githubLink' : "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>",
+    'ndLink' : "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>"
 }
 
 // ===> Correct the bug of the viewport on mobile
@@ -92,10 +96,10 @@ else {
             'score' : settings.basicStats.score,
             'itemLimit' : settings.basicStats.itemLimit,
         },
-        'bonus' : {
-            'lvlHealth' : settings.basicStats.lvlHealth,
-            'lvlStrength' : settings.basicStats.lvlStrength,
-            'lvlShield' : settings.basicStats.lvlShield
+        'bonusLvl' : {
+            'health' : settings.bonusLvl.health,
+            'strength' : settings.bonusLvl.strength,
+            'shield' : settings.bonusLvl.shield
         }
     }
 
@@ -111,7 +115,7 @@ const FR = {
         'startScreenTitle' : "Bienvenue aventurier",
         'nameHeroLabel' : "Quel est ton nom ?",
         'startGame' : "Entrer",
-        'footer' : "Disponible sur <a href=\"https://github.com/n-deleforge/game-tower\">GitHub</a> (v " + settings.version + ")<br />Hébergé sur <a href=\"https://nicolas-deleforge.fr\">nd</a>",
+        'footer' : "Disponible sur " + settings.githubLink + " (v " + settings.version + ")<br />Hébergé sur " + settings.ndLink,
 
         'move' : "Avancer",
         'useHeal' : "Utiliser une potion",
@@ -206,7 +210,7 @@ const FR = {
 
         'chest' : "Vous avez trouvé un <strong>coffre</strong>",
         'chest_notOpened' : "Mais vous décidez de ne pas l'ouvrir",
-        'chestTrap_part1' : "Mais c'est un piège, le coffre vous attaque",
+        'chestTrap_part1' : "Mais c'est un <strong>piège</strong>, le coffre vous attaque",
         'chestTrap_part2' : "Vous perdez ",
         'chestTrap_part3' : " de santé",
         'chestEscape' : "Vous trouvez un <strong>parchemin de fuite</strong>",
@@ -284,7 +288,7 @@ const EN = {
         'startScreenTitle' : "Welcome adventurer",
         'nameHeroLabel' : "What's your name ?",
         'startGame' : "Enter",
-        'footer' : "Soon available on <a href=\"https://github.com/n-deleforge/game-tower\">GitHub</a> (v " + settings.version + ")<br />Hosted on <a href=\"https://nicolas-deleforge.fr\">nd</a>",
+        'footer' : "Soon available on " + settings.githubLink + " (v " + settings.version + ")<br />Hosted on  " + settings.ndLink,
 
         'move' : "Move",
         'useHeal' : "Use a potion",
@@ -379,7 +383,7 @@ const EN = {
 
         'chest' : "You have found a <strong>chest</strong>",
         'chest_notOpened' : "But you decide not to open it",
-        'chestTrap_part1' : "But it's a trap, the chest attacks you",
+        'chestTrap_part1' : "But it's a <strong>trap</strong>, the chest attacks you",
         'chestTrap_part2' : "You lost ",
         'chestTrap_part3' : " of health",
         'chestEscape' : "You find a <strong>escape scroll</strong>",
@@ -835,6 +839,7 @@ function openChest() {
     game.events.subAction = "chestOver";
     changeDisplay("chestToGame");
     let nb = nbRandom(0, 10);
+    let limited = false;
 
     // 8 - 10 : trap chest
     if (nb > 7) { 
@@ -850,34 +855,37 @@ function openChest() {
     // 6 - 7 : escape item
     else if (nb > 5) { 
         game.stats.escapeFound++;
-        if (game.character.itemLimit >= game.character.escape) game.character.escape++;
+        if (game.character.itemLimit > game.character.escape) game.character.escape++;
+        else limited = true;
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/chestEscape.png" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + language.app.chestEscape +  '.</p>';
 
-        if (game.character.itemLimit == game.character.escape) get("#gameContent").innerHTML += '<p>' + language.app.chestLimit + '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + language.app.chestLimit + '.</p>';
     } 
 
      // 4 - 5 : magic item
     else if (nb > 3) {
         game.stats.magicFound++;
-        if (game.character.itemLimit >= game.character.magic) game.character.magic++;
+        if (game.character.itemLimit > game.character.magic) game.character.magic++;
+        else limited = true;
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/chestMagic.png" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + language.app.chestMagic + '.</p>';
 
-        if (game.character.itemLimit == game.character.magic) get("#gameContent").innerHTML += '<p>' + language.app.chestLimit + '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + language.app.chestLimit + '.</p>';
     } 
 
     // 1 - 3 : heal item
     else { 
         game.stats.healFound++;
-        if (game.character.itemLimit >= game.character.heal) game.character.heal++;
+        if (game.character.itemLimit > game.character.heal) game.character.heal++
+        else limited = true;
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/chestHeal.png" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + language.app.chestHeal + '.</p>';
 
-        if (game.character.itemLimit == game.character.heal) get("#gameContent").innerHTML += '<p>' + language.app.chestLimit + '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + language.app.chestLimit + '.</p>';
     }
 
     saveContent();
@@ -1153,9 +1161,9 @@ function checkItems() {
 function checkExperience() {
     if (game.character.xp >= game.character.xpTo) {
         game.character.level++;
-        game.character.strength =  game.character.strength + game.bonus.lvlStrength;
-        game.character.shield =  game.character.shield + game.bonus.lvlShield;
-        game.character.healthMax =  game.character.healthMax + game.bonus.lvlHealth;
+        game.character.strength =  game.character.strength + game.bonusLvl.strength;
+        game.character.shield =  game.character.shield + game.bonusLvl.shield;
+        game.character.healthMax =  game.character.healthMax + game.bonusLvl.health;
 
         game.character.health = game.character.healthMax;
         game.character.xp = 0;
@@ -1221,14 +1229,14 @@ function resetData() {
     game.character.floor = settings.basicStats.floor;
     game.character.room = settings.basicStats.room;
     game.character.itemLimit = settings.basicStats.itemLimit;
-    game.bonus.lvlHealth = settings.basicStats.bonusLvlHealth;
-    game.bonus.lvlStrenght = settings.basicStats.bonusLvlStrenght;
-    game.bonus.lvlShield = settings.basicStats.bonusLvlShield;
+    game.bonusLvl.health = settings.basicStats.bonusLvl.health;
+    game.bonusLvl.strenght = settings.basicStats.bonusLvl.strenght;
+    game.bonusLvl.shield = settings.basicStats.bonusLvl.shield;
 
     storage("set", "TOWER-gameSettings", JSON.stringify(game))
 }
 
-// ===> Save the content of the app 
+// ===> Save the content of the app
 function saveContent() {
     game.events.currentEvent = get("#gameContent").innerHTML;
 }
