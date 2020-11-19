@@ -654,7 +654,7 @@ function play() {
 
 // ===> Choose a game action
 function choiceAction() {
-    let nb = nbRandom(1, 9);
+    let nb = rand(1, 9);
 
     // 8-9 : meet with a spirit or chest
     if (nb > 7) {
@@ -733,7 +733,7 @@ function noEvent() {
 // ===> When meeting a spirit
 function spirit() {
     game.events.lastAction = "spirit";
-    let nb = nbRandom(1, 10)
+    let nb = rand(1, 10)
 
     // 9-10 : Earth spirit
     if (nb > 8) { 
@@ -752,7 +752,7 @@ function spirit() {
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/spiritWind.png" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + language.app.spiritWind + '.</p>';
 
-       let item = nbRandom(1, 3);
+       let item = rand(1, 3);
 
         switch (item) {
             // Heal stealing
@@ -787,7 +787,7 @@ function spirit() {
     // 5-6 : Light spirit
     else if (nb > 4) { 
         game.stats.lighSpiritMeet++;
-        let xp = nbRandom(parseInt(game.character.xpTo / 8), parseInt(game.character.xpTo / 6));
+        let xp = rand(parseInt(game.character.xpTo / 8), parseInt(game.character.xpTo / 6));
         game.character.xp = game.character.xp + xp;
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/spiritLight.png" alt=""></div>';
@@ -838,13 +838,13 @@ function openChest() {
     if (game.core.sound == true) get("#soundChest").play();
     game.events.subAction = "chestOver";
     changeDisplay("chestToGame");
-    let nb = nbRandom(0, 10);
+    let nb = rand(0, 10);
     let limited = false;
 
     // 8 - 10 : trap chest
     if (nb > 7) { 
         game.stats.chestTrap++;
-        let damage = nbRandom(1, game.character.health / 4);
+        let damage = rand(1, game.character.health / 4);
         game.character.health = game.character.health - damage;
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/events/chestTrap.png" alt=""></div>';
@@ -929,8 +929,8 @@ function fight(mode) {
 
 // ===> Choose a monster
 function choiceMonster() {
-    if(game.events.lastAction == "bossFight") monsterLevel = nbRandom(game.character.floor * 10, game.character.floor * 15)
-    else monsterLevel = nbRandom(game.character.floor * 2, game.character.floor * 4)
+    if(game.events.lastAction == "bossFight") monsterLevel = rand(game.character.floor * 10, game.character.floor * 15)
+    else monsterLevel = rand(game.character.floor * 2, game.character.floor * 4)
 
     if (monsterLevel > 800) return [monsterLevel, parseInt(monsterLevel / 3), language.monsters.dragon, "monster_17"];
     if (monsterLevel > 600) return [monsterLevel, parseInt(monsterLevel / 3), language.monsters.supDemon, "monster_16"];
@@ -966,7 +966,7 @@ function attack() {
     game.character.health = game.character.health - damage;
 
     // XP
-    let xp= nbRandom(game.character.level * (game.events.monster[0]), game.character.level * game.events.monster[0] * 2);
+    let xp= rand(game.character.level * (game.events.monster[0]), game.character.level * game.events.monster[0] * 2);
     if (game.events.lastAction == "bossFight") game.character.xp = game.character.xp + (xp * 5); 
     else game.character.xp = game.character.xp + xp;
     game.stats.totalExp = game.stats.totalExp + xp;
@@ -995,7 +995,7 @@ function magic() {
         if (game.events.lastAction == "bossFight") game.character.magic = game.character.magic - 3;
         else game.character.magic--;
 
-        let xp = nbRandom(parseInt(game.character.level * (game.events.monster[0]) / 2), game.character.level * game.events.monster[0] ); // 50% of the experience
+        let xp = rand(parseInt(game.character.level * (game.events.monster[0]) / 2), game.character.level * game.events.monster[0] ); // 50% of the experience
         game.character.xp = game.character.xp + xp;
         game.stats.totalExp = game.stats.totalExp + xp;
         
@@ -1167,7 +1167,7 @@ function checkExperience() {
 
         game.character.health = game.character.healthMax;
         game.character.xp = 0;
-        game.character.xpTo = nbRandom(parseInt(1.5 *  game.character.xpTo), 2 *  game.character.xpTo);
+        game.character.xpTo = rand(parseInt(1.5 *  game.character.xpTo), 2 *  game.character.xpTo);
 
         if (game.character.level > game.stats.maxLevel) game.stats.maxLevel = game.character.level;
 
@@ -1201,7 +1201,7 @@ function checkSound() {
 
 // ===> Display tip
 function randomTip() {
-    let nb = nbRandom(0, language.tips.length);
+    let nb = rand(0, language.tips.length);
     let arr = language.tips;
     return arr[nb];
 }
@@ -1260,6 +1260,6 @@ function storage(a, n, v) {
 }
 
 // ===> Give a random number
-function nbRandom(min, max) {
+function rand(min, max) {
     return (Math.floor(Math.random() * Math.floor(max))) + min;
 }
