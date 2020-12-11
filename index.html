@@ -24,6 +24,7 @@
                 <label id="nameHeroLabel"></label>
                 <input type="text" id="nameHero" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
                 <button id="startGame"></button>
+
                 <p id="displayTip"></p>
                 <p id="footer"></p>
         </div>
@@ -84,14 +85,14 @@
 
         <div id="statsMenu">
             <h1 id="statsMenuTitle"></h1>
-            <ul id="listStats"></ul>
-            <button id="closeStatsMenu"></button>
+                <ul id="listStats"></ul>
+                <button id="closeStatsMenu"></button>
         </div>
 
         <div id="infoMenu">
             <h1 id="infoMenuTitle"></h1>
-            <ul id="infoMenuContent"></ul>
-            <button id="closeInfoMenu"></button>
+                <ul id="infoMenuContent"></ul>
+                <button id="closeInfoMenu"></button>
         </div>
     </div>
     <!-- // Popup list -->
@@ -131,6 +132,8 @@
     </audio>
     <!-- // Sounds list -->
 
+    <script src="../../libraries/littleJS.min.js"></script>
+    <script src="assets/js/core.min.js"></script>
     <script src="assets/js/main.min.js"></script>
 </body>
 </html>
