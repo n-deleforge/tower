@@ -9,9 +9,9 @@ You can try the app : https://nicolas-deleforge.fr/apps/tower/
 Or download it : https://github.com/n-deleforge/game-tower/archive/main.zip  
 Or clone the git : ```git clone https://github.com/n-deleforge/game-tower.git```
 
-## How does it work ?
+## Note for self-host
 
-Everything is stored localy on your device. The application is written in native JavaScript so no depencies are needed, except a modern browser.
+If you download or clone the project to host it yourself, then you'll need [**Little JS**](https://github.com/n-deleforge/littleJS).
 
 ## Ressources
 
