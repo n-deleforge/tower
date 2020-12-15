@@ -160,12 +160,14 @@ header button:hover {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: justify;
     flex-grow: 1;
     padding: 0 2vw;
 }
 
 #displayTip em {
     padding: 2vh;
+    text-align: center;
 }
 
 #footer {

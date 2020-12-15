@@ -1,7 +1,8 @@
 // ===> Determine some settings of the game
+let game;
 let settings = {
-    'version' : 1.4,
-    'basicStats' : {
+    'version' : 1.5,
+    'data' : {
         'health' : 25,
         'healthMax' : 25,
         'strength' : 5,
@@ -11,25 +12,24 @@ let settings = {
         'level' : 1,
         'floor' : 1,
         'room' : 1,
-        'heal' : 0,
-        'magic' : 0,
-        'escape' : 0,
+        'itemHeal' : 0,
+        'itemMagic' : 0,
+        'itemEscape' : 0,
+        'itemLimit' : 5,
         'score' : 0,
-        'itemLimit' : 5
-    },
-    'bonusLvl' : {
-        'health' : 20,
-        'strength' : 2, 
-        'shield' : 0, 
-    },
-    'bonusSpirit' : {
-        'health' : 5,
-        'strength' : 1,
-        'shield' : 1
+        'lvlUpHealth' : 20,
+        'lvlUpStrength' : 2, 
+        'lvlUpShield' : 0, 
+        'spiritHealth' : 5,
+        'spiritStrength' : 1,
+        'spiritShield' : 1
     },
     'refreshDisplay' : null,
     'mobileDevice' : /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
-    'messageDisplay' : 1000,
+    'messageTimeDisplay' : 1000,
+    'floorBoss' : [8,11,14,17,20,23,26,29,32,35,38,41,44,47,50,53,56,59,62,65,68,71,74,77,80,83,86,89,91,94,97,99],
+    'floorSpecial' : [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
+    'lastFloor' : 100,
     'githubLink' : "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>",
     'ndLink' : "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>"
 }
@@ -38,9 +38,9 @@ let settings = {
 if (settings.mobileDevice) get("#container").style.minHeight = window.innerHeight + 'px';
 
 // ===> Create data game or parse it if existing
-if (storage("get", "TOWER-gameSettings")) var game = JSON.parse(storage("get", "TOWER-gameSettings"))
+if (storage("get", "TOWER-gameSettings")) game = JSON.parse(storage("get", "TOWER-gameSettings"))
 else {
-    var game = {
+    game = {
         'core' : {
             'ongoing' : false, 
             'name' : null, 
@@ -62,40 +62,31 @@ else {
             'maxLevel' : 0,
             'totalExp' : 0,
             'healUsed' : 0,
-            'swordKill' : 0,
-            'magicKill' : 0,
-            'runAway' : 0,
-            'healFound' : 0,
-            'magicFound': 0,
-            'escapeFound' : 0,
+            'fightVictory' : 0,
+            'fightEscape' : 0,
+            'chestOpen': 0,
             'chestTrap' : 0,
             'chestNotOpened' : 0,
-            'fireSpiritMeet' : 0,
-            'waterSpiritMeet' : 0,
-            'earthSpiritMeet' : 0,
-            'windSpiritMeet' : 0,
-            'lighSpiritMeet' : 0 
+            'spiritMeet' : 0,
         },
         'character' : {
-            'health' : settings.basicStats.health,
-            'healthMax' : settings.basicStats.healthMax,
-            'strength' : settings.basicStats.strength,
-            'shield' : settings.basicStats.shield,
-            'xp' : settings.basicStats.xp,
-            'xpTo' : settings.basicStats.xpTo,
-            'level' : settings.basicStats.level,
-            'floor' : settings.basicStats.floor,
-            'room' : settings.basicStats.room,
-            'heal' : settings.basicStats.heal,
-            'magic' : settings.basicStats.magic,
-            'escape' : settings.basicStats.escape,
-            'score' : settings.basicStats.score,
-            'itemLimit' : settings.basicStats.itemLimit,
-        },
-        'bonusLvl' : {
-            'health' : settings.bonusLvl.health,
-            'strength' : settings.bonusLvl.strength,
-            'shield' : settings.bonusLvl.shield
+            'health' : settings.data.health,
+            'healthMax' : settings.data.healthMax,
+            'strength' : settings.data.strength,
+            'shield' : settings.data.shield,
+            'xp' : settings.data.xp,
+            'xpTo' : settings.data.xpTo,
+            'level' : settings.data.level,
+            'floor' : settings.data.floor,
+            'room' : settings.data.room,
+            'itemHeal' : settings.data.itemHeal,
+            'itemMagic' : settings.data.itemMagic,
+            'itemEscape' : settings.data.itemEscape,
+            'score' : settings.data.score,
+            'itemLimit' : settings.data.itemLimit,
+            'lvlUpHealth' :settings.data.lvlUpHealth,
+            'lvlUpStrength' :settings.data.lvlUpStrength,
+            'lvlUpShield' :settings.data.lvlUpShield
         }
     }
 
@@ -136,25 +127,18 @@ const FR = {
     },
     'stats' : {
         'bestScore' : "Meilleur score : ",
-        'totalGame' : "Nombre de parties : ",
+        'totalGame' : "Nombre de partie : ",
         'bestFloor' : "Étage atteint le plus haut : ",
         'totalRoom' : "Nombre de salle parcourue : ",
         'maxLevel' : "Niveau d'expérience le plus haut : ",
         'totalExp' : "Total de points d'expérience : ",
         'healUsed' : "Nombre de potion utilisé : ",
-        'swordKill' : "Monstre vaincu avec une épée : ",
-        'magicKill' : "Monstre vaincu avec la magie : ",
-        'runAway' : "Fuite de combat : ",
-        'healFound' : "Coffre - potions trouvée : ",
-        'magicFound': "Coffre - sortilège trouvé : ",
-        'escapeFound' : "Coffre - parchemin trouvé : ",
-        'chestTrap' : "Coffre - piège : ",
-        'chestNotOpened' : "Coffre - non ouverts : ",
-        'fireSpiritMeet' : "Esprit rencontré - feu : ",
-        'waterSpiritMeet' : "Esprit rencontré - eau : ",
-        'earthSpiritMeet' : "Esprit rencontré - terre : ",
-        'windSpiritMeet' : "Esprit rencontré - vent : ",
-        'lighSpiritMeet' : "Esprit rencontré - lumière : ",
+        'fightVictory' : "Monstre vaincu : ",
+        'fightEscape' : "Combat esquivé : ",
+        'chestOpen': "Coffre ouvert : ",
+        'chestTrap' : "Coffre piégé : ",
+        'chestNotOpened' : "Coffre non ouvert : ",
+        'spiritMeet' : "Esprit rencontré : ",
     },
     'app' : {
         'nameHeroCheck' : "Votre nom doit être composé de 2 à 15 lettres",
@@ -229,16 +213,20 @@ const FR = {
 
         'death' : "Vous tombez de fatigue ...",
         'results' : "Voir les résultats",
-        'gameover' : "La partie est terminée.<br />Vous avez obtenu un score de : ",
+        'gameover' : "La partie est terminée.<br />Votre score : ",
         'gameoverButton' : "Recommencer",
         'shareScore_part1' : "Wahou! Je viens de faire un score de ",
         'shareScore_part2' : " points dans La Tour !",
         'shareScore_button' : "Partager",
 
-        'initialContent' : `<div id="containerImage"><img src="assets/images/special/sign.png" alt=""></div>
+        'startGame' : `<div id="containerImage"><img src="assets/images/special/sign.png" alt=""></div>
                                     <p>Une vieille pancarte. La plupart des mots sont effacés par le temps.</p>
                                     <em>"Celui qui ... le sommet pourra ... l'un de ses ... ! ... le danger, restez en ... et grimpez le ... haut ..."</em>
-                                    <p>Vous continuez votre chemin d'un pas déterminé.</p>`
+                                    <p>Vous continuez votre chemin d'un pas déterminé.</p>`,
+
+        'endGame' : `<div id="containerImage"><img src="assets/images/events/endGame.png" alt=""></div>
+                                    <p>Vous êtes finalement arrivé en haut de la tour mais vous ne voyez rien d'autre qu'un ciel infini.</p>
+                                    <p>Vous vous demandez alors la raison de tout ceci mais vous avez oublié le pourquoi du comment.</p>`                
     },
     'monsters' : {
         'dragon' : "Dragon légendaire",
@@ -261,8 +249,8 @@ const FR = {
     },
     'tips' : [
         "Lorsque la santé du héros tombe à 0, la partie est terminée. Cependant, un gain de niveau ou une potion restaure la totalité des points de santé.",
-        "Chaque monstre nécessite un nombre de coups pour être vaincu qui est calculé de la manière suivante : <em>\"santé du monstre divisé par la force du héros\"</em>",
-        "Les dégâts d'un monstre sont calculés selon la formule suivante : <em>\"(nombre de coups pour être vaincu multiplié par la force du monstre) moins le bouclier du héros\"</em>",
+        "Chaque monstre nécessite un nombre de coups pour être vaincu qui est calculé de la manière suivante : <em>\"santé du monstre / force du héros\"</em>",
+        "Les dégâts d'un monstre sont calculés selon la formule suivante : <em>\"(nombre de coups pour être vaincu * force du monstre) - le bouclier du héros\"</em>",
         "Vaincre un monstre avec un sort rapporte seulement 50% de points d'expérience mais peut éviter une morte certaine ou de très gros dégâts.",
         "Les combats se déroulent automatiquement alors veillez à bien choisir votre action de jeu. La fuite peut être une bonne solution pour rester en vie.",
         "La statistique de bouclier permet de réduire les dégâts lors d'une attaque dans un combat. Elle peut être uniquement augmentée par l'esprit de la terre.",    
@@ -271,7 +259,7 @@ const FR = {
         "La Tour est divisé par étages. Chaque étage est lui-même composé de 10 salles. A chaque étage, les monstres deviennent plus puissants.",
         "Pour les plus curieux, le score de fin de partie est calculé selon la formule suivante : <em>\"((bouclier + force + santé maximale) * niveau) * étage\"</em>",
         "Un combat contre un adversaire puissant est plus compliqué. Vous ne pouvez pas fuir et il est nécessaire de posséder au moins 3 sorts pour gagner grâce au sortillège.",
-        "En début de partie, chaque objet que vous pouvez récupérer est limité à une certaine quantité. Par la suite, vous pourrez en garder devantage. "
+        "En début de partie, chaque objet que vous pouvez récupérer est limité à une certaine quantité. Par la suite, vous pourrez en garder davantage. "
     ]
 }
 
@@ -309,25 +297,18 @@ const EN = {
     },
     'stats' : {
         'bestScore' : "Best score : ",
-        'totalGame' : "Number of games : ",
+        'totalGame' : "Number of game : ",
         'bestFloor' : "Highest floor : ",
         'totalRoom' : "Number of rooms : ",
         'maxLevel' : "Highest exp. level : ",
         'totalExp' : "Total exp. point : ",
         'healUsed' : "Potion used : ",
-        'swordKill' : "Monsters defeated with a sword : ",
-        'magicKill' : "Monsters defeated with magic  : ",
-        'runAway' : "Fight escaped: ",
-        'healFound' : "Chest - potion found : ",
-        'magicFound': "Chest - spell found : ",
-        'escapeFound' : "Chest - scroll found : ",
-        'chestTrap' : "Chest - trap : ",
-        'chestNotOpened' : "Chest - not opened : ",
-        'fireSpiritMeet' : "Spirit meet - fire : ",
-        'waterSpiritMeet' : "Spirit meet - water : ",
-        'earthSpiritMeet' : "Spirit meet - earth : ",
-        'windSpiritMeet' : "Spirit meet - wind : ",
-        'lighSpiritMeet' : "Spirit meet - light : ",
+        'fightVictory' : "Monsters defeated  : ",
+        'fightEscape' : "Fight escaped : ",
+        'chestOpen' : "Chest opened : ",
+        'chestTrap' : "Trapped chest : ",
+        'chestNotOpened' : "Chest not opened : ",
+        'spiritMeet' : "Spirit meet : ",
     },
     'app' : {
         'nameHeroCheck' : "Your name must be composed between 2 to 15 letters.",
@@ -402,16 +383,20 @@ const EN = {
 
         'death' : "You're very tired ...",
         'results' : "See the results",
-        'gameover' : "The game is over.<br />You got a score of: ",
+        'gameover' : "The game is over.<br />Your score : ",
         'gameoverButton' : "Restart",
         'shareScore_part1' : "Wow! I just made a score of ",
         'shareScore_part2' : " points in The Tower!",
         'shareScore_button' : "Share",
 
-        'initialContent': `<div id ="containerImage"><img src="assets/images/special/sign.png" alt =""></div>
-                                <p>An old sign. Most of the words are erased by time.</p>
-                                <em>"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ..."</em>
-                                <p>You continue your journey with a determined step.</p> `
+        'startGame': `<div id ="containerImage"><img src="assets/images/special/sign.png" alt =""></div>
+                                    <p>An old sign. Most of the words are erased by time.</p>
+                                    <em>"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ..."</em>
+                                    <p>You continue your journey with a determined step.</p>`,
+
+        'endGame' : `<div id="containerImage"><img src="assets/images/events/endGame.png" alt=""></div>
+                                <p>Finally you reach the top of the tower but you only see an inifite sky.</p>
+                                <p>You're asking yourself what was the reason of all that but you forgot the why of the how.</p>`    
         },
     'monsters' : {
         'dragon' : "Legendary dragon",
@@ -434,8 +419,8 @@ const EN = {
     },
     'tips' : [
         "When the hero's health drops to 0, the game is over. However, leveling up or a potion restores all health points.",
-        "Each monster requires a number of hits to be defeated which is calculated as follows: <em>\" monster health divided by hero strength \"</em>",
-        "The damage of a monster is calculated according to the following formula: <em>\" (number of hits to be defeated multiplied by the strength of the monster) minus the hero's shield \"</em>",
+        "Each monster requires a number of hits to be defeated which is calculated as follows: <em>\" monster health / hero strength \"</em>",
+        "The damage of a monster is calculated according to the following formula: <em>\" (number of hits to be defeated * strength of the monster) - hero's shield \"</em>",
         "Defeating a monster with a spell only grants 50% experience points but can prevent certain death or very large damage.",
         "The fights take place automatically so be sure to choose your game action. Escape can be a good way to stay alive.",
         "The shield stat is used to reduce damage when attacked in combat. It can only be increased by the spirit of the earth.",
