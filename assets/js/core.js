@@ -1,7 +1,12 @@
-// ===> Determine some settings of the game
-let game;
-let settings = {
-    'version' : 1.5,
+// =================================================
+// =================================================
+// ============ CORE VARIABLES
+
+let game; let display; let settings = {
+    'version' : 1.6,
+    'mobile' : /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+    'githubLink' : "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>",
+    'homeLink' : "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>",
     'data' : {
         'health' : 25,
         'healthMax' : 25,
@@ -15,27 +20,64 @@ let settings = {
         'itemHeal' : 0,
         'itemMagic' : 0,
         'itemEscape' : 0,
-        'itemLimit' : 5,
+        'itemLimit' : 9,
         'score' : 0,
         'lvlUpHealth' : 20,
         'lvlUpStrength' : 2, 
-        'lvlUpShield' : 0, 
+        'lvlUpShield' : 0,
         'spiritHealth' : 5,
         'spiritStrength' : 1,
         'spiritShield' : 1
     },
     'refreshDisplay' : null,
-    'mobileDevice' : /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     'messageTimeDisplay' : 1000,
-    'floorBoss' : [8,11,14,17,20,23,26,29,32,35,38,41,44,47,50,53,56,59,62,65,68,71,74,77,80,83,86,89,91,94,97,99],
-    'floorSpecial' : [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
-    'lastFloor' : 100,
-    'githubLink' : "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>",
-    'ndLink' : "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>"
+    'images' : {
+        'start' : "special/sign.png",
+        'monster01' : "monsters/monster_01.png",
+        'monster02' : "monsters/monster_02.png",
+        'monster03' : "monsters/monster_03.png",
+        'monster04' : "monsters/monster_04.png",
+        'monster05' : "monsters/monster_05.png",
+        'monster06' : "monsters/monster_06.png",
+        'monster07' : "monsters/monster_07.png",
+        'monster08' : "monsters/monster_08.png",
+        'monster09' : "monsters/monster_09.png",
+        'monster10' : "monsters/monster_10.png",
+        'monster11' : "monsters/monster_11.png",
+        'monster12' : "monsters/monster_12.png",
+        'monster13' : "monsters/monster_13.png",
+        'monster14' : "monsters/monster_14.png",
+        'monster15' : "monsters/monster_15.png",
+        'monster16' : "monsters/monster_16.png",
+        'monster17' : "monsters/monster_17.png",
+        'noEvent' : "events/noEvent.png",
+        'earthSpirit' : "events/spiritEarth.png",
+        'windSpirit' : "events/spiritWind.png",
+        'lightSpirit' : "events/spiritLight.png",
+        'fireSpirit' : "events/spiritFire.png",
+        'waterSpirit' : "events/spiritWater.png",
+        'chest' : "events/chest.png",
+        'chestTrap' : "events/chestTrap.png",
+        'chestEscape' : "events/chestEscape.png",
+        'chestMagic' : "events/chestMagic.png",
+        'chestHeal' : "events/chestHeal.png",
+        'iconPotion' : "icons/potion.png",
+        'iconMagic' : "icons/magic.png",
+        'iconEscape' : "icons/escape.png",
+        'iconHero' : "icons/hero.png",
+        'iconHealth' : "icons/health.png",
+        'iconExperience' : "icons/xp.png",
+        'iconStrength' : "icons/strength.png",
+        'iconShield' : "icons/shield.png"
+    }
 }
 
+// =================================================
+// =================================================
+// ============ CORE INITIALISATION
+
 // ===> Correct the bug of the viewport on mobile
-if (settings.mobileDevice) get("#container").style.minHeight = window.innerHeight + 'px';
+if (settings.mobile) get("#container").style.minHeight = window.innerHeight + 'px';
 
 // ===> Create data game or parse it if existing
 if (storage("get", "TOWER-gameSettings")) game = JSON.parse(storage("get", "TOWER-gameSettings"))
@@ -82,11 +124,7 @@ else {
             'itemHeal' : settings.data.itemHeal,
             'itemMagic' : settings.data.itemMagic,
             'itemEscape' : settings.data.itemEscape,
-            'score' : settings.data.score,
-            'itemLimit' : settings.data.itemLimit,
-            'lvlUpHealth' :settings.data.lvlUpHealth,
-            'lvlUpStrength' :settings.data.lvlUpStrength,
-            'lvlUpShield' :settings.data.lvlUpShield
+            'score' : settings.data.score
         }
     }
 
@@ -94,7 +132,7 @@ else {
 }
 
 // ===> French translation
-const FR = {
+const french = {
     'auto' : {
         'title' : "La Tour",
 
@@ -102,7 +140,7 @@ const FR = {
         'startScreenTitle' : "Bienvenue aventurier",
         'nameHeroLabel' : "Quel est ton nom ?",
         'startGame' : "Entrer",
-        'footer' : "Disponible sur " + settings.githubLink + " (v " + settings.version + ")<br />Hébergé sur " + settings.ndLink,
+        'footer' : "Disponible sur " + settings.githubLink + " (v " + settings.version + ")<br />Hébergé sur " + settings.homeLink,
 
         'move' : "Avancer",
         'useHeal' : "Utiliser une potion",
@@ -207,10 +245,6 @@ const FR = {
         'fightMagic' : "Vous avez vaincu le monstre grâce à un sort magique",
         'fightEscape' : "Vous vous échappez grâce au parchemin de fuite",
 
-        'bossFight_start' : "Un adversaire puissant vous barre la route",
-        'bossFight_win' : "L'adversaire puissant vaincu en ",
-        'bossFight_magic' : "Vous avez vaincu l'adversaire puissant grâce à un sort magique",
-
         'death' : "Vous tombez de fatigue ...",
         'results' : "Voir les résultats",
         'gameover' : "La partie est terminée.<br />Votre score : ",
@@ -219,14 +253,9 @@ const FR = {
         'shareScore_part2' : " points dans La Tour !",
         'shareScore_button' : "Partager",
 
-        'startGame' : `<div id="containerImage"><img src="assets/images/special/sign.png" alt=""></div>
-                                    <p>Une vieille pancarte. La plupart des mots sont effacés par le temps.</p>
-                                    <em>"Celui qui ... le sommet pourra ... l'un de ses ... ! ... le danger, restez en ... et grimpez le ... haut ..."</em>
-                                    <p>Vous continuez votre chemin d'un pas déterminé.</p>`,
-
-        'endGame' : `<div id="containerImage"><img src="assets/images/events/endGame.png" alt=""></div>
-                                    <p>Vous êtes finalement arrivé en haut de la tour mais vous ne voyez rien d'autre qu'un ciel infini.</p>
-                                    <p>Vous vous demandez alors la raison de tout ceci mais vous avez oublié le pourquoi du comment.</p>`                
+        'startGame_part1' : "Une vieille pancarte. La plupart des mots sont effacés par le temps.",
+        'startGame_part2' : "\"Celui qui ... le sommet pourra ... l'un de ses ... ! ... le danger, restez en ... et grimpez le ... haut ...\"",
+        'startGame_part3' : "Vous continuez votre chemin d'un pas déterminé.."
     },
     'monsters' : {
         'dragon' : "Dragon légendaire",
@@ -264,7 +293,7 @@ const FR = {
 }
 
 // ===> English translation
-const EN = {
+const english = {
     'auto' : {
         'title' : "The Tower",
 
@@ -272,7 +301,7 @@ const EN = {
         'startScreenTitle' : "Welcome adventurer",
         'nameHeroLabel' : "What's your name ?",
         'startGame' : "Enter",
-        'footer' : "Soon available on " + settings.githubLink + " (v " + settings.version + ")<br />Hosted on  " + settings.ndLink,
+        'footer' : "Available on " + settings.githubLink + " (v " + settings.version + ")<br />Hosted on  " + settings.homeLink,
 
         'move' : "Move",
         'useHeal' : "Use a potion",
@@ -377,10 +406,6 @@ const EN = {
         'fightMagic' : "You have defeated the monster with a magic spell",
         'fightEscape' : "You escape thanks to the escape scroll",
 
-        'bossFight_start' : "A powerful opponent stands in your way",
-        'bossFight_win' : "The mighty opponent defeated in ",
-        'bossFight_magic' : "You defeated the mighty opponent with a magic spell",
-
         'death' : "You're very tired ...",
         'results' : "See the results",
         'gameover' : "The game is over.<br />Your score : ",
@@ -389,14 +414,9 @@ const EN = {
         'shareScore_part2' : " points in The Tower!",
         'shareScore_button' : "Share",
 
-        'startGame': `<div id ="containerImage"><img src="assets/images/special/sign.png" alt =""></div>
-                                    <p>An old sign. Most of the words are erased by time.</p>
-                                    <em>"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ..."</em>
-                                    <p>You continue your journey with a determined step.</p>`,
-
-        'endGame' : `<div id="containerImage"><img src="assets/images/events/endGame.png" alt=""></div>
-                                <p>Finally you reach the top of the tower but you only see an inifite sky.</p>
-                                <p>You're asking yourself what was the reason of all that but you forgot the why of the how.</p>`    
+        'startGame_part1' : "An old sign. Most of the words are erased by time.",
+        'startGame_part2' : "\"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ...\"",
+        'startGame_part3' : "You continue your journey with a determined step."
         },
     'monsters' : {
         'dragon' : "Legendary dragon",
@@ -435,20 +455,21 @@ const EN = {
 
 // ===> Determine language of the app
 if (navigator.language == "fr" || navigator.language == "fr-FR") {
+    display = french;
     get("#htmlTag").lang = "fr";
-    language = FR;
 }
 else {
+    display = english;
     get("#htmlTag").lang = "en";
-    language = EN;
 }
 
 // ===> Automatically display all the "language.auto" object
-for(let i = 0; i < Object.keys(language).length - 4; i++) { 
-    let allData = language[Object.keys(language)[i]];
-        let idName = Object.keys(allData);
-        let values = Object.values(allData);
+for(let i = 0; i < Object.keys(display).length - 4; i++) { 
+    let data = display[Object.keys(display)[i]];
+    let names = Object.keys(data);
+    let values = Object.values(data);
     
-        for (let j = 0; j < idName.length; j++) 
-            get("#" + idName[j]).innerHTML = values[j];
+    for (let j = 0; j < names.length; j++) {
+        get("#" + names[j]).innerHTML = values[j];
+    }
 }

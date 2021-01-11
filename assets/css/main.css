@@ -3,15 +3,41 @@
 /* ======== MAIN */
 
 :root {
-    --lightBlack: #262931;
+    --mainBackground: #262931;
+    --linkColor: lightcoral;
+    --redTextColor: #AA6373;
+    --greenTextColor: #7FB285;
+    --gameBackground: white;
+    --gameBorder: black;
+    --headerBackground: black;
+    --headerTitle: white;
+    --headerButtonColor1: #262931;
+    --headerButtonColor2: white;
+    --errorTextColor : red;
+    --gameoverBackground : lightcoral;
+    
+    --startScreenTitleBorder: black;
+    --startScreenInputBorder: black;
+    --startScreenInputColor: #262931;
+    --startScreenInputBackground: transparent;
+
+    --buttonColor1: black;
+    --buttonColor2: white;
+    --buttonColor3: lightcoral;
+    --buttonColor4: lightblue;
+    --buttonColor5: #262931;
+
+    --popupContainer: black;
+    --popupBackground: #262931;
+    --popupTextColor: white;
+    --popupTitleBorder: white;
 }
 
 @font-face {
     font-family: 'retrogaming';
-    src: url('../../ressources/fonts/retro_gaming.woff2') format('woff2'),
-           url('../../ressources/fonts/retro_gaming.woff') format('woff');
-    font-weight: normal;
     font-style: normal;
+    font-weight: normal;
+    src: url('../../ressources/fonts/retro_gaming.woff2') format('woff2'), url('../../ressources/fonts/retro_gaming.woff') format('woff');
     font-display: swap;
 }
 
@@ -21,7 +47,7 @@ body {
     padding: 0;
     font-family: sans-serif;
     font-size: 1em;
-    background-color: var(--lightBlack);
+    background-color: var(--mainBackground);
 }
 
 button,
@@ -29,16 +55,9 @@ input {
     font-family: sans-serif;
 }
 
-button:active,
-button:focus,
-input:active,
-input:focus {
-    outline: 0 !important;
-}
-
 a {
-    color: lightcoral;
     text-decoration: none;
+    color: var(--linkColor);
 }
 
 a:hover {
@@ -46,54 +65,50 @@ a:hover {
 }
 
 .red {
-    color: #AA6373;
+    color: var(--redTextColor);
 }
 
 .green {
-    color: #7FB285
+    color: var(--greenTextColor);
 }
 
 /* ======================================== */
 /* ======================================== */
-/* ======== CONTAINER */
+/* ======== GENERAL */
 
 #container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     margin: 0 32vw;
-    border-left: 2px solid black;
-    border-right: 2px solid black;
-    background-color: white;
+    min-height: 100vh;
+    border-right: 2px solid var(--gameBorder);
+    border-left: 2px solid var(--gameBorder);
+    background-color: var(--gameBackground);
 }
-
-/* ======================================== */
-/* ======================================== */
-/* ======== HEADER */
 
 header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: black;
-    color: white;
-    font-size: 2.5em;
-    text-transform: uppercase;
+    justify-content: space-between;
     padding: 2vh;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    color: var(--headerTitle);
+    background-color: var(--headerBackground);
 }
 
 header button {
-    background: var(--lightBlack);
-    color: white;
-    border-radius: 30%;
     padding: 1vh;
-    border: 2px solid var(--lightBlack);
-    font-size: 0.5em;
     min-width: 3vw;
+    border: 2px solid var(--headerButtonColor1);
+    border-radius: 30%;
+    font-size: 0.5em;
+    color: var(--headerButtonColor2);
+    background: var(--headerButtonColor1);
 }
 
 header button:hover {
-    border: 2px solid white;
+    border: 2px solid var(--headerButtonColor2);
 }
 
 #volumeButton,
@@ -107,10 +122,10 @@ header button:hover {
 
 #startScreen {
     display: none;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
     flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     font-size: 1.3em;
 }
@@ -120,49 +135,45 @@ header button:hover {
 }
 
 #startScreen h1 {
-    font-size: 1.5em;
-    border-top: 1px solid black;
-    border-bottom: 1px solid  black;
     padding: 0.8vh 0 0.5vh 0;
+    border-top: 1px solid var(--startScreenTitleBorder);
+    border-bottom: 1px solid var(--startScreenTitleBorder);
+    font-size: 1.5em;
 }
 
 #nameHero {
-    padding: 0vh;
     width: 30vw;
-    background: transparent;
-    border: 0;
-    border-bottom: 2px solid black;
-    text-align: center;
-    color: var(--grey);
-    font-size: 1.5em;
     margin: 4vh 0;
-}
-
-#nameHero:focus {
-    outline: 0;
+    padding: 0;
+    border: 0;
+    border-bottom: 2px solid var(--startScreenInputBorder);
+    text-align: center;
+    font-size: 1.5em;
+    color: var(--startScreenInputColor);
+    background: var(--startScreenInputBackground);
 }
 
 #startScreen button {
-    background: black;
-    color: white;
-    font-size: 1.5em;
+    width: 20vw;
     padding: 1.5vh;
+    border: 0;
     border-radius: 15px;
-    border: 1px solid transparent;
-    width: 20vw; 
+    font-size: 1.5em;
+    color: var(--buttonColor2);
+    background: var(--buttonColor1);
 }
 
 #startScreen button:hover {
-    color: lightcoral;
+    color: var(--buttonColor3);
 }
 
 #displayTip {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    text-align: justify;
     flex-grow: 1;
+    justify-content: center;
     padding: 0 2vw;
+    text-align: justify;
 }
 
 #displayTip em {
@@ -181,37 +192,37 @@ header button:hover {
 #gameScreen {
     display: none;
     flex-direction: column;
-    padding: 1vh 0;
     flex-grow: 1;
+    padding: 1vh 0;
     text-align: center;
     font-size: 1.3em;
 }
 
 #gameContent {
     flex-grow: 1;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
     padding: 1vh 0.5vw;
+    border-top: 2px solid var(--gameBorder);
+    border-bottom: 2px solid var(--gameBorder);
 }
 
 #containerImage {
-    height: 25vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    height: 25vh;
 }
 
 #containerImage img {
-    min-height: 15vh;
     max-height: 25vh;
+    min-height: 15vh;
 }
 
 #gameMessage {
     display: none;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     flex-grow: 1;
+    align-items: center;
+    justify-content: center;
     padding: 2vh;
 }
 
@@ -225,18 +236,18 @@ header button:hover {
 }
 
 #gameMessage button {
-    background: black;
-    color: white;
-    font-size: 2em;
-    padding: 1.5vh;
-    border-radius: 15px;
-    border: 1px solid transparent;
+    width: 20vw;
     margin: 1vh;
-    width: 20vw; 
+    padding: 1.5vh;
+    border: 0;
+    border-radius: 15px;
+    font-size: 2em;
+    color: var(--buttonColor2);
+    background: var(--buttonColor1);
 }
 
 #gameMessage button:hover {
-    color: lightcoral;
+    color: var(--buttonColor3);
 }
 
 #heroStatus {
@@ -274,28 +285,28 @@ header button:hover {
 }
 
 #listAction button {
-    background: black;
-    color: white;
-    font-size: 1em;
-    padding: 1.5vh;
-    border-radius: 15px;
-    border: 1px solid transparent;
     margin: 1vh;
-    min-width: 15vw;
+    padding: 1.5vh;
     min-height: 8vh;
+    min-width: 15vw;
+    border: 0;
+    border-radius: 15px;
+    font-size: 1em;
+    color: var(--buttonColor2);
+    background: var(--buttonColor1);
 }
 
 #listAction button:hover {
-    color: lightblue;
-    background: var(--lightBlack);
+    color: var(--buttonColor4);
+    background: var(--buttonColor5);
 }
 
-#listAction button:disabled  {
+#listAction button:disabled {
     opacity: 0.5;
 }
 
-#listAction button:disabled:hover  {
-    color : white;
+#listAction button:disabled:hover {
+    color: var(--buttonColor2);
 }
 
 /* ======================================== */
@@ -304,14 +315,14 @@ header button:hover {
 
 #containerPopup {
     display: none;
+    z-index: 1;
     position: fixed;
     top: 0;
+    right: 0;
     bottom: 0;
     left: 0;
-    right: 0;
-    background-color: black;
-    z-index: 1;
     font-size: 1.1em;
+    background-color: var(--popupContainer);
 }
 
 #containerPopup:target {
@@ -320,27 +331,27 @@ header button:hover {
 
 #containerPopup div {
     display: none;
-    background: var(--lightBlack);
-    color: white;
-    padding: 2vh;
     position: relative;
     width: 50vw;
+    margin: auto auto;
+    padding: 2vh;
     border-radius: 10px;
     text-align: center;
-    margin: auto auto;
+    color: var(--popupTextColor);
+    background: var(--popupBackground);
 }
 
 #containerPopup h1 {
-    border-bottom: 2px solid white;
-    font-size: 1.5em;
     margin: 0 0 2vh 0;
+    border-bottom: 2px solid var(--popupTitleBorder);
+    font-size: 1.5em;
 }
 
 #containerPopup ul {
-    text-align: justify !important;
-    list-style: square;
     margin: 0;
     padding: 0 2vh 0 3vh;
+    text-align: justify !important;
+    list-style: square;
 }
 
 #containerPopup .noListStyle {
@@ -352,28 +363,35 @@ header button:hover {
 }
 
 #containerPopup button {
-    background: white;
+    margin: 1vh;
+    padding: 1.5vh;
+    min-width: 25vw;
+    border: 0;
+    border-bottom: 5px solid var(--buttonColor2);
     font-size: 1em;
     font-weight: bold;
-    padding: 1.5vh;
-    border: 0;
-    border-bottom: 5px solid white;
-    margin: 1vh;
-    min-width: 25vw;
+    background: var(--buttonColor2);
 }
 
 #containerPopup button:hover {
-    border-bottom: 5px solid lightcoral;
+    border-bottom: 5px solid var(--buttonColor3);
 }
 
 /* ======================================== */
 /* ======================================== */
 /* ======== MOBILE */
 
-@media(max-width: 1024px) {
+@media(max-width:1024px) {
     html,
     body {
         font-size: 0.9em;
+    }
+
+    button:active,
+    button:focus,
+    input:active,
+    input:focus {
+        outline: 0 !important;
     }
 
     #container {
@@ -386,14 +404,14 @@ header button:hover {
     }
 
     header button {
-        background: var(--lightBlack);
-        border-radius: 25%;
         padding: 0.2vh;
-        border: 1px solid white;
-        font-size: 1em;
         min-width: 7vw;
+        border: 1px solid var(--buttonColor2);
+        border-radius: 25%;
+        font-size: 1em;
+        background: var(--mainBackground);
     }
-    
+
     header button:hover {
         border: 0;
     }
