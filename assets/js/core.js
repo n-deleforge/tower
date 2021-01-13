@@ -2,11 +2,12 @@
 // =================================================
 // ============ CORE VARIABLES
 
-let game; let display; let settings = {
-    'version' : 1.6,
-    'mobile' : /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
-    'githubLink' : "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>",
-    'homeLink' : "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>",
+let game; let refreshDisplay; let timeDisplay = 1000;
+const VERSION = 1.7;
+const GITHUB = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
+const HOME = "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>";
+const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
+const SETTINGS = {
     'data' : {
         'health' : 25,
         'healthMax' : 25,
@@ -29,8 +30,6 @@ let game; let display; let settings = {
         'spiritStrength' : 1,
         'spiritShield' : 1
     },
-    'refreshDisplay' : null,
-    'messageTimeDisplay' : 1000,
     'images' : {
         'start' : "special/sign.png",
         'monster01' : "monsters/monster_01.png",
@@ -70,69 +69,8 @@ let game; let display; let settings = {
         'iconStrength' : "icons/strength.png",
         'iconShield' : "icons/shield.png"
     }
-}
-
-// =================================================
-// =================================================
-// ============ CORE INITIALISATION
-
-// ===> Correct the bug of the viewport on mobile
-if (settings.mobile) get("#container").style.minHeight = window.innerHeight + 'px';
-
-// ===> Create data game or parse it if existing
-if (storage("get", "TOWER-gameSettings")) game = JSON.parse(storage("get", "TOWER-gameSettings"))
-else {
-    game = {
-        'core' : {
-            'ongoing' : false, 
-            'name' : null, 
-            'sound' : true,
-            'version' : 1.3
-        },
-        'events' : {
-            'lastAction' : null,  
-            'newAction' : null, 
-            'subAction' : null, 
-            'monster' : null,
-            'currentEvent' : null
-        },
-        'stats' : {
-            'bestScore' : 0,
-            'totalGame' : 0,
-            'bestFloor' : 0,
-            'totalRoom' : 0,
-            'maxLevel' : 0,
-            'totalExp' : 0,
-            'healUsed' : 0,
-            'fightVictory' : 0,
-            'fightEscape' : 0,
-            'chestOpen': 0,
-            'chestTrap' : 0,
-            'chestNotOpened' : 0,
-            'spiritMeet' : 0,
-        },
-        'character' : {
-            'health' : settings.data.health,
-            'healthMax' : settings.data.healthMax,
-            'strength' : settings.data.strength,
-            'shield' : settings.data.shield,
-            'xp' : settings.data.xp,
-            'xpTo' : settings.data.xpTo,
-            'level' : settings.data.level,
-            'floor' : settings.data.floor,
-            'room' : settings.data.room,
-            'itemHeal' : settings.data.itemHeal,
-            'itemMagic' : settings.data.itemMagic,
-            'itemEscape' : settings.data.itemEscape,
-            'score' : settings.data.score
-        }
-    }
-
-    storage("set", "TOWER-gameSettings", JSON.stringify(game));
-}
-
-// ===> French translation
-const french = {
+};
+const FRENCH = {
     'auto' : {
         'title' : "La Tour",
 
@@ -140,7 +78,7 @@ const french = {
         'startScreenTitle' : "Bienvenue aventurier",
         'nameHeroLabel' : "Quel est ton nom ?",
         'startGame' : "Entrer",
-        'footer' : "Disponible sur " + settings.githubLink + " (v " + settings.version + ")<br />Hébergé sur " + settings.homeLink,
+        'footer' : "Disponible sur " + GITHUB + " (v " + VERSION + ")<br />Hébergé sur " + HOME,
 
         'move' : "Avancer",
         'useHeal' : "Utiliser une potion",
@@ -290,10 +228,8 @@ const french = {
         "Un combat contre un adversaire puissant est plus compliqué. Vous ne pouvez pas fuir et il est nécessaire de posséder au moins 3 sorts pour gagner grâce au sortillège.",
         "En début de partie, chaque objet que vous pouvez récupérer est limité à une certaine quantité. Par la suite, vous pourrez en garder davantage. "
     ]
-}
-
-// ===> English translation
-const english = {
+};
+const ENGLISH = {
     'auto' : {
         'title' : "The Tower",
 
@@ -301,7 +237,7 @@ const english = {
         'startScreenTitle' : "Welcome adventurer",
         'nameHeroLabel' : "What's your name ?",
         'startGame' : "Enter",
-        'footer' : "Available on " + settings.githubLink + " (v " + settings.version + ")<br />Hosted on  " + settings.homeLink,
+        'footer' : "Available on " + GITHUB + " (v " + VERSION + ")<br />Hosted on  " + HOME,
 
         'move' : "Move",
         'useHeal' : "Use a potion",
@@ -417,7 +353,7 @@ const english = {
         'startGame_part1' : "An old sign. Most of the words are erased by time.",
         'startGame_part2' : "\"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ...\"",
         'startGame_part3' : "You continue your journey with a determined step."
-        },
+    },
     'monsters' : {
         'dragon' : "Legendary dragon",
         'supDemon' : "Superior demon",
@@ -451,21 +387,72 @@ const english = {
         "A fight against a powerful opponent is more complicated. You cannot flee and it is necessary to have at least 3 spells to win thanks to the spell.",
         "At the start of the game, each item you can collect is limited to a certain quantity. Later, you can keep more."
     ]
-}
+};
 
-// ===> Determine language of the app
-if (navigator.language == "fr" || navigator.language == "fr-FR") {
-    display = french;
-    get("#htmlTag").lang = "fr";
-}
+// =================================================
+// =================================================
+// ============ CORE INITIALISATION
+
+// ===> Correct the bug of the viewport on mobile
+if (MOBILE) get("#container").style.minHeight = window.innerHeight + 'px';
+
+// ===> Create data game or parse it if existing
+if (storage("get", "TOWER-gameSettings")) game = JSON.parse(storage("get", "TOWER-gameSettings"))
 else {
-    display = english;
-    get("#htmlTag").lang = "en";
+    game = {
+        'core' : {
+            'ongoing' : false, 
+            'name' : null, 
+            'sound' : true,
+            'version' : VERSION
+        },
+        'events' : {
+            'lastAction' : null,  
+            'newAction' : null, 
+            'subAction' : null, 
+            'monster' : null,
+            'currentEvent' : null
+        },
+        'stats' : {
+            'bestScore' : 0,
+            'totalGame' : 0,
+            'bestFloor' : 0,
+            'totalRoom' : 0,
+            'maxLevel' : 0,
+            'totalExp' : 0,
+            'healUsed' : 0,
+            'fightVictory' : 0,
+            'fightEscape' : 0,
+            'chestOpen': 0,
+            'chestTrap' : 0,
+            'chestNotOpened' : 0,
+            'spiritMeet' : 0,
+        },
+        'character' : {
+            'health' : SETTINGS.data.health,
+            'healthMax' : SETTINGS.data.healthMax,
+            'strength' : SETTINGS.data.strength,
+            'shield' : SETTINGS.data.shield,
+            'xp' : SETTINGS.data.xp,
+            'xpTo' : SETTINGS.data.xpTo,
+            'level' : SETTINGS.data.level,
+            'floor' : SETTINGS.data.floor,
+            'room' : SETTINGS.data.room,
+            'itemHeal' : SETTINGS.data.itemHeal,
+            'itemMagic' : SETTINGS.data.itemMagic,
+            'itemEscape' : SETTINGS.data.itemEscape,
+            'score' : SETTINGS.data.score
+        }
+    }
+
+    storage("set", "TOWER-gameSettings", JSON.stringify(game));
 }
 
-// ===> Automatically display all the "language.auto" object
-for(let i = 0; i < Object.keys(display).length - 4; i++) { 
-    let data = display[Object.keys(display)[i]];
+// ===> Determine language of the application
+const CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? FRENCH : ENGLISH;
+
+for(let i = 0; i < Object.keys(CONTENT).length - 4; i++) { 
+    let data = CONTENT[Object.keys(CONTENT)[i]];
     let names = Object.keys(data);
     let values = Object.values(data);
     

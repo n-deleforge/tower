@@ -8,7 +8,7 @@ game.core.ongoing == false ? launcher() : startGame("load");
 // ===> Display the launcher 
 function launcher() {
     get('#startScreen').style.display = "flex";
-    get('#displayTip').innerHTML = display.tips[rand(0, display.tips.length)]; // random tip
+    get('#displayTip').innerHTML = CONTENT.tips[rand(0, CONTENT.tips.length)]; // random tip
 
     // Check if the name is registred
     if (game.core.name != null && game.core.name != "") get("#nameHero").value = game.core.name
@@ -20,7 +20,7 @@ function launcher() {
     // Check of the regex and start of the game
     get("#startGame").addEventListener("click", function () {
         if (!get("#nameHero").checkValidity() || get("#nameHero").value == "") {
-            get("#nameHeroLabel").innerHTML = display.app.nameHeroCheck;
+            get("#nameHeroLabel").innerHTML = CONTENT.app.nameHeroCheck;
             get("#nameHeroLabel").style.color = getVariableCSS("--errorTextColor");
         }
         else startGame("new");
@@ -35,17 +35,17 @@ function startGame(mode) {
     createMenu();
     createButtons();
     displayGame();
-    settings.refreshDisplay = setInterval(displayGame, 100);
+    refreshDisplay = setInterval(displayGame, 100);
 
     // If it's a new game
     if (mode == "new") {
         if (game.core.sound == true) get("#soundRoom").play();
         game.core.name = get("#nameHero").value;
         game.core.ongoing = true; // the game is ongoing
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.start + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.startGame_part1 +  '.</p>';
-        get("#gameContent").innerHTML += '<em>' + display.app.startGame_part2 +  '.</em>';
-        get("#gameContent").innerHTML += '<p>' + display.app.startGame_part3 +  '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.start + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.startGame_part1 +  '.</p>';
+        get("#gameContent").innerHTML += '<em>' + CONTENT.app.startGame_part2 +  '.</em>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.startGame_part3 +  '.</p>';
     } 
     
     // If it's not a new game
@@ -65,26 +65,26 @@ function play() {
     // At the 10th room
     if (game.character.room > 10) {
         if (game.core.sound == true) get("#soundFloor").play();
-        settings.messageTimeDisplay = 2000;
+        timeDisplay = 2000;
         game.character.room = 1; 
         game.character.floor++; 
         if (game.character.floor > game.stats.bestFloor) game.stats.bestFloor = game.character.floor;
-        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + display.app.floor + ' ' + game.character.floor + "</p>";
+        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + CONTENT.app.floor + ' ' + game.character.floor + "</p>";
     } 
 
     // All rooms expect the 10th
     else { 
         if (game.core.sound == true) get("#soundRoom").play();
-        settings.messageTimeDisplay = 1000;
+        timeDisplay = 1000;
         game.stats.totalRoom++;
-        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + display.app.floor + ' ' + parseInt(game.character.floor) + "</p>";
-        get("#gameMessage").innerHTML += "<p>" + display.app.room + ' ' + game.character.room + "</p>";
+        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + CONTENT.app.floor + ' ' + parseInt(game.character.floor) + "</p>";
+        get("#gameMessage").innerHTML += "<p>" + CONTENT.app.room + ' ' + game.character.room + "</p>";
     }
 
     // Timeout to show the game again
     setTimeout(function () {
         changeDisplay("hideMessage");
-    },  settings.messageTimeDisplay);
+    },  timeDisplay);
     
     choiceAction();
 }
@@ -142,7 +142,7 @@ function heal() {
         game.character.health = game.character.healthMax;
         game.stats.healUsed++;
 
-        get("#gameContent").innerHTML += '<hr><p class="green">' + display.app.healing + '</p>';
+        get("#gameContent").innerHTML += '<hr><p class="green">' + CONTENT.app.healing + '</p>';
         saveContent();
     }
 }
@@ -150,8 +150,8 @@ function heal() {
 // ===> When there is no event
 function noEvent() {
     game.events.lastAction = "noEvent";
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.noEvent + '" alt=""></div>';
-    get("#gameContent").innerHTML += '<p>' + display.app.noEvent + '.</p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.noEvent + '" alt=""></div>';
+    get("#gameContent").innerHTML += '<p>' + CONTENT.app.noEvent + '.</p>';
     saveContent();
 }
 
@@ -163,16 +163,16 @@ function spirit() {
 
     // 9-10 : Earth spirit
     if (nb > 8) { 
-        game.character.shield = game.character.shield + settings.data.spiritShield;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.earthSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' +display.app.spiritEarth_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + display.app.spiritEarth_part2 + ' <strong>' + settings.data.spiritShield + '</strong> ' + plural(settings.data.spiritShield, display.app.point_singular, display.app.point_plural) + '.</p>';
+        game.character.shield = game.character.shield + SETTINGS.data.spiritShield;
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.earthSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' +CONTENT.app.spiritEarth_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritEarth_part2 + ' <strong>' + SETTINGS.data.spiritShield + '</strong> ' + plural(SETTINGS.data.spiritShield, CONTENT.app.point_singular, CONTENT.app.point_plural) + '.</p>';
     } 
     
     // 7-8 : Wind spirit
     else if (nb > 6) { 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.windSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.spiritWind + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.windSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritWind + '.</p>';
         let item = rand(1, 3);
 
         switch (item) {
@@ -180,27 +180,27 @@ function spirit() {
             case 1:
                 if (game.character.itemHeal != 0) {
                     game.character.itemHeal--;
-                    get("#gameContent").innerHTML += '<p class="red">' + display.app.spiritWind_healStealing + '.</p>';
+                    get("#gameContent").innerHTML += '<p class="red">' + CONTENT.app.spiritWind_healStealing + '.</p>';
                 } 
-                else get("#gameContent").innerHTML += '<p>' + display.app.spiritWind_noStealing + '.</p>';
+                else get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritWind_noStealing + '.</p>';
                 break;
 
             // Magic stealing
             case 2:
                 if (game.character.itemMagic != 0) {
                     game.character.itemMagic--;
-                    get("#gameContent").innerHTML += '<p class="red">' + display.app.spiritWind_magicStealing + '.</p>';
+                    get("#gameContent").innerHTML += '<p class="red">' + CONTENT.app.spiritWind_magicStealing + '.</p>';
                 } 
-                else get("#gameContent").innerHTML += '<p>' + display.app.spiritWind_noStealing + '.</p>';
+                else get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritWind_noStealing + '.</p>';
                 break;
 
             // Escape stealing
             case 3:
                 if (game.character.itemEscape != 0) {
                     game.character.itemEscape--;
-                    get("#gameContent").innerHTML += '<p class="red">' + display.app.spiritWind_escapeStealing + '.</p>';
+                    get("#gameContent").innerHTML += '<p class="red">' + CONTENT.app.spiritWind_escapeStealing + '.</p>';
                 } 
-                else get("#gameContent").innerHTML += '<p>' + display.app.spiritWind_noStealing + '.</p>';
+                else get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritWind_noStealing + '.</p>';
                 break;
         }
     }
@@ -209,25 +209,25 @@ function spirit() {
     else if (nb > 4) {
         let xp = rand(parseInt(game.character.xpTo / 8), parseInt(game.character.xpTo / 6));
         game.character.xp = game.character.xp + xp;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.lightSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.spiritLight_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + display.app.spiritLight_part2 + '<strong>' + xp + '</strong> ' + plural(xp, display.app.point_singular, display.app.point_plural) + display.app.spiritLight_part3 + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.lightSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritLight_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritLight_part2 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.spiritLight_part3 + '.</p>';
     } 
 
     // 3-4 : Fire spirit
     else if (nb > 2) {
-        game.character.strength = game.character.strength + settings.data.spiritStrength;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.fireSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' +display.app.spiritFire_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + display.app.spiritFire_part2 + ' <strong>' + settings.data.spiritStrength + '</strong> ' + plural(settings.data.spiritStrength, display.app.point_singular, display.app.point_plural) + '.</p>';
+        game.character.strength = game.character.strength + SETTINGS.data.spiritStrength;
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.fireSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' +CONTENT.app.spiritFire_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritFire_part2 + ' <strong>' + SETTINGS.data.spiritStrength + '</strong> ' + plural(SETTINGS.data.spiritStrength, CONTENT.app.point_singular, CONTENT.app.point_plural) + '.</p>';
     } 
 
     // 1-2 : Water spirit
     else {
-        game.character.healthMax = game.character.healthMax + settings.data.spiritHealth;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.waterSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.spiritWater_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + display.app.spiritWater_part2 + ' <strong>' + settings.data.spiritHealth + '</strong> ' + plural(settings.data.spiritHealth, display.app.point_singular, display.app.point_plural) + '.</p>';
+        game.character.healthMax = game.character.healthMax + SETTINGS.data.spiritHealth;
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.waterSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritWater_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritWater_part2 + ' <strong>' + SETTINGS.data.spiritHealth + '</strong> ' + plural(SETTINGS.data.spiritHealth, CONTENT.app.point_singular, CONTENT.app.point_plural) + '.</p>';
     }
 
     saveContent();
@@ -242,8 +242,8 @@ function chest() {
     game.events.lastAction = "chest";
     changeDisplay("gameToChest");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.chest + '" alt=""></div>';
-    get("#gameContent").innerHTML += '<p>' + display.app.chest + ' !</p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chest + '" alt=""></div>';
+    get("#gameContent").innerHTML += '<p>' + CONTENT.app.chest + ' !</p>';
     saveContent();
 }
 
@@ -262,33 +262,33 @@ function openChest() {
         game.stats.chestTrap++;
         let damage = rand(1, game.character.health / 4);
         game.character.health = game.character.health - damage;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.chestTrap + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.chestTrap_part1 + ' !</p>';
-        get("#gameContent").innerHTML += '<p class="red">' + display.app.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, display.app.point_singular, display.app.point_plural) + display.app.chestTrap_part3 + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestTrap + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestTrap_part1 + ' !</p>';
+        get("#gameContent").innerHTML += '<p class="red">' + CONTENT.app.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.chestTrap_part3 + '.</p>';
     } 
 
     // 6 - 7 : escape item
     else if (nb > 5) { 
-        settings.data.itemLimit > game.character.itemEscape ? game.character.itemEscape++ : limited = true;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.chestEscape + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.chestEscape +  '.</p>';
-        if (limited) get("#gameContent").innerHTML += '<p>' + display.app.chestLimit + '.</p>';
+        SETTINGS.data.itemLimit > game.character.itemEscape ? game.character.itemEscape++ : limited = true;
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestEscape + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestEscape +  '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestLimit + '.</p>';
     } 
 
      // 4 - 5 : magic item
     else if (nb > 3) {
-        settings.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.chestMagic + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.chestMagic + '.</p>';
-        if (limited) get("#gameContent").innerHTML += '<p>' + display.app.chestLimit + '.</p>';
+        SETTINGS.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestMagic + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestMagic + '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestLimit + '.</p>';
     } 
 
     // 1 - 3 : heal item
     else { 
-        settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.chestHeal + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.chestHeal + '.</p>';
-        if (limited) get("#gameContent").innerHTML += '<p>' + display.app.chestLimit + '.</p>';
+        SETTINGS.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestHeal + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestHeal + '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestLimit + '.</p>';
     }
 
     saveContent();
@@ -300,9 +300,9 @@ function closeChest() {
     game.events.subAction = "chestOver";
     changeDisplay("chestToGame");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + settings.images.chest + '" alt=""></div>';
-    get("#gameContent").innerHTML += '<p>' + display.app.chest + ' !</p>';
-    get("#gameContent").innerHTML += '<p>' + display.app.chest_notOpened + '.</p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chest + '" alt=""></div>';
+    get("#gameContent").innerHTML += '<p>' + CONTENT.app.chest + ' !</p>';
+    get("#gameContent").innerHTML += '<p>' + CONTENT.app.chest_notOpened + '.</p>';
     saveContent();
 }
 
@@ -317,31 +317,31 @@ function fight() {
     changeDisplay("gameToFight");
 
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-    get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + display.app.fightStart + '</p>';
-    get("#gameContent").innerHTML += '<p>' + display.app.health + ' : <strong>' + game.events.monster[0] + '</strong> / ' + display.app.strength + ' : <strong>'  + game.events.monster[1] + '</strong></p>';
+    get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + CONTENT.app.fightStart + '</p>';
+    get("#gameContent").innerHTML += '<p>' + CONTENT.app.health + ' : <strong>' + game.events.monster[0] + '</strong> / ' + CONTENT.app.strength + ' : <strong>'  + game.events.monster[1] + '</strong></p>';
     saveContent();
 }
 
 // ===> Choose a monster
 function choiceMonster() {
     let monsterLevel = rand(game.character.floor * 2, game.character.floor * 4)
-    if (monsterLevel > 500) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.dragon, settings.images.monster17];
-    if (monsterLevel > 450) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.supDemon, settings.images.monster16];
-    if (monsterLevel > 400) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.bigSpirit, settings.images.monster15];
-    if (monsterLevel > 350) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.deadWarrior, settings.images.monster14];
-    if (monsterLevel > 290) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.troll, settings.images.monster13];
-    if (monsterLevel > 240) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.behemot, settings.images.monster12];
-    if (monsterLevel > 190) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.minotaur, settings.images.monster11];
-    if (monsterLevel > 160) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.cerberus, settings.images.monster10];
-    if (monsterLevel > 130) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.goblin, settings.images.monster09];
-    if (monsterLevel > 100) return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.ghost, settings.images.monster08];
-    if (monsterLevel > 75)  return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.cockatrice, settings.images.monster07];
-    if (monsterLevel > 50)  return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.lamia, settings.images.monster06];
-    if (monsterLevel > 40)  return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.imp, settings.images.monster05];
-    if (monsterLevel > 30)  return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.plant, settings.images.monster04];
-    if (monsterLevel > 20)  return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.scorpio,settings.images.monster03];
-    if (monsterLevel > 10)  return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.spider, settings.images.monster02];
-    return [monsterLevel, parseInt(monsterLevel / 3), display.monsters.slim, settings.images.monster01];
+    if (monsterLevel > 500) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.dragon, SETTINGS.images.monster17];
+    if (monsterLevel > 450) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.supDemon, SETTINGS.images.monster16];
+    if (monsterLevel > 400) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.bigSpirit, SETTINGS.images.monster15];
+    if (monsterLevel > 350) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.deadWarrior, SETTINGS.images.monster14];
+    if (monsterLevel > 290) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.troll, SETTINGS.images.monster13];
+    if (monsterLevel > 240) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.behemot, SETTINGS.images.monster12];
+    if (monsterLevel > 190) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.minotaur, SETTINGS.images.monster11];
+    if (monsterLevel > 160) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.cerberus, SETTINGS.images.monster10];
+    if (monsterLevel > 130) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.goblin, SETTINGS.images.monster09];
+    if (monsterLevel > 100) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.ghost, SETTINGS.images.monster08];
+    if (monsterLevel > 75)  return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.cockatrice, SETTINGS.images.monster07];
+    if (monsterLevel > 50)  return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.lamia, SETTINGS.images.monster06];
+    if (monsterLevel > 40)  return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.imp, SETTINGS.images.monster05];
+    if (monsterLevel > 30)  return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.plant, SETTINGS.images.monster04];
+    if (monsterLevel > 20)  return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.scorpio,SETTINGS.images.monster03];
+    if (monsterLevel > 10)  return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.spider, SETTINGS.images.monster02];
+    return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.slim, SETTINGS.images.monster01];
 }
 
 // ===> When attacking a monster
@@ -364,9 +364,9 @@ function attack() {
     game.stats.totalExp = game.stats.totalExp + xp;
 
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-    get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + display.app.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, display.app.hit_singular, display.app.hit_plural) + ' !</p>';
-    get("#gameContent").innerHTML += '<p class="red">' + display.app.fightWin_part2 + '<strong>' + damage + '</strong> ' + plural(damage, display.app.point_singular, display.app.point_plural) + ' ' + display.app.fightWin_part3 + '.</p>';
-    if (game.character.health > 0) get("#gameContent").innerHTML += '<p class="green">' + display.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, display.app.point_singular, display.app.point_plural) + display.app.fightWin_part4 + ".</p>";
+    get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + CONTENT.app.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, CONTENT.app.hit_singular, CONTENT.app.hit_plural) + ' !</p>';
+    get("#gameContent").innerHTML += '<p class="red">' + CONTENT.app.fightWin_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.app.point_singular, CONTENT.app.point_plural) + ' ' + CONTENT.app.fightWin_part3 + '.</p>';
+    if (game.character.health > 0) get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.fightWin_part4 + ".</p>";
     saveContent();
 }
 
@@ -385,8 +385,8 @@ function magic() {
         game.stats.totalExp = game.stats.totalExp + xp;
         
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.fightMagic + ".</p>";
-        get("#gameContent").innerHTML += '<p class="green">' + display.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, display.app.point_singular, display.app.point_plural) + display.app.fightWin_part4 + ".</p>";
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.fightMagic + ".</p>";
+        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.fightWin_part4 + ".</p>";
         saveContent();
     }
 }
@@ -400,7 +400,7 @@ function runAway() {
         changeDisplay("fightToGame");
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-        get("#gameContent").innerHTML += '<p>' + display.app.fightEscape + '.</p>';
+        get("#gameContent").innerHTML += '<p>' + CONTENT.app.fightEscape + '.</p>';
         saveContent();
     }
 }
@@ -424,14 +424,14 @@ function displayGame() {
 
 // ===> Display gameover
 function gameOver() {
-    clearInterval(settings.refreshDisplay);
+    clearInterval(refreshDisplay);
     changeDisplay('classic');
     get("#move").removeEventListener("click", play);
     get("#move").addEventListener("click", displayScore);
 
-    get("#move").innerHTML = display.app.results;
+    get("#move").innerHTML = CONTENT.app.results;
     get("#useHeal").style.display = "none";
-    get("#gameContent").innerHTML += '<p class="red"><strong>' + display.app.death + '</strong></p>';  
+    get("#gameContent").innerHTML += '<p class="red"><strong>' + CONTENT.app.death + '</strong></p>';  
 }
 
 // ===> Display the score
@@ -440,14 +440,14 @@ function displayScore() {
     resetData();
     changeDisplay("displayMessage");
 
-    get('#gameMessage').innerHTML = "<p class=\"bigger\">" + display.app.gameover  + game.character.score + " pts.</p>";
-    get('#gameMessage').innerHTML += "<button id=\"restart\">" + display.app.gameoverButton + "</button>";
+    get('#gameMessage').innerHTML = "<p class=\"bigger\">" + CONTENT.app.gameover  + game.character.score + " pts.</p>";
+    get('#gameMessage').innerHTML += "<button id=\"restart\">" + CONTENT.app.gameoverButton + "</button>";
     get('#restart').addEventListener("click", function() { location.reload(); });
 
     // Share button
     if (navigator.share) {
-        get('#gameMessage').innerHTML += "<button id=\"share\">" + display.app.shareScore_button + "</button>";
-        const shareScore = { text: display.app.shareScore_part1 + game.character.score + display.app.shareScore_part2, url: 'https://nicolas-deleforge/apps/tower/' };
+        get('#gameMessage').innerHTML += "<button id=\"share\">" + CONTENT.app.shareScore_button + "</button>";
+        const shareScore = { text: CONTENT.app.shareScore_part1 + game.character.score + CONTENT.app.shareScore_part2, url: 'https://nicolas-deleforge/apps/tower/' };
         get("#share").addEventListener('click', function() { navigator.share(shareScore); });
     }
 }
@@ -499,12 +499,12 @@ function changeDisplay(mode) {
 
 // ===> Check hero's stats and floor
 function checkInfo() {
-    get("#name").innerHTML = '<img src="assets/images/' + settings.images.iconHero + '" alt="🤺"> ' + game.core.name + " (" + display.app.level + " " + game.character.level + ")";
-    get("#health").innerHTML = '<img src="assets/images/' + settings.images.iconHealth + '" alt="💓"> ' + display.app.health + ' ' + game.character.health + ' / ' + game.character.healthMax;
-    get("#xp").innerHTML = '<img src="assets/images/' + settings.images.iconExperience + '" alt="🏆"> ' + display.app.experience + ' ' + game.character.xp + ' / ' + game.character.xpTo;
-    get("#strength").innerHTML = '<img src="assets/images/' + settings.images.iconStrength + '" alt="💪">  ' + display.app.strength + ' ' + game.character.strength;
-    get("#shield").innerHTML = '<img src="assets/images/' + settings.images.iconShield + '" alt="🛡️">  ' + display.app.shield + ' ' + game.character.shield;
-    get('#headerTitle').innerHTML = display.app.floor + ' ' + game.character.floor + " - " + display.app.room + ' ' + game.character.room;
+    get("#name").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconHero + '" alt=""> ' + game.core.name + " (" + CONTENT.app.level + " " + game.character.level + ")";
+    get("#health").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconHealth + '" alt=""> ' + CONTENT.app.health + ' ' + game.character.health + ' / ' + game.character.healthMax;
+    get("#xp").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconExperience + '" alt=""> ' + CONTENT.app.experience + ' ' + game.character.xp + ' / ' + game.character.xpTo;
+    get("#strength").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconStrength + '" alt="">  ' + CONTENT.app.strength + ' ' + game.character.strength;
+    get("#shield").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconShield + '" alt="">  ' + CONTENT.app.shield + ' ' + game.character.shield;
+    get('#headerTitle').innerHTML = CONTENT.app.floor + ' ' + game.character.floor + " - " + CONTENT.app.room + ' ' + game.character.room;
 }
 
 // ===> Check items availability
@@ -513,9 +513,9 @@ function checkItems() {
     game.character.itemMagic > 0 ? get("#useMagic").disabled = false : get("#useMagic").disabled = true;
     game.character.itemEscape > 0 ? get("#useEscape").disabled = false : get("#useEscape").disabled = true;
     
-    get("#potion").innerHTML = '<img src="assets/images/' +settings.images.iconPotion + '" alt="🥃"> ' + game.character.itemHeal + ' ' + plural(game.character.itemHeal, display.app.heal_singular, display.app.heal_plural);
-    get("#magic").innerHTML = '<img src="assets/images/' +settings.images.iconMagic + '" alt="🃏"> ' + game.character.itemMagic + ' ' + plural(game.character.itemMagic, display.app.magic_singular, display.app.magic_plural);
-    get("#escape").innerHTML = '<img src="assets/images/' +settings.images.iconEscape + '"alt="📜"> ' + game.character.itemEscape + ' ' + plural(game.character.itemEscape, display.app.escape_singular, display.app.escape_plural);     
+    get("#potion").innerHTML = '<img src="assets/images/' +SETTINGS.images.iconPotion + '" alt=""> ' + game.character.itemHeal + ' ' + plural(game.character.itemHeal, CONTENT.app.heal_singular, CONTENT.app.heal_plural);
+    get("#magic").innerHTML = '<img src="assets/images/' +SETTINGS.images.iconMagic + '" alt=""> ' + game.character.itemMagic + ' ' + plural(game.character.itemMagic, CONTENT.app.magic_singular, CONTENT.app.magic_plural);
+    get("#escape").innerHTML = '<img src="assets/images/' +SETTINGS.images.iconEscape + '"alt=""> ' + game.character.itemEscape + ' ' + plural(game.character.itemEscape, CONTENT.app.escape_singular, CONTENT.app.escape_plural);     
 }
 
 // ===> Check experience and level
@@ -525,17 +525,17 @@ function checkExperience() {
         if (game.character.level > game.stats.maxLevel) game.stats.maxLevel = game.character.level;
 
         // Level up
-        game.character.strength =  game.character.strength + settings.data.lvlUpStrength;
-        game.character.shield =  game.character.shield + settings.data.lvlUpShield;
-        game.character.healthMax =  game.character.healthMax + settings.data.lvlUpealth;
+        game.character.strength =  game.character.strength + SETTINGS.data.lvlUpStrength;
+        game.character.shield =  game.character.shield + SETTINGS.data.lvlUpShield;
+        game.character.healthMax =  game.character.healthMax + SETTINGS.data.lvlUpealth;
 
         // Heal and reset of the experience
         game.character.health = game.character.healthMax;
         game.character.xp = 0;
         game.character.xpTo = rand(parseInt(1.5 *  game.character.xpTo), 2 *  game.character.xpTo);
 
-        get("#gameContent").innerHTML += '<hr><p class="green">' + display.app.levelUp_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + display.app.levelUp_part2 + '.</p>';
+        get("#gameContent").innerHTML += '<hr><p class="green">' + CONTENT.app.levelUp_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.levelUp_part2 + '.</p>';
         saveContent();
     }
 }
@@ -577,7 +577,7 @@ function createMenu() {
 
     // Menu - stats
     get("#openStatsMenu").addEventListener("click", function () {
-        let titles = Object.values(display.stats);
+        let titles = Object.values(CONTENT.stats);
         let values = Object.values(game.stats);
 
         for (let i = 0; i < titles.length; i++) {
@@ -609,7 +609,7 @@ function createMenu() {
 
     // Menu - restart
     get('#confirmRestart').addEventListener("click", function() {
-        clearInterval(settings.refreshDisplay);
+        clearInterval(refreshDisplay);
         game.core.ongoing = false;
         resetData();
         location.reload();
@@ -617,7 +617,7 @@ function createMenu() {
 
     // Menu - total restart
     get('#confirmTotalRestart').addEventListener("click", function () {
-        clearInterval(settings.refreshDisplay);
+        clearInterval(refreshDisplay);
         storage("rem", "TOWER-gameSettings");
         location.reload();
     });
@@ -645,18 +645,18 @@ function createButtons() {
 function resetData() {
     game.core.ongoing = false;
     game.stats.totalGame++;
-    game.character.health = settings.data.health;
-    game.character.healthMax = settings.data.healthMax;
-    game.character.strength = settings.data.strength;
-    game.character.shield = settings.data.shield;
-    game.character.xp = settings.data.xp;
-    game.character.xpTo = settings.data.xpTo;
-    game.character.itemHeal = settings.data.heal;
-    game.character.itemMagic = settings.data.magic;
-    game.character.itemEscape = settings.data.escape;
-    game.character.level = settings.data.level;
-    game.character.floor = settings.data.floor;
-    game.character.room = settings.data.room;
+    game.character.health = SETTINGS.data.health;
+    game.character.healthMax = SETTINGS.data.healthMax;
+    game.character.strength = SETTINGS.data.strength;
+    game.character.shield = SETTINGS.data.shield;
+    game.character.xp = SETTINGS.data.xp;
+    game.character.xpTo = SETTINGS.data.xpTo;
+    game.character.itemHeal = SETTINGS.data.heal;
+    game.character.itemMagic = SETTINGS.data.magic;
+    game.character.itemEscape = SETTINGS.data.escape;
+    game.character.level = SETTINGS.data.level;
+    game.character.floor = SETTINGS.data.floor;
+    game.character.room = SETTINGS.data.room;
 
     storage("set", "TOWER-gameSettings", JSON.stringify(game))
 }
