@@ -1,6 +1,6 @@
 # Tower
 
-> Version 1.5 :memo:  
+> Version 1.6 :memo:  
 > A little mobile game with RPG mechanics made with native JS.
 
 ## How to use it ?
