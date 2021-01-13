@@ -16,3 +16,10 @@ If you download or clone the project to host it yourself, then you'll need [**Li
 ## Ressources
 
 The majority of the resources (images and sounds) are from the basic library of RPG Maker MV that I own. The icons of the top bar are from a free pack on (https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack) Itchio.
+
+## Changelog
+
+- 1.7 : End and special events removed to keep this version simplier, much JS rewriting and cleaning, CSS variables added and general cleaning
+- 1.6 : End to the game added with the 100th floor and some special events which can occurs
+- 1.5 : Core JS file added, a lot of fixes to make the game working better.
+- 1.4 : Initial release
