@@ -527,7 +527,7 @@ function checkExperience() {
         // Level up
         game.character.strength =  game.character.strength + SETTINGS.data.lvlUpStrength;
         game.character.shield =  game.character.shield + SETTINGS.data.lvlUpShield;
-        game.character.healthMax =  game.character.healthMax + SETTINGS.data.lvlUpealth;
+        game.character.healthMax =  game.character.healthMax + SETTINGS.data.lvlUpHealth;
 
         // Heal and reset of the experience
         game.character.health = game.character.healthMax;
