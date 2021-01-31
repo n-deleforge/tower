@@ -1,6 +1,6 @@
 # Tower
 
-> Version 1.7 :memo:  
+> Version 1.8 :memo:  
 > A little mobile game with RPG mechanics made with native JS.
 
 ## How to use it ?
@@ -19,7 +19,7 @@ The majority of the resources (images and sounds) are from the basic library of 
 
 # Changelog
 
-- 1.8 : NOT PUBLISHED YET, new menu, vibration added, wind spirit event removed, JS and CSS cleaning
+- 1.8 : New menu, vibration added, wind spirit event removed, more JS and CSS cleaning
 - 1.7 : End and special events removed to keep this version simplier, much JS rewriting and cleaning, CSS variables added and general cleaning
 - 1.6 : End to the game added with the 100th floor and some special events which can occurs
 - 1.5 : Core JS file added, a lot of fixes to make the game working better.
