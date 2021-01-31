@@ -5,32 +5,37 @@
     <meta charset="UTF8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title"></title>
-    <link rel="stylesheet" href="assets/css/main.min.css?v=public_1.7.1">
+    <link rel="stylesheet" href="assets/css/main.min.css">
     <link rel="icon" href="assets/images/favicon.ico" rel="icon" type="image/x-icon">
 </head>
 
 <body>
+    <!-- MAIN CONTAINER -->
     <div id="container">
+
         <header>
-            <button id="volumeButton">🔊</button>
             <span id="headerTitle"></span>
-            <button id="optionButton">🔧</button>
+            <button id="openMenu">⚙️</button>
+            <button id="closeMenu">❌</button>
         </header>
-
-        <!-- START SCREEN -->
+        
+        <!-- START -->
         <div id="startScreen">
-            <img src="assets/images/special/tower.png">
+            <img src="assets/images/events/start.png">
             <h1 id="startScreenTitle"></h1>
-                <label id="nameHeroLabel"></label>
-                <input type="text" id="nameHero" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
-                <button id="startGame"></button>
 
-                <p id="displayTip"></p>
-                <p id="footer"></p>
+            <label id="nameHeroLabel"></label>
+            <input type="text" id="nameHero" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
+            <button id="startGame"></button>
+
+            <p id="displayTip"></p>
+            <p id="startFooter"></p>
         </div>
-        <!-- // START SCREEN -->
+        <!-- // START -->
 
-        <!-- GAME SCREEN -->
+        <!-- GAME -->
+        <div id="gameMessage"></div>
+
         <div id="gameScreen">
             <div id="heroStatus">
                 <div class="heroStatusLine">
@@ -67,37 +72,28 @@
                 </div>
             </div>
         </div>
+        <!-- // GAME-->
 
-        <div id="gameMessage"></div>
     </div>
-    <!-- // GAME SCREEN -->
+    <!-- // MAIN CONTAINER -->
 
-    <!-- POPUP LIST -->
-    <div id="containerPopup">
-        <div id="optionMenu">
-            <h1 id="optionMenuTitle"></h1>
-            <button id="openInfoMenu"></button>
-            <button id="openStatsMenu"></button>
-            <button id="confirmRestart"></button>
-            <button id="confirmTotalRestart"></button>
-            <button id="closeOptionMenu"></button>
-        </div>
+    <!-- MENU -->
+    <div id="blankPage"></div>
+    <div id="menu">
+        <h1 id="optionMenuTitle"></h1>
+            <div class="buttonList">
+                <button id="volumeButton"></button>
+                <button id="vibrateButton"></button>
+                <button id="confirmRestart"></button>
+                <button id="confirmTotalRestart"></button>
+            </div>
 
-        <div id="statsMenu">
-            <h1 id="statsMenuTitle"></h1>
-                <ul id="listStats"></ul>
-                <button id="closeStatsMenu"></button>
-        </div>
-
-        <div id="infoMenu">
-            <h1 id="infoMenuTitle"></h1>
-                <ul id="infoMenuContent"></ul>
-                <button id="closeInfoMenu"></button>
-        </div>
+        <h1 id="statsMenuTitle"></h1>
+            <ul id="listStats"></ul>
     </div>
-    <!-- // POPUP LIST -->
+    <!-- // MENU -->
 
-    <!-- SOUNDS LIST -->
+    <!-- SOUNDS -->
     <audio preload id="soundAttack">
         <source src="assets/sounds/attack.ogg" type="audio/ogg">
         <source src="assets/sounds/attack.mp3" type="audio/mp3">
@@ -126,7 +122,7 @@
         <source src="assets/sounds/floor.ogg" type="audio/ogg">
         <source src="assets/sounds/floor.mp3" type="audio/mp3">
     </audio>
-    <!-- // SOUNDS LIST -->
+    <!-- // SOUNDS -->
 
     <!-- ADD LITTLE JS HERE -->
     <script src="assets/js/core.min.js"></script>

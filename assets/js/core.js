@@ -3,7 +3,7 @@
 // ============ CORE VARIABLES
 
 let game; let refreshDisplay; let timeDisplay = 1000;
-const VERSION = 1.7;
+const VERSION = 1.8;
 const GITHUB = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
 const HOME = "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>";
 const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
@@ -31,7 +31,7 @@ const SETTINGS = {
         'spiritShield' : 1
     },
     'images' : {
-        'start' : "special/sign.png",
+        'start' : "events/firstFloor.png",
         'monster01' : "monsters/monster_01.png",
         'monster02' : "monsters/monster_02.png",
         'monster03' : "monsters/monster_03.png",
@@ -51,7 +51,6 @@ const SETTINGS = {
         'monster17' : "monsters/monster_17.png",
         'noEvent' : "events/noEvent.png",
         'earthSpirit' : "events/spiritEarth.png",
-        'windSpirit' : "events/spiritWind.png",
         'lightSpirit' : "events/spiritLight.png",
         'fireSpirit' : "events/spiritFire.png",
         'waterSpirit' : "events/spiritWater.png",
@@ -73,13 +72,11 @@ const SETTINGS = {
 const FRENCH = {
     'auto' : {
         'title' : "La Tour",
-
         'headerTitle' : "La Tour",
         'startScreenTitle' : "Bienvenue aventurier",
         'nameHeroLabel' : "Quel est ton nom ?",
         'startGame' : "Entrer",
-        'footer' : "Disponible sur " + GITHUB + " (v " + VERSION + ")<br />Hébergé sur " + HOME,
-
+        'startFooter' : "Disponible sur " + GITHUB + " (v " + VERSION + ")<br />Hébergé sur " + HOME,
         'move' : "Avancer",
         'useHeal' : "Utiliser une potion",
         'openChest' : "Ouvrir le coffre",
@@ -87,19 +84,10 @@ const FRENCH = {
         'useAttack' : "Attaque",
         'useMagic' : "Sortilège",
         'useEscape' : "Fuite",
-
         'optionMenuTitle' : "Paramètres",
         'statsMenuTitle' : "Statistiques",
-        'closeStatsMenu' : "Fermer",
-        'openStatsMenu' : "Statistiques",
-        'closeOptionMenu' : "Fermer",
         'confirmRestart' : "Recommencer la partie",
-        'confirmTotalRestart' : "⚠ EFFACER les données",
-        'openInfoMenu' : "Plus d'informations",
-        'closeInfoMenu' : "Fermer",
-        'infoMenuTitle' : "Plus d'informations",
-        'infoMenuContent' : `<li>L'application a été réalisée uniquement en Javascript pure, sans aucune librairies externes.</li>
-                                         <li>La majorité des ressources (images et sons) proviennent de la librairie de base de RPG Maker MV que je possède. Les icones de statut proviennent d'un pack gratuit sur <a href="https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack">Itchio</a>.</li>`
+        'confirmTotalRestart' : "⚠ EFFACER les données"
     },
     'stats' : {
         'bestScore' : "Meilleur score : ",
@@ -118,7 +106,6 @@ const FRENCH = {
     },
     'app' : {
         'nameHeroCheck' : "Votre nom doit être composé de 2 à 15 lettres",
-
         'health' : "Santé",
         'experience' : "Exp.",
         'level' : "niv.",
@@ -137,33 +124,19 @@ const FRENCH = {
         'point_plural' : "points",
         'hit_singular' : "coup",
         'hit_plural' : "coups",
-
         'levelUp_part1' : "Votre niveau augmente",
         'levelUp_part2' : "Votre santé est regénérée et vos statistiques augmentent",
-
         'healing' : "Vous avez utilisé une potion, vous regagnez toute votre santé",
-
         'noEvent' : "Vous traversez tranquillement de longs couloirs",
-
         'spiritEarth_part1' : "Un <strong>esprit de la terre</strong> vous protège",
         'spiritEarth_part2' : "Votre bouclier augmente de ",
-
-        'spiritWind' : "Un <strong>esprit du vent</strong> virevolte autour de vous",
-        'spiritWind_noStealing' : "Et s'enfuit",
-        'spiritWind_healStealing' : "Il dérobe une <strong>potion de soin</strong>",
-        'spiritWind_magicStealing' : "Il dérobe un <strong>sort magique</strong>",
-        'spiritWind_escapeStealing' : "Il dérobe un <strong>parchemin de fuite</strong>",
-
         'spiritLight_part1' : "Un <strong>esprit de lumière</strong> se rapproche de vous",
         'spiritLight_part2' : "Vous gagnez ",
         'spiritLight_part3' : " d'expérience",
-
         'spiritFire_part1' : "Un <strong>esprit de feu</strong> partage son énergie",
         'spiritFire_part2' : "Votre force augmente de ",
-
         'spiritWater_part1' : "Un <strong>esprit d'eau</strong> partage sa vitalité",
         'spiritWater_part2' : "Votre santé augmente de ",
-
         'chest' : "Vous avez trouvé un <strong>coffre</strong>",
         'chest_notOpened' : "Mais vous décidez de ne pas l'ouvrir",
         'chestTrap_part1' : "Mais c'est un <strong>piège</strong>, le coffre vous attaque",
@@ -173,7 +146,6 @@ const FRENCH = {
         'chestMagic' : "Vous trouvez un <strong>sort magique</strong>",
         'chestHeal' : "Vous trouvez une <strong>potion de soin</strong>",
         'chestLimit' : "Mais vous n'avez plus assez de place",
-
         'fightStart' : "apparaît !",
         'fightWin_part1' : " vaincu en ",
         'fightWin_part2' : "Vous avez perdu ",
@@ -182,7 +154,6 @@ const FRENCH = {
         'fightWin_part5' : "Vous avez gagné ",
         'fightMagic' : "Vous avez vaincu le monstre grâce à un sort magique",
         'fightEscape' : "Vous vous échappez grâce au parchemin de fuite",
-
         'death' : "Vous tombez de fatigue ...",
         'results' : "Voir les résultats",
         'gameover' : "La partie est terminée.<br />Votre score : ",
@@ -190,10 +161,11 @@ const FRENCH = {
         'shareScore_part1' : "Wahou! Je viens de faire un score de ",
         'shareScore_part2' : " points dans La Tour !",
         'shareScore_button' : "Partager",
-
         'startGame_part1' : "Une vieille pancarte. La plupart des mots sont effacés par le temps.",
         'startGame_part2' : "\"Celui qui ... le sommet pourra ... l'un de ses ... ! ... le danger, restez en ... et grimpez le ... haut ...\"",
-        'startGame_part3' : "Vous continuez votre chemin d'un pas déterminé.."
+        'startGame_part3' : "Vous continuez votre chemin d'un pas déterminé..",
+        'confirmRestart' : "Êtes-vous certain de recommencer votre partie ?",
+        'confirmDelete' : "Êtes-vous certain d'effacer toutes les données ?"
     },
     'monsters' : {
         'dragon' : "Dragon légendaire",
@@ -232,13 +204,11 @@ const FRENCH = {
 const ENGLISH = {
     'auto' : {
         'title' : "The Tower",
-
         'headerTitle' : "The Tower",
         'startScreenTitle' : "Welcome adventurer",
         'nameHeroLabel' : "What's your name ?",
         'startGame' : "Enter",
         'footer' : "Available on " + GITHUB + " (v " + VERSION + ")<br />Hosted on  " + HOME,
-
         'move' : "Move",
         'useHeal' : "Use a potion",
         'openChest' : "Open the chest",
@@ -246,7 +216,6 @@ const ENGLISH = {
         'useAttack' : "Attack",
         'useMagic' : "Spell",
         'useEscape' : "Escape",
-
         'optionMenuTitle' : "Settings",
         'statsMenuTitle' : "Statistics",
         'closeStatsMenu' : "Close",
@@ -255,10 +224,7 @@ const ENGLISH = {
         'confirmRestart' : "Restart the game",
         'confirmTotalRestart' : "⚠ DELETE all data",
         'openInfoMenu' : "More informations",
-        'closeInfoMenu' : "Close",
-        'infoMenuTitle' : "More informations",
-        'infoMenuContent' : `<li>The application has been realized only with pure Javascript, no external libraries has been used.</li>
-                                         <li>The majority of the resources (images and sounds) are from the basic library of RPG Maker MV that I own. The icons of the top bar are from a free pack on <a href="https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack">Itchio</a>.</li>`
+        'closeInfoMenu' : "Close"
     },
     'stats' : {
         'bestScore' : "Best score : ",
@@ -277,7 +243,6 @@ const ENGLISH = {
     },
     'app' : {
         'nameHeroCheck' : "Your name must be composed between 2 to 15 letters.",
-
         'health' : "Health",
         'experience' : "Exp.",
         'level' : "lvl",
@@ -296,33 +261,19 @@ const ENGLISH = {
         'point_plural' : "points",
         'hit_singular' : "hit",
         'hit_plural' : "hits",
-
         'levelUp_part1' : "Level up",
         'levelUp_part2' : "Your health is regenerated and your stats increase",
-
         'healing' : "You use a potion, you regain all your health",
-
         'noEvent' : "You walk quietly through long corridors",
-
         'spiritEarth_part1' : "A <strong>earth spirit</strong> protects you",
         'spiritEarth_part2' : "Your shield increases by ",
-
-        'spiritWind' : "A <strong>wind spirit</strong> flies around you",
-        'spiritWind_noStealing' : "And fled",
-        'spiritWind_healStealing' : "He steals a <strong>healing potion</strong>",
-        'spiritWind_magicStealing' : "He steals a <strong>magic spell</strong>",
-        'spiritWind_escapeStealing' : "He steals a <strong>escape scroll</strong>",
-
         'spiritLight_part1' : "A <strong>light spirit</strong> draws near to you",
         'spiritLight_part2' : "You win ",
         'spiritLight_part3' : " of experience",
-
         'spiritFire_part1' : "A <strong>fire spirit</strong> shares its energy",
         'spiritFire_part2' : "Your strength increases by ",
-
         'spiritWater_part1' : "A <strong>water spirit</strong> shares its vitality",
         'spiritWater_part2' : "Your health increases by ",
-
         'chest' : "You have found a <strong>chest</strong>",
         'chest_notOpened' : "But you decide not to open it",
         'chestTrap_part1' : "But it's a <strong>trap</strong>, the chest attacks you",
@@ -332,7 +283,6 @@ const ENGLISH = {
         'chestMagic' : "You find a <strong>magic spell</strong>",
         'chestHeal' : "You find a <strong>healing potion</strong>",
         'chestLimit' : "But you don't have enough room",
-
         'fightStart' : "appears !",
         'fightWin_part1' : " defeated with ",
         'fightWin_part2' : "You have lost ",
@@ -341,7 +291,6 @@ const ENGLISH = {
         'fightWin_part5' : "You have won ",
         'fightMagic' : "You have defeated the monster with a magic spell",
         'fightEscape' : "You escape thanks to the escape scroll",
-
         'death' : "You're very tired ...",
         'results' : "See the results",
         'gameover' : "The game is over.<br />Your score : ",
@@ -349,10 +298,11 @@ const ENGLISH = {
         'shareScore_part1' : "Wow! I just made a score of ",
         'shareScore_part2' : " points in The Tower!",
         'shareScore_button' : "Share",
-
         'startGame_part1' : "An old sign. Most of the words are erased by time.",
         'startGame_part2' : "\"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ...\"",
-        'startGame_part3' : "You continue your journey with a determined step."
+        'startGame_part3' : "You continue your journey with a determined step.",
+        'confirmRestart' : "Are you sure to restart your game ?",
+        'confirmDelete' : "Are you sure to delete all your data ?"
     },
     'monsters' : {
         'dragon' : "Legendary dragon",
@@ -397,13 +347,13 @@ const ENGLISH = {
 if (MOBILE) get("#container").style.minHeight = window.innerHeight + 'px';
 
 // ===> Create data game or parse it if existing
-if (storage("get", "TOWER-gameSettings")) game = JSON.parse(storage("get", "TOWER-gameSettings"))
-else {
+if (!storage("get", "TOWER-gameSettings")) {
     game = {
         'core' : {
             'ongoing' : false, 
             'name' : null, 
             'sound' : true,
+            'vibrate' : true,
             'version' : VERSION
         },
         'events' : {
@@ -446,7 +396,7 @@ else {
     }
 
     storage("set", "TOWER-gameSettings", JSON.stringify(game));
-}
+} else game = JSON.parse(storage("get", "TOWER-gameSettings"))
 
 // ===> Determine language of the application
 const CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? FRENCH : ENGLISH;

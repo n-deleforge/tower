@@ -1,6 +1,6 @@
 /* ======================================== */
 /* ======================================== */
-/* ======== MAIN */
+/* ======== VARIABLES */
 
 :root {
     --mainBackground: #262931;
@@ -11,27 +11,28 @@
     --gameBorder: black;
     --headerBackground: black;
     --headerTitle: white;
-    --headerButtonColor1: #262931;
-    --headerButtonColor2: white;
-    --errorTextColor : red;
-    --gameoverBackground : lightcoral;
-    
+    --headerAndMenuButtonColor1: black;
+    --headerAndMenuButtonColor2: white;
+    --errorTextColor: red;
+    --gameoverBackground: lightcoral;
     --startScreenTitleBorder: black;
     --startScreenInputBorder: black;
     --startScreenInputColor: #262931;
     --startScreenInputBackground: transparent;
-
     --buttonColor1: black;
     --buttonColor2: white;
     --buttonColor3: lightcoral;
     --buttonColor4: lightblue;
     --buttonColor5: #262931;
-
-    --popupContainer: black;
-    --popupBackground: #262931;
-    --popupTextColor: white;
-    --popupTitleBorder: white;
+    --menuBlankPage: rgba(0,0,0,0.8);
+    --menuBackground: #262931;
+    --menuText: white;
+    --menuTitleBorder: white;
 }
+
+/* ======================================== */
+/* ======================================== */
+/* ======== MAIN */
 
 @font-face {
     font-family: 'retrogaming';
@@ -50,9 +51,30 @@ body {
     background-color: var(--mainBackground);
 }
 
+#container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 32vw;
+    min-height: 100vh;
+    border-right: 2px solid var(--gameBorder);
+    border-left: 2px solid var(--gameBorder);
+    background-color: var(--gameBackground);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    color: var(--headerTitle);
+    background-color: var(--headerBackground);
+}
+
 button,
 input {
-    font-family: sans-serif;
+    font-family: inherit;
 }
 
 a {
@@ -74,51 +96,89 @@ a:hover {
 
 /* ======================================== */
 /* ======================================== */
-/* ======== GENERAL */
+/* ======== MENU */
 
-#container {
-    display: flex;
-    flex-direction: column;
-    margin: 0 32vw;
-    min-height: 100vh;
-    border-right: 2px solid var(--gameBorder);
-    border-left: 2px solid var(--gameBorder);
-    background-color: var(--gameBackground);
-}
-
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2vh;
-    text-transform: uppercase;
-    font-size: 2.5em;
-    color: var(--headerTitle);
-    background-color: var(--headerBackground);
-}
-
-header button {
+#openMenu,
+#closeMenu {
+    visibility: hidden;
+    position: absolute;
+    right: 3vw;
     padding: 1vh;
     min-width: 3vw;
-    border: 2px solid var(--headerButtonColor1);
-    border-radius: 30%;
+    border: 2px solid var(--headerAndMenuButtonColor1);
+    border-radius: 5px;
     font-size: 0.5em;
-    color: var(--headerButtonColor2);
-    background: var(--headerButtonColor1);
+    color: var(--headerAndMenuButtonColor2);
+    background: var(--headerAndMenuButtonColor1);
 }
 
-header button:hover {
-    border: 2px solid var(--headerButtonColor2);
+#closeMenu {
+    z-index: 3;
 }
 
-#volumeButton,
-#optionButton {
-    visibility: hidden;
+#openMenu:hover,
+#closeMenu:hover {
+    border: 2px solid var(--headerAndMenuButtonColor2);
+}
+
+#blankPage {
+    display: none;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--menuBlankPage);
+}
+
+#menu {
+    display: none;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25vw;
+    height: 100%;
+    color: var(--menuText);
+    background: var(--menuBackground);
+}
+
+#menu h1 {
+    margin: 2vh 0 0 2vh;
+    border-bottom: 2px solid var(--menuTitleBorder);
+    font-size: 2em;
+}
+
+#menu h1:first-child {
+    margin-top: 5vh;
+}
+
+#menu ul {
+    padding-left: 1.5vw;
+    list-style: square;
+}
+
+#menu button {
+    margin: 1vh;
+    padding: 1vh;
+    min-width: 3vw;
+    border: 2px solid var(--headerAndMenuButtonColor1);
+    border-radius: 5px;
+    font-size: 1.2em;
+    color: var(--headerAndMenuButtonColor2);
+    background: var(--headerAndMenuButtonColor1);
+}
+
+.buttonList {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 2vh;
 }
 
 /* ======================================== */
 /* ======================================== */
-/* ======== START SCREEN + FOOTER */
+/* ======== START SCREEN */
 
 #startScreen {
     display: none;
@@ -134,7 +194,7 @@ header button:hover {
     height: 25vh;
 }
 
-#startScreen h1 {
+#startScreenTitle {
     padding: 0.8vh 0 0.5vh 0;
     border-top: 1px solid var(--startScreenTitleBorder);
     border-bottom: 1px solid var(--startScreenTitleBorder);
@@ -153,18 +213,20 @@ header button:hover {
     background: var(--startScreenInputBackground);
 }
 
-#startScreen button {
+#startGame {
     width: 20vw;
     padding: 1.5vh;
     border: 0;
-    border-radius: 15px;
+    border-radius: 5px;
+    text-transform: uppercase;
     font-size: 1.5em;
     color: var(--buttonColor2);
     background: var(--buttonColor1);
 }
 
-#startScreen button:hover {
+#startGame:hover {
     color: var(--buttonColor3);
+    background: var(--buttonColor5);
 }
 
 #displayTip {
@@ -181,8 +243,45 @@ header button:hover {
     text-align: center;
 }
 
-#footer {
+#startFooter {
     font-size: 0.8em;
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== GAME MESSAGE  */
+
+#gameMessage {
+    display: none;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh;
+}
+
+#gameMessage {
+    font-size: 2em;
+}
+
+#gameMessage .bigger {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+#gameMessage button {
+    width: 20vw;
+    margin: 1vh;
+    padding: 1.5vh;
+    border: 0;
+    border-radius: 15px;
+    font-size: 2em;
+    color: var(--buttonColor2);
+    background: var(--buttonColor1);
+}
+
+#gameMessage button:hover {
+    color: var(--buttonColor3);
 }
 
 /* ======================================== */
@@ -215,39 +314,6 @@ header button:hover {
 #containerImage img {
     max-height: 25vh;
     min-height: 15vh;
-}
-
-#gameMessage {
-    display: none;
-    flex-direction: column;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    padding: 2vh;
-}
-
-#gameMessage p {
-    font-size: 2em;
-}
-
-#gameMessage .bigger {
-    font-size: 3em;
-    font-weight: bold;
-}
-
-#gameMessage button {
-    width: 20vw;
-    margin: 1vh;
-    padding: 1.5vh;
-    border: 0;
-    border-radius: 15px;
-    font-size: 2em;
-    color: var(--buttonColor2);
-    background: var(--buttonColor1);
-}
-
-#gameMessage button:hover {
-    color: var(--buttonColor3);
 }
 
 #heroStatus {
@@ -284,7 +350,7 @@ header button:hover {
     justify-content: center;
 }
 
-#listAction button {
+.listActionsLine button {
     margin: 1vh;
     padding: 1.5vh;
     min-height: 8vh;
@@ -296,85 +362,17 @@ header button:hover {
     background: var(--buttonColor1);
 }
 
-#listAction button:hover {
+.listActionsLine button:hover {
     color: var(--buttonColor4);
     background: var(--buttonColor5);
 }
 
-#listAction button:disabled {
+.listActionsLine button:disabled {
     opacity: 0.5;
 }
 
-#listAction button:disabled:hover {
+.listActionsLine button:disabled:hover {
     color: var(--buttonColor2);
-}
-
-/* ======================================== */
-/* ======================================== */
-/* ======== POPUP */
-
-#containerPopup {
-    display: none;
-    z-index: 1;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    font-size: 1.1em;
-    background-color: var(--popupContainer);
-}
-
-#containerPopup:target {
-    display: block;
-}
-
-#containerPopup div {
-    display: none;
-    position: relative;
-    width: 50vw;
-    margin: auto auto;
-    padding: 2vh;
-    border-radius: 10px;
-    text-align: center;
-    color: var(--popupTextColor);
-    background: var(--popupBackground);
-}
-
-#containerPopup h1 {
-    margin: 0 0 2vh 0;
-    border-bottom: 2px solid var(--popupTitleBorder);
-    font-size: 1.5em;
-}
-
-#containerPopup ul {
-    margin: 0;
-    padding: 0 2vh 0 3vh;
-    text-align: justify !important;
-    list-style: square;
-}
-
-#containerPopup .noListStyle {
-    list-style: none !important;
-}
-
-#containerPopup li {
-    padding: 0.5vh 0;
-}
-
-#containerPopup button {
-    margin: 1vh;
-    padding: 1.5vh;
-    min-width: 25vw;
-    border: 0;
-    border-bottom: 5px solid var(--buttonColor2);
-    font-size: 1em;
-    font-weight: bold;
-    background: var(--buttonColor2);
-}
-
-#containerPopup button:hover {
-    border-bottom: 5px solid var(--buttonColor3);
 }
 
 /* ======================================== */
@@ -403,17 +401,13 @@ header button:hover {
         font-size: 1.5em;
     }
 
-    header button {
-        padding: 0.2vh;
-        min-width: 7vw;
-        border: 1px solid var(--buttonColor2);
-        border-radius: 25%;
-        font-size: 1em;
-        background: var(--mainBackground);
+    #menu {
+        width: 100%;
+        font-size: 1.1em;
     }
 
-    header button:hover {
-        border: 0;
+    #menu ul {
+        padding-left: 6vw;
     }
 
     #heroStatus {
@@ -447,13 +441,5 @@ header button:hover {
 
     #listAction button {
         min-width: 40vw;
-    }
-
-    #containerPopup div {
-        width: 85vw;
-    }
-
-    #containerPopup button {
-        min-width: 65vw;
     }
 }
