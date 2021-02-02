@@ -3,16 +3,16 @@
 // ============ MAIN
 
 // ===> Check if a game is ongoing
-game.core.ongoing == false ? launcher() : startGame("load");
+GAME.core.ongoing == false ? launcher() : startGame("load");
 
 // ===> Display the launcher 
 function launcher() {
     // Display the start screen
     get('#startScreen').style.display = "flex";
-    get('#displayTip').innerHTML = CONTENT.tips[rand(0, CONTENT.tips.length)];
+    get('#displayTip').innerHTML = _CONTENT.tips[rand(0, _CONTENT.tips.length)];
 
     // Check if the name is registred
-    if (game.core.name != null && game.core.name != "") get("#nameHero").value = game.core.name
+    if (GAME.core.name != null && GAME.core.name != "") get("#nameHero").value = GAME.core.name
     else {
         get("#nameHero").value = "";
         get('#nameHero').focus();
@@ -21,7 +21,7 @@ function launcher() {
     // Check of the regex and start of the game
     get("#startGame").addEventListener("click", function () {
         if (!get("#nameHero").checkValidity() || get("#nameHero").value == "") {
-            get("#nameHeroLabel").innerHTML = CONTENT.app.nameHeroCheck;
+            get("#nameHeroLabel").innerHTML = _CONTENT.app.nameHeroCheck;
             get("#nameHeroLabel").style.color = getVariableCSS("--errorTextColor");
         }
         else startGame("new");
@@ -36,59 +36,59 @@ function startGame(mode) {
     changeDisplay("actionGameMode");
     createMenu();
     createButtons();
-    refreshDisplay = setInterval(displayGame, 100);
+    REFRESH_DISPLAY = setInterval(displayGame, 100);
 
     // If it's a new game
     if (mode == "new") {
-        game.core.name = get("#nameHero").value;
-        game.core.ongoing = true; 
+        GAME.core.name = get("#nameHero").value;
+        GAME.core.ongoing = true; 
         playSound("sound", "Room");
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.start + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.startGame_part1 +  '.</p>';
-        get("#gameContent").innerHTML += '<em>' + CONTENT.app.startGame_part2 +  '.</em>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.startGame_part3 +  '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.start + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.startGame_part1 +  '.</p>';
+        get("#gameContent").innerHTML += '<em>' + _CONTENT.app.startGame_part2 +  '.</em>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.startGame_part3 +  '.</p>';
     } 
     
     // If it's not a new game
     else if (mode == "load") {
-        if (game.events.lastAction == "fight" && game.events.subAction != "fightOver") changeDisplay("actionGameToFight");
-        if (game.events.lastAction == "chest" && game.events.subAction != "chestOver") changeDisplay("actionGameToChest");
+        if (GAME.events.lastAction == "fight" && GAME.events.subAction != "fightOver") changeDisplay("actionGameToFight");
+        if (GAME.events.lastAction == "chest" && GAME.events.subAction != "chestOver") changeDisplay("actionGameToChest");
 
-        get('#gameContent').innerHTML = game.events.currentEvent;
+        get('#gameContent').innerHTML = GAME.events.currentEvent;
     }
 }
 
 // ===> Main function of the game
 function playTurn() {
-    game.events.subAction = null;
-    game.character.room++;
+    GAME.events.subAction = null;
+    GAME.character.room++;
     changeDisplay("screenDisplayMessage");
 
     // At the 10th room
-    if (game.character.room > 10) {
-        timeDisplay = 2000;
-        game.character.room = 1; 
-        game.character.floor++; 
+    if (GAME.character.room > 10) {
+        INTERVAL_REFRESH = 2000;
+        GAME.character.room = 1; 
+        GAME.character.floor++; 
         playSound("sound", "Floor");
 
-        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + CONTENT.app.floor + ' ' + game.character.floor + "</p>";
+        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + _CONTENT.app.floor + ' ' + GAME.character.floor + "</p>";
     } 
 
     // All rooms expect the 10th
     else { 
-        timeDisplay = 1000;
-        game.stats.totalRoom++;
+        INTERVAL_REFRESH = 1000;
+        GAME.stats.totalRoom++;
         playSound("sound", "Room");
 
-        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + CONTENT.app.floor + ' ' + parseInt(game.character.floor) + "</p>";
-        get("#gameMessage").innerHTML += "<p>" + CONTENT.app.room + ' ' + game.character.room + "</p>";
+        get("#gameMessage").innerHTML = "<p class=\"bigger\">" + _CONTENT.app.floor + ' ' + parseInt(GAME.character.floor) + "</p>";
+        get("#gameMessage").innerHTML += "<p>" + _CONTENT.app.room + ' ' + GAME.character.room + "</p>";
     }
 
     // Timeout to show the game again
     setTimeout(function () {
         changeDisplay("screenHideMessage");
-    },  timeDisplay);
+    }, INTERVAL_REFRESH);
     
     choiceAction();
 }
@@ -103,93 +103,93 @@ function choiceAction() {
 
     // 8-9 : spirit event
     if (nb > 7) {
-        game.events.newAction = "spirit";
-        game.events.newAction != game.events.lastAction ? spirit() : choiceAction();
+        GAME.events.newAction = "spirit";
+        GAME.events.newAction != GAME.events.lastAction ? spirit() : choiceAction();
     } 
     
     // 5-7 : fight event
     else if (nb > 4) { 
-        game.events.newAction = "fight";
-        game.events.newAction != game.events.lastAction ? fight() : choiceAction();
+        GAME.events.newAction = "fight";
+        GAME.events.newAction != GAME.events.lastAction ? fight() : choiceAction();
     } 
     
     // 3-4 : chest event
     else if (nb > 2) { 
-        game.events.newAction = "chest";
-        game.events.newAction != game.events.lastAction ? chest() : choiceAction();
+        GAME.events.newAction = "chest";
+        GAME.events.newAction != GAME.events.lastAction ? chest() : choiceAction();
     } 
     
     // 1-2 : no event
     else { 
-        game.events.newAction = "noEvent";
-        game.events.newAction != game.events.lastAction ? noEvent() : choiceAction();
+        GAME.events.newAction = "noEvent";
+        GAME.events.newAction != GAME.events.lastAction ? noEvent() : choiceAction();
     }
 }
 
 // ===> Using a potion
 function heal() {
-    if (game.character.itemHeal > 0 && game.character.health < game.character.healthMax) {
-        game.character.itemHeal --; 
-        game.character.health = game.character.healthMax; 
-        game.stats.healUsed++;
+    if (GAME.character.itemHeal > 0 && GAME.character.health < GAME.character.healthMax) {
+        GAME.character.itemHeal --; 
+        GAME.character.health = GAME.character.healthMax; 
+        GAME.stats.healUsed++;
         playSound("vibrate", 10);
         playSound("sound", "Heal");
 
-        get("#gameContent").innerHTML += '<hr><p class="green">' + CONTENT.app.healing + '</p>';
+        get("#gameContent").innerHTML += '<hr><p class="green">' + _CONTENT.app.healing + '</p>';
     }
     else playSound("vibrate", 250);
 }
 
 // ===> When there is no event
 function noEvent() {
-    game.events.lastAction = "noEvent";
+    GAME.events.lastAction = "noEvent";
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.noEvent + '" alt=""></div>';
-    get("#gameContent").innerHTML += '<p>' + CONTENT.app.noEvent + '.</p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.noEvent + '" alt=""></div>';
+    get("#gameContent").innerHTML += '<p>' + _CONTENT.app.noEvent + '.</p>';
 }
 
 // ===> When meeting a spirit
 function spirit() {
-    game.events.lastAction = "spirit";
-    game.stats.spiritMeet++;
+    GAME.events.lastAction = "spirit";
+    GAME.stats.spiritMeet++;
 
     let nb = rand(1, 8)
 
     // 7-8 : Earth spirit : add shield
     if (nb > 6) { 
-        game.character.shield = game.character.shield + SETTINGS.data.spiritShield;
+        GAME.character.shield = GAME.character.shield + _SETTINGS.data.spiritShield;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.earthSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' +CONTENT.app.spiritEarth_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritEarth_part2 + ' <strong>' + SETTINGS.data.spiritShield + '</strong> ' + plural(SETTINGS.data.spiritShield, CONTENT.app.point_singular, CONTENT.app.point_plural) + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.earthSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' +_CONTENT.app.spiritEarth_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.spiritEarth_part2 + ' <strong>' + _SETTINGS.data.spiritShield + '</strong> ' + plural(_SETTINGS.data.spiritShield, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + '.</p>';
     } 
 
     // 5-6 : Light spirit : add experience
     else if (nb > 4) {
-        let xp = rand(parseInt(game.character.xpTo / 8), parseInt(game.character.xpTo / 6));
-        game.character.xp = game.character.xp + xp;
+        let xp = rand(parseInt(GAME.character.xpTo / 8), parseInt(GAME.character.xpTo / 6));
+        GAME.character.xp = GAME.character.xp + xp;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.lightSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritLight_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritLight_part2 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.spiritLight_part3 + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.lightSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.spiritLight_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.spiritLight_part2 + '<strong>' + xp + '</strong> ' + plural(xp, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + _CONTENT.app.spiritLight_part3 + '.</p>';
     } 
 
     // 3-4 : Fire spirit : add strenght
     else if (nb > 2) {
-        game.character.strength = game.character.strength + SETTINGS.data.spiritStrength;
+        GAME.character.strength = GAME.character.strength + _SETTINGS.data.spiritStrength;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.fireSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' +CONTENT.app.spiritFire_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritFire_part2 + ' <strong>' + SETTINGS.data.spiritStrength + '</strong> ' + plural(SETTINGS.data.spiritStrength, CONTENT.app.point_singular, CONTENT.app.point_plural) + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.fireSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' +_CONTENT.app.spiritFire_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.spiritFire_part2 + ' <strong>' + _SETTINGS.data.spiritStrength + '</strong> ' + plural(_SETTINGS.data.spiritStrength, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + '.</p>';
     } 
 
     // 1-2 : Water spirit : add health
     else {
-        game.character.healthMax = game.character.healthMax + SETTINGS.data.spiritHealth;
+        GAME.character.healthMax = GAME.character.healthMax + _SETTINGS.data.spiritHealth;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.waterSpirit + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.spiritWater_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.spiritWater_part2 + ' <strong>' + SETTINGS.data.spiritHealth + '</strong> ' + plural(SETTINGS.data.spiritHealth, CONTENT.app.point_singular, CONTENT.app.point_plural) + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.waterSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.spiritWater_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.spiritWater_part2 + ' <strong>' + _SETTINGS.data.spiritHealth + '</strong> ' + plural(_SETTINGS.data.spiritHealth, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + '.</p>';
     }
 }
 
@@ -199,17 +199,17 @@ function spirit() {
 
 // ===> When finding a chest
 function chest() {
-    game.events.lastAction = "chest";
+    GAME.events.lastAction = "chest";
     changeDisplay("actionGameToChest");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chest + '" alt=""></div>';
-    get("#gameContent").innerHTML += '<p>' + CONTENT.app.chest + ' !</p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chest + '" alt=""></div>';
+    get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chest + ' !</p>';
 }
 
 // ===> When opening a chest
 function openChest() {
-    game.events.subAction = "chestOver";
-    game.stats.chestOpen++;
+    GAME.events.subAction = "chestOver";
+    GAME.stats.chestOpen++;
     playSound("vibrate", 90);
     playSound("sound", "Chest");
     changeDisplay("actionChestToGame");
@@ -219,53 +219,53 @@ function openChest() {
 
     // 8 - 10 : trap chest
     if (nb > 7) { 
-        game.stats.chestTrap++;
-        let damage = rand(1, game.character.health / 4);
-        game.character.health = game.character.health - damage;
+        GAME.stats.chestTrap++;
+        let damage = rand(1, GAME.character.health / 4);
+        GAME.character.health = GAME.character.health - damage;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestTrap + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestTrap_part1 + ' !</p>';
-        get("#gameContent").innerHTML += '<p class="red">' + CONTENT.app.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.chestTrap_part3 + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chestTrap + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chestTrap_part1 + ' !</p>';
+        get("#gameContent").innerHTML += '<p class="red">' + _CONTENT.app.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + _CONTENT.app.chestTrap_part3 + '.</p>';
     } 
 
     // 6 - 7 : escape item
     else if (nb > 5) { 
-        SETTINGS.data.itemLimit > game.character.itemEscape ? game.character.itemEscape++ : limited = true;
+        _SETTINGS.data.itemLimit > GAME.character.itemEscape ? GAME.character.itemEscape++ : limited = true;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestEscape + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestEscape +  '.</p>';
-        if (limited) get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestLimit + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chestEscape + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chestEscape +  '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chestLimit + '.</p>';
     } 
 
      // 4 - 5 : magic item
     else if (nb > 3) {
-        SETTINGS.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
+        _SETTINGS.data.itemLimit > GAME.character.itemMagic ? GAME.character.itemMagic++ : limited = true;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestMagic + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestMagic + '.</p>';
-        if (limited) get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestLimit + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chestMagic + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chestMagic + '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chestLimit + '.</p>';
     } 
 
     // 1 - 3 : heal item
     else { 
-        SETTINGS.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
+        _SETTINGS.data.itemLimit > GAME.character.itemHeal ? GAME.character.itemHeal++ : limited = true;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chestHeal + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestHeal + '.</p>';
-        if (limited) get("#gameContent").innerHTML += '<p>' + CONTENT.app.chestLimit + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chestHeal + '" alt=""></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chestHeal + '.</p>';
+        if (limited) get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chestLimit + '.</p>';
     }
 }
 
 // ===> When avoiding a chest
 function closeChest() {
-    game.events.subAction = "chestOver";
-    game.stats.chestNotOpened++;
+    GAME.events.subAction = "chestOver";
+    GAME.stats.chestNotOpened++;
     playSound("vibrate", 10);
     changeDisplay("actionChestToGame");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + SETTINGS.images.chest + '" alt=""></div>';
-    get("#gameContent").innerHTML += '<p>' + CONTENT.app.chest + ' !</p>';
-    get("#gameContent").innerHTML += '<p>' + CONTENT.app.chest_notOpened + '.</p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chest + '" alt=""></div>';
+    get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chest + ' !</p>';
+    get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chest_notOpened + '.</p>';
 }
 
 // =================================================
@@ -274,97 +274,97 @@ function closeChest() {
 
 // ===> When a fight start
 function fight() {
-    game.events.lastAction = "fight";
-    game.events.monster = choiceMonster();
+    GAME.events.lastAction = "fight";
+    GAME.events.monster = choiceMonster();
     changeDisplay("actionGameToFight");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-    get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + CONTENT.app.fightStart + '</p>';
-    get("#gameContent").innerHTML += '<p>' + CONTENT.app.health + ' : <strong>' + game.events.monster[0] + '</strong> / ' + CONTENT.app.strength + ' : <strong>'  + game.events.monster[1] + '</strong></p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
+    get("#gameContent").innerHTML += '<p><strong>' + GAME.events.monster[2] + '</strong> ' + _CONTENT.app.fightStart + '</p>';
+    get("#gameContent").innerHTML += '<p>' + _CONTENT.app.health + ' : <strong>' + GAME.events.monster[0] + '</strong> / ' + _CONTENT.app.strength + ' : <strong>'  + GAME.events.monster[1] + '</strong></p>';
 }
 
 // ===> Choose a monster according the floor
 function choiceMonster() {
-    let monsterLevel = rand(game.character.floor * 2, game.character.floor * 4)
-    if (monsterLevel > 500) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.dragon, SETTINGS.images.monster17];
-    if (monsterLevel > 450) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.supDemon, SETTINGS.images.monster16];
-    if (monsterLevel > 400) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.bigSpirit, SETTINGS.images.monster15];
-    if (monsterLevel > 350) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.deadWarrior, SETTINGS.images.monster14];
-    if (monsterLevel > 290) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.troll, SETTINGS.images.monster13];
-    if (monsterLevel > 240) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.behemot, SETTINGS.images.monster12];
-    if (monsterLevel > 190) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.minotaur, SETTINGS.images.monster11];
-    if (monsterLevel > 160) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.cerberus, SETTINGS.images.monster10];
-    if (monsterLevel > 130) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.goblin, SETTINGS.images.monster09];
-    if (monsterLevel > 100) return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.ghost, SETTINGS.images.monster08];
-    if (monsterLevel > 75)   return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.cockatrice, SETTINGS.images.monster07];
-    if (monsterLevel > 50)   return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.lamia, SETTINGS.images.monster06];
-    if (monsterLevel > 40)   return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.imp, SETTINGS.images.monster05];
-    if (monsterLevel > 30)   return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.plant, SETTINGS.images.monster04];
-    if (monsterLevel > 20)   return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.scorpio,SETTINGS.images.monster03];
-    if (monsterLevel > 10)   return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.spider, SETTINGS.images.monster02];
-                                          return [monsterLevel, parseInt(monsterLevel / 3), CONTENT.monsters.slim, SETTINGS.images.monster01];
+    let monsterLevel = rand(GAME.character.floor * 2, GAME.character.floor * 4)
+    if (monsterLevel > 500) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.dragon, _SETTINGS.images.monster17];
+    if (monsterLevel > 450) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.supDemon, _SETTINGS.images.monster16];
+    if (monsterLevel > 400) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.bigSpirit, _SETTINGS.images.monster15];
+    if (monsterLevel > 350) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.deadWarrior, _SETTINGS.images.monster14];
+    if (monsterLevel > 290) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.troll, _SETTINGS.images.monster13];
+    if (monsterLevel > 240) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.behemot, _SETTINGS.images.monster12];
+    if (monsterLevel > 190) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.minotaur, _SETTINGS.images.monster11];
+    if (monsterLevel > 160) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.cerberus, _SETTINGS.images.monster10];
+    if (monsterLevel > 130) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.goblin, _SETTINGS.images.monster09];
+    if (monsterLevel > 100) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.ghost, _SETTINGS.images.monster08];
+    if (monsterLevel > 75)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.cockatrice, _SETTINGS.images.monster07];
+    if (monsterLevel > 50)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.lamia, _SETTINGS.images.monster06];
+    if (monsterLevel > 40)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.imp, _SETTINGS.images.monster05];
+    if (monsterLevel > 30)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.plant, _SETTINGS.images.monster04];
+    if (monsterLevel > 20)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.scorpio,_SETTINGS.images.monster03];
+    if (monsterLevel > 10)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.spider, _SETTINGS.images.monster02];
+                                          return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.slim, _SETTINGS.images.monster01];
 }
 
 // ===> When attacking a monster
 function attack() {
-    game.events.subAction = "fightOver";
-    game.stats.fightVictory++;
+    GAME.events.subAction = "fightOver";
+    GAME.stats.fightVictory++;
     playSound("vibrate", 10);
     playSound("sound", "Attack");
     changeDisplay("actionFightToGame");
 
     // Damage
-    let nbHit = Math.ceil(game.events.monster[0] / game.character.strength);
-    let damage = parseInt(nbHit * game.events.monster[1] - parseInt(game.events.monster[1]) / nbHit) - game.character.shield; 
+    let nbHit = Math.ceil(GAME.events.monster[0] / GAME.character.strength);
+    let damage = parseInt(nbHit * GAME.events.monster[1] - parseInt(GAME.events.monster[1]) / nbHit) - GAME.character.shield; 
     if (nbHit == 1 ) damage = 0; if (damage < 0) damage = 0; // Can't be negative
-    game.character.health = game.character.health - damage;
+    GAME.character.health = GAME.character.health - damage;
 
     // Experience
-    let xp= rand(game.character.level * (game.events.monster[0]), game.character.level * game.events.monster[0] * 2);
-    game.character.xp = game.character.xp + xp;
-    game.stats.totalExp = game.stats.totalExp + xp;
+    let xp= rand(GAME.character.level * (GAME.events.monster[0]), GAME.character.level * GAME.events.monster[0] * 2);
+    GAME.character.xp = GAME.character.xp + xp;
+    GAME.stats.totalExp = GAME.stats.totalExp + xp;
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-    get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + CONTENT.app.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, CONTENT.app.hit_singular, CONTENT.app.hit_plural) + ' !</p>';
-    get("#gameContent").innerHTML += '<p class="red">' + CONTENT.app.fightWin_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.app.point_singular, CONTENT.app.point_plural) + ' ' + CONTENT.app.fightWin_part3 + '.</p>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
+    get("#gameContent").innerHTML += '<p><strong>' + GAME.events.monster[2] + '</strong> ' + _CONTENT.app.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, _CONTENT.app.hit_singular, _CONTENT.app.hit_plural) + ' !</p>';
+    get("#gameContent").innerHTML += '<p class="red">' + _CONTENT.app.fightWin_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + ' ' + _CONTENT.app.fightWin_part3 + '.</p>';
     
-    if (game.character.health > 0) // Displayed only if still alive
-        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.fightWin_part4 + ".</p>";
+    if (GAME.character.health > 0) // Displayed only if still alive
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + _CONTENT.app.fightWin_part4 + ".</p>";
 }
 
 // ===> When using magic
 function magic() {
-    if (game.character.itemMagic > 0) {
-        game.events.subAction = "fightOver"; 
-        game.character.itemMagic--;
-        game.stats.fightVictory++; 
+    if (GAME.character.itemMagic > 0) {
+        GAME.events.subAction = "fightOver"; 
+        GAME.character.itemMagic--;
+        GAME.stats.fightVictory++; 
         playSound("vibrate", 10);
         playSound("sound", "Magic");
         changeDisplay("actionFightToGame");
 
         // Experience : 50% with magic
-        let xp = rand(parseInt(game.character.level * (game.events.monster[0]) / 2), game.character.level * game.events.monster[0] );
-        game.character.xp = game.character.xp + xp; 
-        game.stats.totalExp = game.stats.totalExp + xp;
+        let xp = rand(parseInt(GAME.character.level * (GAME.events.monster[0]) / 2), GAME.character.level * GAME.events.monster[0] );
+        GAME.character.xp = GAME.character.xp + xp; 
+        GAME.stats.totalExp = GAME.stats.totalExp + xp;
         
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.fightMagic + ".</p>";
-        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.app.point_singular, CONTENT.app.point_plural) + CONTENT.app.fightWin_part4 + ".</p>";
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.fightMagic + ".</p>";
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + _CONTENT.app.fightWin_part4 + ".</p>";
     }
     else playSound("vibrate", 250);
 }
 
 // ===> When running away
 function runAway() {
-    if (game.character.itemEscape > 0) {
-        game.character.itemEscape--;
-        game.stats.fightEscape++; 
+    if (GAME.character.itemEscape > 0) {
+        GAME.character.itemEscape--;
+        GAME.stats.fightEscape++; 
         playSound("vibrate", 10);
         playSound("sound", "sound", "Escape");
         changeDisplay("actionFightToGame");
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
-        get("#gameContent").innerHTML += '<p>' + CONTENT.app.fightEscape + '.</p>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
+        get("#gameContent").innerHTML += '<p>' + _CONTENT.app.fightEscape + '.</p>';
     }
     else playSound("vibrate", 250);
 }
@@ -375,7 +375,7 @@ function runAway() {
 
 // ===> Display informations, check death and save data
 function displayGame() {
-    if (game.character.health < 1) gameOver();
+    if (GAME.character.health < 1) gameOver();
     else {
         // Check everything and display values
         checkExperience();
@@ -384,22 +384,22 @@ function displayGame() {
         checkScore();
 
         // Save content and save all data
-        if (get("#gameContent").innerHTML != "") game.events.currentEvent = get("#gameContent").innerHTML;
-        storage("set", "TOWER-gameSettings", JSON.stringify(game))
+        if (get("#gameContent").innerHTML != "") GAME.events.currentEvent = get("#gameContent").innerHTML;
+        storage("set", "TOWER-gameSettings", JSON.stringify(GAME))
     }
 }
 
 // ===> Display gameover after the death
 function gameOver() {
-    clearInterval(refreshDisplay);
+    clearInterval(REFRESH_DISPLAY);
     playSound("vibrate", 500);
     changeDisplay('buttonGameMode');
 
     get("#move").removeEventListener("click", playTurn);
     get("#move").addEventListener("click", displayScore);
-    get("#move").innerHTML = CONTENT.app.results;
+    get("#move").innerHTML = _CONTENT.app.results;
     get("#useHeal").style.display = "none";
-    get("#gameContent").innerHTML += '<p class="red"><strong>' + CONTENT.app.death + '</strong></p>';  
+    get("#gameContent").innerHTML += '<p class="red"><strong>' + _CONTENT.app.death + '</strong></p>';  
 }
 
 // ===> Display the score after the gameover
@@ -408,8 +408,8 @@ function displayScore() {
     changeDisplay("screenDisplayMessage");
 
     get("#gameMessage").style.backgroundColor = getVariableCSS("--gameoverBackground");
-    get('#gameMessage').innerHTML = "<p class=\"bigger\">" + CONTENT.app.gameover  + game.character.score + " pts.</p>";
-    get('#gameMessage').innerHTML += "<button id=\"restart\">" + CONTENT.app.gameoverButton + "</button>";
+    get('#gameMessage').innerHTML = "<p class=\"bigger\">" + _CONTENT.app.gameover  + GAME.character.score + " pts.</p>";
+    get('#gameMessage').innerHTML += "<button id=\"restart\">" + _CONTENT.app.gameoverButton + "</button>";
     get('#restart').addEventListener("click", function() { location.reload(); });
 }
 
@@ -461,83 +461,83 @@ function changeDisplay(set) {
 // ===> Check hero's stats
 function checkInfo() {
     // Infos
-    get('#headerTitle').innerHTML = CONTENT.app.floor + ' ' + game.character.floor + " - " + CONTENT.app.room + ' ' + game.character.room;
-    get("#name").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconHero + '" alt=""> ' + game.core.name + " (" + CONTENT.app.level + " " + game.character.level + ")";
+    get('#headerTitle').innerHTML = _CONTENT.app.floor + ' ' + GAME.character.floor + " - " + _CONTENT.app.room + ' ' + GAME.character.room;
+    get("#name").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHero + '" alt=""> ' + GAME.core.name + " (" + _CONTENT.app.level + " " + GAME.character.level + ")";
     
     // Stats
-    get("#health").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconHealth + '" alt=""> ' + CONTENT.app.health + ' ' + game.character.health + ' / ' + game.character.healthMax;
-    get("#xp").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconExperience + '" alt=""> ' + CONTENT.app.experience + ' ' + game.character.xp + ' / ' + game.character.xpTo;
-    get("#strength").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconStrength + '" alt="">  ' + CONTENT.app.strength + ' ' + game.character.strength;
-    get("#shield").innerHTML = '<img src="assets/images/' + SETTINGS.images.iconShield + '" alt="">  ' + CONTENT.app.shield + ' ' + game.character.shield;
+    get("#health").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHealth + '" alt=""> ' + _CONTENT.app.health + ' ' + GAME.character.health + ' / ' + GAME.character.healthMax;
+    get("#xp").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconExperience + '" alt=""> ' + _CONTENT.app.experience + ' ' + GAME.character.xp + ' / ' + GAME.character.xpTo;
+    get("#strength").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconStrength + '" alt="">  ' + _CONTENT.app.strength + ' ' + GAME.character.strength;
+    get("#shield").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconShield + '" alt="">  ' + _CONTENT.app.shield + ' ' + GAME.character.shield;
 }
 
 // ===> Check items availability
 function checkItems() {
     // Buttons
-    get("#useHeal").style.opacity = game.character.itemHeal < 1 || game.character.health == game.character.healthMax ? 0.5 : 1;
-    get("#useMagic").style.opacity = game.character.itemMagic > 0 ? 1 : 0.5;
-    get("#useEscape").style.opacity = game.character.itemEscape > 0 ? 1 : 0.5;
+    get("#useHeal").style.opacity = GAME.character.itemHeal < 1 || GAME.character.health == GAME.character.healthMax ? 0.5 : 1;
+    get("#useMagic").style.opacity = GAME.character.itemMagic > 0 ? 1 : 0.5;
+    get("#useEscape").style.opacity = GAME.character.itemEscape > 0 ? 1 : 0.5;
 
     // Pictures and texts
-    get("#potion").innerHTML = '<img src="assets/images/' +SETTINGS.images.iconPotion + '" alt=""> ' + game.character.itemHeal + ' ' + plural(game.character.itemHeal, CONTENT.app.heal_singular, CONTENT.app.heal_plural);
-    get("#magic").innerHTML = '<img src="assets/images/' +SETTINGS.images.iconMagic + '" alt=""> ' + game.character.itemMagic + ' ' + plural(game.character.itemMagic, CONTENT.app.magic_singular, CONTENT.app.magic_plural);
-    get("#escape").innerHTML = '<img src="assets/images/' +SETTINGS.images.iconEscape + '"alt=""> ' + game.character.itemEscape + ' ' + plural(game.character.itemEscape, CONTENT.app.escape_singular, CONTENT.app.escape_plural);     
+    get("#potion").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconPotion + '" alt=""> ' + GAME.character.itemHeal + ' ' + plural(GAME.character.itemHeal, _CONTENT.app.heal_singular, _CONTENT.app.heal_plural);
+    get("#magic").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconMagic + '" alt=""> ' + GAME.character.itemMagic + ' ' + plural(GAME.character.itemMagic, _CONTENT.app.magic_singular, _CONTENT.app.magic_plural);
+    get("#escape").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconEscape + '"alt=""> ' + GAME.character.itemEscape + ' ' + plural(GAME.character.itemEscape, _CONTENT.app.escape_singular, _CONTENT.app.escape_plural);     
 }
 
 // ===> Check experience and level
 function checkExperience() {
-    if (game.character.xp >= game.character.xpTo) {
+    if (GAME.character.xp >= GAME.character.xpTo) {
         // Level up
-        game.character.level++;
-        game.character.strength =  game.character.strength + SETTINGS.data.lvlUpStrength;
-        game.character.shield =  game.character.shield + SETTINGS.data.lvlUpShield;
-        game.character.healthMax =  game.character.healthMax + SETTINGS.data.lvlUpHealth;
+        GAME.character.level++;
+        GAME.character.strength =  GAME.character.strength + _SETTINGS.data.lvlUpStrength;
+        GAME.character.shield =  GAME.character.shield + _SETTINGS.data.lvlUpShield;
+        GAME.character.healthMax =  GAME.character.healthMax + _SETTINGS.data.lvlUpHealth;
 
         // Heal and reset of the experience
-        game.character.health = game.character.healthMax;
-        game.character.xp = 0;
-        game.character.xpTo = rand(parseInt(1.5 *  game.character.xpTo), 2 *  game.character.xpTo);
+        GAME.character.health = GAME.character.healthMax;
+        GAME.character.xp = 0;
+        GAME.character.xpTo = rand(parseInt(1.5 *  GAME.character.xpTo), 2 *  GAME.character.xpTo);
 
-        get("#gameContent").innerHTML += '<hr><p class="green">' + CONTENT.app.levelUp_part1 + '.</p>';
-        get("#gameContent").innerHTML += '<p class="green">' + CONTENT.app.levelUp_part2 + '.</p>';
+        get("#gameContent").innerHTML += '<hr><p class="green">' + _CONTENT.app.levelUp_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.levelUp_part2 + '.</p>';
     }
 }
 
 // ===> Check the actual score and the best scores
 function checkScore() {
-    game.character.score = (((game.character.strength + game.character.healthMax) * game.character.level) * game.character.floor) - 30;
-    if (game.character.score > game.stats.bestScore) game.stats.bestScore = game.character.score;
-    if (game.character.floor > game.stats.bestFloor) game.stats.bestFloor = game.character.floor;
-    if (game.character.level > game.stats.maxLevel) game.stats.maxLevel = game.character.level;
+    GAME.character.score = (((GAME.character.strength + GAME.character.healthMax) * GAME.character.level) * GAME.character.floor) - 30;
+    if (GAME.character.score > GAME.stats.bestScore) GAME.stats.bestScore = GAME.character.score;
+    if (GAME.character.floor > GAME.stats.bestFloor) GAME.stats.bestFloor = GAME.character.floor;
+    if (GAME.character.level > GAME.stats.maxLevel) GAME.stats.maxLevel = GAME.character.level;
 }
 
 // ===> Check volume and its button
 function checkSound() {
-    if (game.core.sound == true) {
-        game.core.sound = false;
+    if (GAME.core.sound == true) {
+        GAME.core.sound = false;
         get("#volumeButton").innerHTML = "🔈";
     } else {
-        game.core.sound = true;
+        GAME.core.sound = true;
         get("#volumeButton").innerHTML = "🔊";
     }
 }
 
 // ===> Check vibration and its button
 function checkVibrate() {
-    if (game.core.vibrate == true) {
-        game.core.vibrate = false;
+    if (GAME.core.vibrate == true) {
+        GAME.core.vibrate = false;
         get("#vibrateButton").innerHTML = "📴";
     }
     else {
-        game.core.vibrate = true;
+        GAME.core.vibrate = true;
         get("#vibrateButton").innerHTML = "📳";
     }
 }
 
 // ===> Check game stats
 function checkStats() {
-    let titles = Object.values(CONTENT.stats);
-    let values = Object.values(game.stats);
+    let titles = Object.values(_CONTENT.stats);
+    let values = Object.values(GAME.stats);
     
     for (let i = 0; i < titles.length; i++) {
         (i == 0) ? get('#listStats').innerHTML = "<li>" + titles[i] + values[i] + "</li>" : get('#listStats').innerHTML += "<li>" + titles[i] + values[i] + "</li>"
@@ -567,9 +567,9 @@ function createMenu() {
 
     // Inside menu - restart
     get('#confirmRestart').addEventListener("click", function() {
-        if (confirm(CONTENT.app.confirmRestart))  {
-            clearInterval(refreshDisplay);
-            game.core.ongoing = false;
+        if (confirm(_CONTENT.app.confirmRestart))  {
+            clearInterval(REFRESH_DISPLAY);
+            GAME.core.ongoing = false;
             resetGame();
             location.reload();
         }
@@ -577,8 +577,8 @@ function createMenu() {
 
     // Inside menu - total restart
     get('#confirmTotalRestart').addEventListener("click", function () {
-        if (confirm(CONTENT.app.confirmDelete))  {
-            clearInterval(refreshDisplay);
+        if (confirm(_CONTENT.app.confirmDelete))  {
+            clearInterval(REFRESH_DISPLAY);
             storage("rem", "TOWER-gameSettings");
             location.reload();
         }
@@ -591,8 +591,8 @@ function createButtons() {
     get("#openMenu").style.visibility = "visible";
     get("#volumeButton").addEventListener("click", checkSound);
     get("#vibrateButton").addEventListener("click", checkVibrate);
-    game.core.sound == true ? get("#volumeButton").innerHTML = "🔊" : get("#volumeButton").innerHTML = "🔈";
-    game.core.vibrate == true ? get("#vibrateButton").innerHTML = "📳" : get("#vibrateButton").innerHTML = "📴";
+    GAME.core.sound == true ? get("#volumeButton").innerHTML = "🔊" : get("#volumeButton").innerHTML = "🔈";
+    GAME.core.vibrate == true ? get("#vibrateButton").innerHTML = "📳" : get("#vibrateButton").innerHTML = "📴";
 
     // Actions
     get("#useHeal").addEventListener("click", heal);
@@ -602,32 +602,32 @@ function createButtons() {
     get("#useMagic").addEventListener("click", magic);
     get("#useEscape").addEventListener("click", runAway);
     get("#move").addEventListener("click", function() {
-        playSound("vibrate", 10);
+        playSound("vibrate", 50);
         playTurn();
     });
 }
 
 // ===> Play sound / vibration if it's enabled
 function playSound(action, value) {
-    if (action == "sound" && game.core.sound == true) get("#sound" + value).play();
-    if (action == "vibrate" && game.core.vibrate == true) navigator.vibrate(value);
+    if (action == "sound" && GAME.core.sound == true) get("#sound" + value).play();
+    if (action == "vibrate" && GAME.core.vibrate == true) navigator.vibrate(value);
 }
 
 // ===> Reset all game data
 function resetGame() {
-    game.core.ongoing = false;
-    game.stats.totalGame++;
-    game.character.health = SETTINGS.data.health;
-    game.character.healthMax = SETTINGS.data.healthMax;
-    game.character.strength = SETTINGS.data.strength;
-    game.character.shield = SETTINGS.data.shield;
-    game.character.xp = SETTINGS.data.xp;
-    game.character.xpTo = SETTINGS.data.xpTo;
-    game.character.itemHeal = SETTINGS.data.heal;
-    game.character.itemMagic = SETTINGS.data.magic;
-    game.character.itemEscape = SETTINGS.data.escape;
-    game.character.level = SETTINGS.data.level;
-    game.character.floor = SETTINGS.data.floor;
-    game.character.room = SETTINGS.data.room;
-    storage("set", "TOWER-gameSettings", JSON.stringify(game))
+    GAME.core.ongoing = false;
+    GAME.stats.totalGame++;
+    GAME.character.health = _SETTINGS.data.health;
+    GAME.character.healthMax = _SETTINGS.data.healthMax;
+    GAME.character.strength = _SETTINGS.data.strength;
+    GAME.character.shield = _SETTINGS.data.shield;
+    GAME.character.xp = _SETTINGS.data.xp;
+    GAME.character.xpTo = _SETTINGS.data.xpTo;
+    GAME.character.itemHeal = _SETTINGS.data.itemHeal;
+    GAME.character.itemMagic = _SETTINGS.data.itemMagic;
+    GAME.character.itemEscape = _SETTINGS.data.itemEscape;
+    GAME.character.level = _SETTINGS.data.level;
+    GAME.character.floor = _SETTINGS.data.floor;
+    GAME.character.room = _SETTINGS.data.room;
+    storage("set", "TOWER-gameSettings", JSON.stringify(GAME))
 }

@@ -1,13 +1,19 @@
 // =================================================
 // =================================================
+// ============ CALL SERVICE WORKER
+
+"serviceWorker" in navigator && window.addEventListener ("load", function() {navigator.serviceWorker.register("serviceWorker.js")});
+
+// =================================================
+// =================================================
 // ============ CORE VARIABLES
 
-let game; let refreshDisplay; let timeDisplay = 1000;
-const VERSION = 1.8;
-const GITHUB = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
-const HOME = "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>";
-const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
-const SETTINGS = {
+let GAME; let REFRESH_DISPLAY; let INTERVAL_RESFRESH;
+const _VERSION = 1.8;
+const _GITHUB = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
+const _HOME = "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>";
+const _MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
+const _SETTINGS = {
     'data' : {
         'health' : 25,
         'healthMax' : 25,
@@ -69,14 +75,14 @@ const SETTINGS = {
         'iconShield' : "icons/shield.png"
     }
 };
-const FRENCH = {
+const _FRENCH = {
     'auto' : {
         'title' : "La Tour",
         'headerTitle' : "La Tour",
         'startScreenTitle' : "Bienvenue aventurier",
         'nameHeroLabel' : "Quel est ton nom ?",
         'startGame' : "Entrer",
-        'startFooter' : "Disponible sur " + GITHUB + " (v " + VERSION + ")<br />Hébergé sur " + HOME,
+        'startFooter' : "Disponible sur " + _GITHUB + " (v " + _VERSION + ")<br />Hébergé sur " + _HOME,
         'move' : "Avancer",
         'useHeal' : "Utiliser une potion",
         'openChest' : "Ouvrir le coffre",
@@ -201,14 +207,14 @@ const FRENCH = {
         "En début de partie, chaque objet que vous pouvez récupérer est limité à une certaine quantité. Par la suite, vous pourrez en garder davantage. "
     ]
 };
-const ENGLISH = {
+const _ENGLISH = {
     'auto' : {
         'title' : "The Tower",
         'headerTitle' : "The Tower",
         'startScreenTitle' : "Welcome adventurer",
         'nameHeroLabel' : "What's your name ?",
         'startGame' : "Enter",
-        'footer' : "Available on " + GITHUB + " (v " + VERSION + ")<br />Hosted on  " + HOME,
+        'footer' : "Available on " + _GITHUB + " (v " + _VERSION + ")<br />Hosted on  " + _HOME,
         'move' : "Move",
         'useHeal' : "Use a potion",
         'openChest' : "Open the chest",
@@ -344,17 +350,17 @@ const ENGLISH = {
 // ============ CORE INITIALISATION
 
 // ===> Correct the bug of the viewport on mobile
-if (MOBILE) get("#container").style.minHeight = window.innerHeight + 'px';
+if (_MOBILE) get("#container").style.minHeight = window.innerHeight + 'px';
 
 // ===> Create data game or parse it if existing
 if (!storage("get", "TOWER-gameSettings")) {
-    game = {
+    GAME = {
         'core' : {
             'ongoing' : false, 
             'name' : null, 
             'sound' : true,
             'vibrate' : true,
-            'version' : VERSION
+            'version' : _VERSION
         },
         'events' : {
             'lastAction' : null,  
@@ -379,30 +385,31 @@ if (!storage("get", "TOWER-gameSettings")) {
             'spiritMeet' : 0,
         },
         'character' : {
-            'health' : SETTINGS.data.health,
-            'healthMax' : SETTINGS.data.healthMax,
-            'strength' : SETTINGS.data.strength,
-            'shield' : SETTINGS.data.shield,
-            'xp' : SETTINGS.data.xp,
-            'xpTo' : SETTINGS.data.xpTo,
-            'level' : SETTINGS.data.level,
-            'floor' : SETTINGS.data.floor,
-            'room' : SETTINGS.data.room,
-            'itemHeal' : SETTINGS.data.itemHeal,
-            'itemMagic' : SETTINGS.data.itemMagic,
-            'itemEscape' : SETTINGS.data.itemEscape,
-            'score' : SETTINGS.data.score
+            'health' : _SETTINGS.data.health,
+            'healthMax' : _SETTINGS.data.healthMax,
+            'strength' : _SETTINGS.data.strength,
+            'shield' : _SETTINGS.data.shield,
+            'xp' : _SETTINGS.data.xp,
+            'xpTo' : _SETTINGS.data.xpTo,
+            'level' : _SETTINGS.data.level,
+            'floor' : _SETTINGS.data.floor,
+            'room' : _SETTINGS.data.room,
+            'itemHeal' : _SETTINGS.data.itemHeal,
+            'itemMagic' : _SETTINGS.data.itemMagic,
+            'itemEscape' : _SETTINGS.data.itemEscape,
+            'score' : _SETTINGS.data.score
         }
     }
 
-    storage("set", "TOWER-gameSettings", JSON.stringify(game));
-} else game = JSON.parse(storage("get", "TOWER-gameSettings"))
+    storage("set", "TOWER-gameSettings", JSON.stringify(GAME));
+} else GAME = JSON.parse(storage("get", "TOWER-gameSettings"))
 
 // ===> Determine language of the application
-const CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? FRENCH : ENGLISH;
+const _CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? _FRENCH : _ENGLISH;
+get('#manifest').href = navigator.language == "fr" || navigator.language == "fr-FR" ? "french.webmanifest" : "english.webmanifest";
 
-for(let i = 0; i < Object.keys(CONTENT).length - 4; i++) { 
-    let data = CONTENT[Object.keys(CONTENT)[i]];
+for(let i = 0; i < Object.keys(_CONTENT).length - 4; i++) { 
+    let data = _CONTENT[Object.keys(_CONTENT)[i]];
     let names = Object.keys(data);
     let values = Object.values(data);
     
