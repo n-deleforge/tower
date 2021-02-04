@@ -385,7 +385,7 @@ function displayGame() {
 
         // Save content and save all data
         if (get("#gameContent").innerHTML != "") GAME.events.currentEvent = get("#gameContent").innerHTML;
-        storage("set", "TOWER-gameSettings", JSON.stringify(GAME))
+        storage("set", "TOWER-save", JSON.stringify(GAME))
     }
 }
 
@@ -579,7 +579,7 @@ function createMenu() {
     get('#confirmTotalRestart').addEventListener("click", function () {
         if (confirm(_CONTENT.app.confirmDelete))  {
             clearInterval(REFRESH_DISPLAY);
-            storage("rem", "TOWER-gameSettings");
+            storage("rem", "TOWER-save");
             location.reload();
         }
     });
@@ -629,5 +629,5 @@ function resetGame() {
     GAME.character.level = _SETTINGS.data.level;
     GAME.character.floor = _SETTINGS.data.floor;
     GAME.character.room = _SETTINGS.data.room;
-    storage("set", "TOWER-gameSettings", JSON.stringify(GAME))
+    storage("set", "TOWER-save", JSON.stringify(GAME))
 }

@@ -1,11 +1,5 @@
 // =================================================
 // =================================================
-// ============ CALL SERVICE WORKER
-
-"serviceWorker" in navigator && window.addEventListener ("load", function() {navigator.serviceWorker.register("serviceWorker.js")});
-
-// =================================================
-// =================================================
 // ============ CORE VARIABLES
 
 let GAME; let REFRESH_DISPLAY; let INTERVAL_RESFRESH;
@@ -353,7 +347,7 @@ const _ENGLISH = {
 if (_MOBILE) get("#container").style.minHeight = window.innerHeight + 'px';
 
 // ===> Create data game or parse it if existing
-if (!storage("get", "TOWER-gameSettings")) {
+if (!storage("get", "TOWER-save")) {
     GAME = {
         'core' : {
             'ongoing' : false, 
@@ -402,11 +396,10 @@ if (!storage("get", "TOWER-gameSettings")) {
     }
 
     storage("set", "TOWER-gameSettings", JSON.stringify(GAME));
-} else GAME = JSON.parse(storage("get", "TOWER-gameSettings"))
+} else GAME = JSON.parse(storage("get", "TOWER-save"))
 
 // ===> Determine language of the application
 const _CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? _FRENCH : _ENGLISH;
-get('#manifest').href = navigator.language == "fr" || navigator.language == "fr-FR" ? "french.webmanifest" : "english.webmanifest";
 
 for(let i = 0; i < Object.keys(_CONTENT).length - 4; i++) { 
     let data = _CONTENT[Object.keys(_CONTENT)[i]];
