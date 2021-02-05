@@ -9,9 +9,9 @@ You can try the app : https://nicolas-deleforge.fr/apps/tower/
 Or download it : https://github.com/n-deleforge/game-tower/archive/main.zip  
 Or clone the git : ```git clone https://github.com/n-deleforge/game-tower.git```
 
-# Note for self-host
+## Note for self-host
 
-If you download or clone the project to host it yourself, then you'll need [**Little JS**](https://github.com/n-deleforge/littleJS).
+If you download or clone the project to host it yourself, then you'll need [**Little JS**](https://github.com/n-deleforge/littleJS) at the line 128 of `index.html`. Also, I do not upload the web manifest and the service worker on Github but they are still present at the line 5 and 409 of `core.js`.
 
 # Ressources
 
