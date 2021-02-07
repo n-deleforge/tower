@@ -433,6 +433,11 @@ a:hover {
     #startScreen button,
     #gameMessage button {
         min-width: 50vw;
+        font-size: 1em;
+    }
+
+    #gameMessage .bigger {
+        font-size: 1.5em;
     }
 
     #nameHero {

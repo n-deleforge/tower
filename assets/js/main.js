@@ -406,7 +406,8 @@ function displayScore() {
     changeDisplay("screenDisplayMessage");
 
     get("#gameMessage").style.backgroundColor = getVariableCSS("--gameoverBackground");
-    get('#gameMessage').innerHTML = "<p class=\"bigger\">" + _CONTENT.app.gameover  + GAME.character.score + " pts.</p>";
+    get('#gameMessage').innerHTML = "<p>" + _CONTENT.app.gameover_part1  + GAME.character.floor + ".</p>";
+    get('#gameMessage').innerHTML += '<p class="bigger">' + _CONTENT.app.gameover_part2  + GAME.character.score + '</p>';
     get('#gameMessage').innerHTML += "<button id=\"restart\">" + _CONTENT.app.gameoverButton + "</button>";
     get('#restart').addEventListener("click", () => { location.reload(); });
 }
@@ -460,7 +461,7 @@ function changeDisplay(set) {
 function checkInfo() {
     // Infos
     get('#headerTitle').innerHTML = _CONTENT.app.floor + ' ' + GAME.character.floor + " - " + _CONTENT.app.room + ' ' + GAME.character.room;
-    get("#name").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHero + '" alt=""> ' + GAME.core.name + " (" + _CONTENT.app.level + " " + GAME.character.level + ")";
+    get("#name").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHero + '" alt=""> ' + GAME.core.name + " (" + GAME.character.level + ")";
     
     // Stats
     get("#health").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHealth + '" alt=""> ' + _CONTENT.app.health + ' ' + GAME.character.health + ' / ' + GAME.character.healthMax;
