@@ -360,7 +360,7 @@ function runAway() {
         GAME.character.itemEscape--;
         GAME.stats.fightEscape++; 
         playSound("vibrate", 10);
-        playSound("sound", "sound", "Escape");
+        playSound("sound", "Escape");
         changeDisplay("actionFightToGame");
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
@@ -393,24 +393,22 @@ function displayGame() {
 function gameOver() {
     clearInterval(REFRESH_DISPLAY);
     playSound("vibrate", 500);
-    changeDisplay('buttonGameMode');
+    changeDisplay('actionGameMode');
 
-    get("#move").removeEventListener("click", playTurn);
-    get("#move").addEventListener("click", displayScore);
-    get("#move").innerHTML = _CONTENT.app.results;
-    get("#useHeal").style.display = "none";
+    get(".listActionsLine")[0].innerHTML = "<button id=\"gameover\">" +_CONTENT.app.results; + "</button>";
+    get('#gameover').addEventListener("click", displayScore);
     get("#gameContent").innerHTML += '<p class="red"><strong>' + _CONTENT.app.death + '</strong></p>';  
 }
 
 // ===> Display the score after the gameover
 function displayScore() {
-    resetData();
+    resetGame();
     changeDisplay("screenDisplayMessage");
 
     get("#gameMessage").style.backgroundColor = getVariableCSS("--gameoverBackground");
     get('#gameMessage').innerHTML = "<p class=\"bigger\">" + _CONTENT.app.gameover  + GAME.character.score + " pts.</p>";
     get('#gameMessage').innerHTML += "<button id=\"restart\">" + _CONTENT.app.gameoverButton + "</button>";
-    get('#restart').addEventListener("click", function() { location.reload(); });
+    get('#restart').addEventListener("click", () => { location.reload(); });
 }
 
 // ===> Modify actions
@@ -551,7 +549,7 @@ function checkStats() {
 // ===> Create events for the menu
 function createMenu() {
     // Open menu
-    get("#openMenu").addEventListener("click", function() {
+    get("#openMenu").addEventListener("click", () => {
         get("#blankPage").style.display = "block";
         get("#menu").style.display = "block";
         get("#closeMenu").style.visibility = "visible";
@@ -559,14 +557,14 @@ function createMenu() {
     });
 
     // Close menu
-    get('#closeMenu').addEventListener("click", function() {
+    get('#closeMenu').addEventListener("click", () => {
         get("#blankPage").style.display = "none";
         get("#menu").style.display = "none";
         get("#closeMenu").style.visibility = "hidden";
     });
 
     // Inside menu - restart
-    get('#confirmRestart').addEventListener("click", function() {
+    get('#confirmRestart').addEventListener("click", () => {
         if (confirm(_CONTENT.app.confirmRestart))  {
             clearInterval(REFRESH_DISPLAY);
             GAME.core.ongoing = false;
@@ -576,7 +574,7 @@ function createMenu() {
     });
 
     // Inside menu - total restart
-    get('#confirmTotalRestart').addEventListener("click", function () {
+    get('#confirmTotalRestart').addEventListener("click", () => {
         if (confirm(_CONTENT.app.confirmDelete))  {
             clearInterval(REFRESH_DISPLAY);
             storage("rem", "TOWER-save");
@@ -601,7 +599,7 @@ function createButtons() {
     get("#useAttack").addEventListener("click", attack);
     get("#useMagic").addEventListener("click", magic);
     get("#useEscape").addEventListener("click", runAway);
-    get("#move").addEventListener("click", function() {
+    get("#move").addEventListener("click", () => {
         playSound("vibrate", 50);
         playTurn();
     });
