@@ -214,7 +214,7 @@ const _ENGLISH = {
         'startScreenTitle' : "Welcome adventurer",
         'nameHeroLabel' : "What's your name ?",
         'startGame' : "Enter",
-        'footer' : "Available on " + _GITHUB + " (v " + _VERSION + ")<br />Hosted on  " + _HOME,
+        'startFooter' : "Available on " + _GITHUB + " (v " + _VERSION + ")<br />Hosted on  " + _HOME,
         'move' : "Move",
         'useHeal' : "Use a potion",
         'openChest' : "Open the chest",
