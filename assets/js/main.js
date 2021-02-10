@@ -2,10 +2,16 @@
 // =================================================
 // ============ MAIN
 
-// ===> Check if a game is ongoing
+/**
+ * Initialize the application
+ **/
+
 GAME.core.ongoing == false ? launcher() : startGame("load");
 
-// ===> Display the launcher 
+/**
+ * Display the screen title : show tip and allow new game
+ **/
+
 function launcher() {
     // Display the start screen
     get('#startScreen').style.display = "flex";
@@ -28,7 +34,11 @@ function launcher() {
     });
 }
 
-// ===> Start a new game or a loaded game
+/**
+ *  Display the game screen,  create menu and buttons
+ * @param {string} mode "new" to start a new game or "load" to load an existing game
+ **/
+
 function startGame(mode) {
     // Display the game screen
     get('#startScreen').style.display = "none";
@@ -59,7 +69,10 @@ function startGame(mode) {
     }
 }
 
-// ===> Main function of the game
+/**
+ * Main game function which manage floor and room, then call the choiceAction function
+ **/
+
 function playTurn() {
     GAME.events.subAction = null;
     GAME.character.room++;
@@ -97,7 +110,10 @@ function playTurn() {
 // =================================================
 // ============ EVENTS
 
-// ===> Choose a game action
+/**
+ * Randomly choose between no event, fight, chest or meeting a spirit
+ **/
+
 function choiceAction() {
     let nb = rand(1, 9);
 
@@ -126,7 +142,10 @@ function choiceAction() {
     }
 }
 
-// ===> Using a potion
+/**
+ * Use a potion and regain all health
+ **/
+
 function heal() {
     if (GAME.character.itemHeal > 0 && GAME.character.health < GAME.character.healthMax) {
         GAME.character.itemHeal --; 
@@ -140,7 +159,10 @@ function heal() {
     else playSound("vibrate", 250);
 }
 
-// ===> When there is no event
+/**
+ * When there is no event
+ **/
+
 function noEvent() {
     GAME.events.lastAction = "noEvent";
 
@@ -148,7 +170,10 @@ function noEvent() {
     get("#gameContent").innerHTML += '<p>' + _CONTENT.app.noEvent + '.</p>';
 }
 
-// ===> When meeting a spirit
+/**
+ * Meeting with a spirit : randomly choose between fire, water, earth and light
+ **/
+
 function spirit() {
     GAME.events.lastAction = "spirit";
     GAME.stats.spiritMeet++;
@@ -197,7 +222,10 @@ function spirit() {
 // =================================================
 // ============ CHEST EVENTS
 
-// ===> When finding a chest
+/**
+ * Initialize the chest event : allow open / avoid
+ **/
+
 function chest() {
     GAME.events.lastAction = "chest";
     changeDisplay("actionGameToChest");
@@ -206,7 +234,10 @@ function chest() {
     get("#gameContent").innerHTML += '<p>' + _CONTENT.app.chest + ' !</p>';
 }
 
-// ===> When opening a chest
+/**
+ * Open the chest : randomly choose between trap, potion, magic or scroll
+ **/
+
 function openChest() {
     GAME.events.subAction = "chestOver";
     GAME.stats.chestOpen++;
@@ -256,7 +287,10 @@ function openChest() {
     }
 }
 
-// ===> When avoiding a chest
+/**
+ * Avoid the chest and do not open it
+ **/
+
 function closeChest() {
     GAME.events.subAction = "chestOver";
     GAME.stats.chestNotOpened++;
@@ -272,7 +306,10 @@ function closeChest() {
 // =================================================
 // ============ FIGHT EVENTS
 
-// ===> When a fight start
+/**
+ * Initialize the fight event : allow attack, magic or escaping
+ **/
+
 function fight() {
     GAME.events.lastAction = "fight";
     GAME.events.monster = choiceMonster();
@@ -283,7 +320,10 @@ function fight() {
     get("#gameContent").innerHTML += '<p>' + _CONTENT.app.health + ' : <strong>' + GAME.events.monster[0] + '</strong> / ' + _CONTENT.app.strength + ' : <strong>'  + GAME.events.monster[1] + '</strong></p>';
 }
 
-// ===> Choose a monster according the floor
+/**
+ * Choose the monster according the height in the tower
+ **/
+
 function choiceMonster() {
     let monsterLevel = rand(GAME.character.floor * 2, GAME.character.floor * 4)
     if (monsterLevel > 500) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.dragon, _SETTINGS.images.monster17];
@@ -305,7 +345,10 @@ function choiceMonster() {
                                           return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.slim, _SETTINGS.images.monster01];
 }
 
-// ===> When attacking a monster
+/**
+ * Fight monster by physical attack : 100% of experience, taking damage
+ **/
+
 function attack() {
     GAME.events.subAction = "fightOver";
     GAME.stats.fightVictory++;
@@ -332,7 +375,9 @@ function attack() {
         get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.app.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, _CONTENT.app.point_singular, _CONTENT.app.point_plural) + _CONTENT.app.fightWin_part4 + ".</p>";
 }
 
-// ===> When using magic
+/**
+ * Fight monster by magic : 50% of experience, no damage
+ **/ 
 function magic() {
     if (GAME.character.itemMagic > 0) {
         GAME.events.subAction = "fightOver"; 
@@ -354,7 +399,10 @@ function magic() {
     else playSound("vibrate", 250);
 }
 
-// ===> When running away
+/**
+ * Escape the monster : no experience, no damage
+ **/
+
 function runAway() {
     if (GAME.character.itemEscape > 0) {
         GAME.character.itemEscape--;
@@ -373,7 +421,11 @@ function runAway() {
 // =================================================
 // ============ DISPLAY
 
-// ===> Display informations, check death and save data
+
+/**
+ * Display all the informations, check death and save game
+ **/
+
 function displayGame() {
     if (GAME.character.health < 1) gameOver();
     else {
@@ -389,7 +441,10 @@ function displayGame() {
     }
 }
 
-// ===> Display gameover after the death
+/**
+ * Display the game over (called by the displayGame function)
+ **/
+
 function gameOver() {
     clearInterval(REFRESH_DISPLAY);
     playSound("vibrate", 500);
@@ -400,7 +455,10 @@ function gameOver() {
     get("#gameContent").innerHTML += '<p class="red"><strong>' + _CONTENT.app.death + '</strong></p>';  
 }
 
-// ===> Display the score after the gameover
+/**
+ * Display the score and allow to restart the game (called by the gameOver function)
+ **/
+
 function displayScore() {
     resetGame();
     changeDisplay("screenDisplayMessage");
@@ -412,7 +470,11 @@ function displayScore() {
     get('#restart').addEventListener("click", () => { location.reload(); });
 }
 
-// ===> Modify actions
+/**
+ * Modify the screen or the list of accessible buttons
+ * @param {string} set keyword to hide or show buttons / screen
+ **/
+
 function changeDisplay(set) {
     // Classic game mode
     if (set == "actionGameMode") {
@@ -457,7 +519,10 @@ function changeDisplay(set) {
 // =================================================
 // ============ CHECKS
 
-// ===> Check hero's stats
+/**
+ * Check the hero's stats and the floor
+ **/
+
 function checkInfo() {
     // Infos
     get('#headerTitle').innerHTML = _CONTENT.app.floor + ' ' + GAME.character.floor + " - " + _CONTENT.app.room + ' ' + GAME.character.room;
@@ -470,7 +535,10 @@ function checkInfo() {
     get("#shield").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconShield + '" alt="">  ' + _CONTENT.app.shield + ' ' + GAME.character.shield;
 }
 
-// ===> Check items availability
+/**
+ * Check numbers and availability of the items
+ **/
+
 function checkItems() {
     // Buttons
     get("#useHeal").style.opacity = GAME.character.itemHeal < 1 || GAME.character.health == GAME.character.healthMax ? 0.5 : 1;
@@ -483,7 +551,10 @@ function checkItems() {
     get("#escape").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconEscape + '"alt=""> ' + GAME.character.itemEscape + ' ' + plural(GAME.character.itemEscape, _CONTENT.app.escape_singular, _CONTENT.app.escape_plural);     
 }
 
-// ===> Check experience and level
+/**
+ * Check experience and level of the hero
+ **/
+
 function checkExperience() {
     if (GAME.character.xp >= GAME.character.xpTo) {
         // Level up
@@ -502,7 +573,10 @@ function checkExperience() {
     }
 }
 
-// ===> Check the actual score and the best scores
+/**
+ * Check all the scores (best score, best floor, best level)
+ **/
+
 function checkScore() {
     GAME.character.score = (((GAME.character.strength + GAME.character.healthMax) * GAME.character.level) * GAME.character.floor) - 30;
     if (GAME.character.score > GAME.stats.bestScore) GAME.stats.bestScore = GAME.character.score;
@@ -510,7 +584,10 @@ function checkScore() {
     if (GAME.character.level > GAME.stats.maxLevel) GAME.stats.maxLevel = GAME.character.level;
 }
 
-// ===> Check volume and its button
+/**
+ * Check the activation of the volume (+ button)
+ **/
+
 function checkSound() {
     if (GAME.core.sound == true) {
         GAME.core.sound = false;
@@ -521,7 +598,10 @@ function checkSound() {
     }
 }
 
-// ===> Check vibration and its button
+/**
+ * Check the activation of the vibration (+ button)
+ **/
+
 function checkVibrate() {
     if (GAME.core.vibrate == true) {
         GAME.core.vibrate = false;
@@ -533,7 +613,10 @@ function checkVibrate() {
     }
 }
 
-// ===> Check game stats
+/**
+ * Check and display the stats in the menu
+ **/
+
 function checkStats() {
     let titles = Object.values(_CONTENT.stats);
     let values = Object.values(GAME.stats);
@@ -545,9 +628,12 @@ function checkStats() {
 
 // =================================================
 // =================================================
-// ============ GAME ASIDE
+// ============ UNCATEGORIZED
 
-// ===> Create events for the menu
+/**
+ * Create the menu (allow opening, closing, restarting etc)
+ **/
+
 function createMenu() {
     // Open menu
     get("#openMenu").addEventListener("click", () => {
@@ -584,7 +670,10 @@ function createMenu() {
     });
 }
 
-// ===> Create events for the buttons
+/**
+ * Create the buttons (action, fight, chest, system etc)
+ **/
+
 function createButtons() {
     // Menu
     get("#openMenu").style.visibility = "visible";
@@ -606,13 +695,21 @@ function createButtons() {
     });
 }
 
-// ===> Play sound / vibration if it's enabled
+/**
+ * Play sound / vibration if it's enabled
+ * @param {string} action "sound" to play a sound, "vibrate" to vibrate
+ * @param {string} value the "id" of the sound or the "length" of the vibration
+ **/
+
 function playSound(action, value) {
     if (action == "sound" && GAME.core.sound == true) get("#sound" + value).play();
     if (action == "vibrate" && GAME.core.vibrate == true) navigator.vibrate(value);
 }
 
-// ===> Reset all game data
+/**
+ * Reset the game (reinitialize stats and floor)
+ **/
+
 function resetGame() {
     GAME.core.ongoing = false;
     GAME.stats.totalGame++;

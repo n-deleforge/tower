@@ -1,6 +1,6 @@
 // =================================================
 // =================================================
-// ============ CALL SERVICE WORKER
+// ============ SERVICE WORKER
 
 "serviceWorker" in navigator && window.addEventListener ("load", function() {navigator.serviceWorker.register("serviceWorker.js")});
 
@@ -350,10 +350,10 @@ const _ENGLISH = {
 // =================================================
 // ============ CORE INITIALISATION
 
-// ===> Correct the bug of the viewport on mobile
+// Correct the bug of the viewport on mobile
 if (_MOBILE) get("#container").style.minHeight = window.innerHeight + 'px';
 
-// ===> Create data game or parse it if existing
+// Create data game or parse it if existing
 if (!storage("get", "TOWER-save")) {
     GAME = {
         'core' : {
@@ -402,19 +402,16 @@ if (!storage("get", "TOWER-save")) {
         }
     }
 
-    storage("set", "TOWER-gameSettings", JSON.stringify(GAME));
+    storage("set", "TOWER-save", JSON.stringify(GAME));
 } else GAME = JSON.parse(storage("get", "TOWER-save"))
 
-// ===> Determine language of the application
-const _CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? _FRENCH : _ENGLISH;
+// Determine language of the application
+const _CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? FRENCH : ENGLISH;
 get('#manifest').href = navigator.language == "fr" || navigator.language == "fr-FR" ? "french.webmanifest" : "english.webmanifest";
 
-for(let i = 0; i < Object.keys(_CONTENT).length - 4; i++) { 
-    let data = _CONTENT[Object.keys(_CONTENT)[i]];
-    let names = Object.keys(data);
-    let values = Object.values(data);
-    
-    for (let j = 0; j < names.length; j++) {
-        get("#" + names[j]).innerHTML = values[j];
-    }
+let names = Object.keys(_CONTENT);
+let values = Object.values(_CONTENT);
+
+for (let i = 0; i < names.length; i++) {
+    if (get("#" + names[i])) get("#" + names[i]).innerHTML = values[i];
 }
