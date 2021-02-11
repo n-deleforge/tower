@@ -76,7 +76,7 @@ const _SETTINGS = {
     }
 };
 const _FRENCH = {
-    'auto' : {
+    'main' : {
         'title' : "La Tour",
         'headerTitle' : "La Tour",
         'startScreenTitle' : "Bienvenue aventurier",
@@ -93,7 +93,9 @@ const _FRENCH = {
         'optionMenuTitle' : "Paramètres",
         'statsMenuTitle' : "Statistiques",
         'confirmRestart' : "Recommencer la partie",
-        'confirmTotalRestart' : "⚠ EFFACER les données"
+        'confirmDelete' : "⚠ EFFACER les données",
+        'confirmRestartText' : "Êtes-vous certain de recommencer votre partie ?",
+        'confirmDeleteText' : "Êtes-vous certain d'effacer toutes les données ?",
     },
     'stats' : {
         'bestScore' : "Meilleur score : ",
@@ -110,8 +112,7 @@ const _FRENCH = {
         'chestNotOpened' : "Coffre non ouvert : ",
         'spiritMeet' : "Esprit rencontré : ",
     },
-    'app' : {
-        'nameHeroCheck' : "Votre nom doit être composé de 2 à 15 lettres",
+    'vocabulary': {
         'health' : "Santé",
         'experience' : "Exp.",
         'score' : "Score",
@@ -129,10 +130,20 @@ const _FRENCH = {
         'point_plural' : "points",
         'hit_singular' : "coup",
         'hit_plural' : "coups",
+    },
+    'events' : {
+        // Regex check
+        'nameHeroCheck' : "Votre nom doit être composé de 2 à 15 lettres",
+        // Level up
         'levelUp_part1' : "Votre niveau augmente",
         'levelUp_part2' : "Votre santé est regénérée et vos statistiques augmentent",
+        // Simple events
         'healing' : "Vous avez utilisé une potion, vous regagnez toute votre santé",
         'noEvent' : "Vous traversez tranquillement de longs couloirs",
+        'startGame_part1' : "Une vieille pancarte. La plupart des mots sont effacés par le temps.",
+        'startGame_part2' : "\"Celui qui ... le sommet pourra ... l'un de ses ... ! ... le danger, restez en ... et grimpez le ... haut ...\"",
+        'startGame_part3' : "Vous continuez votre chemin d'un pas déterminé..",
+        // Spirits
         'spiritEarth_part1' : "Un <strong>esprit de la terre</strong> vous protège",
         'spiritEarth_part2' : "Votre bouclier augmente de ",
         'spiritLight_part1' : "Un <strong>esprit de lumière</strong> se rapproche de vous",
@@ -142,6 +153,7 @@ const _FRENCH = {
         'spiritFire_part2' : "Votre force augmente de ",
         'spiritWater_part1' : "Un <strong>esprit d'eau</strong> partage sa vitalité",
         'spiritWater_part2' : "Votre santé augmente de ",
+        // Chest
         'chest' : "Vous avez trouvé un <strong>coffre</strong>",
         'chest_notOpened' : "Mais vous décidez de ne pas l'ouvrir",
         'chestTrap_part1' : "Mais c'est un <strong>piège</strong>, le coffre vous attaque",
@@ -151,6 +163,7 @@ const _FRENCH = {
         'chestMagic' : "Vous trouvez un <strong>sort magique</strong>",
         'chestHeal' : "Vous trouvez une <strong>potion de soin</strong>",
         'chestLimit' : "Mais vous n'avez plus assez de place",
+        // Fight
         'fightStart' : "apparaît !",
         'fightWin_part1' : " vaincu en ",
         'fightWin_part2' : "Vous avez perdu ",
@@ -159,19 +172,12 @@ const _FRENCH = {
         'fightWin_part5' : "Vous avez gagné ",
         'fightMagic' : "Vous avez vaincu le monstre grâce à un sort magique",
         'fightEscape' : "Vous vous échappez grâce au parchemin de fuite",
+        // Game over
         'death' : "Vous tombez de fatigue ...",
         'results' : "Voir les résultats",
         'gameover_part1' : "La partie est terminée.<br />Vous êtes arrivé à l'étage ",
         'gameover_part2' : "Score : ",
-        'gameoverButton' : "Recommencer",
-        'shareScore_part1' : "Wahou! Je viens de faire un score de ",
-        'shareScore_part2' : " points dans La Tour !",
-        'shareScore_button' : "Partager",
-        'startGame_part1' : "Une vieille pancarte. La plupart des mots sont effacés par le temps.",
-        'startGame_part2' : "\"Celui qui ... le sommet pourra ... l'un de ses ... ! ... le danger, restez en ... et grimpez le ... haut ...\"",
-        'startGame_part3' : "Vous continuez votre chemin d'un pas déterminé..",
-        'confirmRestart' : "Êtes-vous certain de recommencer votre partie ?",
-        'confirmDelete' : "Êtes-vous certain d'effacer toutes les données ?"
+        'gameoverButton' : "Recommencer"
     },
     'monsters' : {
         'dragon' : "Dragon légendaire",
@@ -208,7 +214,7 @@ const _FRENCH = {
     ]
 };
 const _ENGLISH = {
-    'auto' : {
+    'main' : {
         'title' : "The Tower",
         'headerTitle' : "The Tower",
         'startScreenTitle' : "Welcome adventurer",
@@ -224,13 +230,10 @@ const _ENGLISH = {
         'useEscape' : "Escape",
         'optionMenuTitle' : "Settings",
         'statsMenuTitle' : "Statistics",
-        'closeStatsMenu' : "Close",
-        'openStatsMenu' : "Statistics",
-        'closeOptionMenu' : "Close",
         'confirmRestart' : "Restart the game",
-        'confirmTotalRestart' : "⚠ DELETE all data",
-        'openInfoMenu' : "More informations",
-        'closeInfoMenu' : "Close"
+        'confirmDelete' : "⚠ DELETE all data",
+        'confirmRestartText' : "Are you sure to restart your game ?",
+        'confirmDeleteText' : "Are you sure to delete all your data ?"
     },
     'stats' : {
         'bestScore' : "Best score : ",
@@ -247,8 +250,7 @@ const _ENGLISH = {
         'chestNotOpened' : "Chest not opened : ",
         'spiritMeet' : "Spirit meet : ",
     },
-    'app' : {
-        'nameHeroCheck' : "Your name must be composed between 2 to 15 letters.",
+    'vocabulary' : {
         'health' : "Health",
         'experience' : "Exp.",
         'score' : "Score",
@@ -266,10 +268,20 @@ const _ENGLISH = {
         'point_plural' : "points",
         'hit_singular' : "hit",
         'hit_plural' : "hits",
+    },
+    'events' : {
+        // Regex check
+        'nameHeroCheck' : "Your name must be composed between 2 to 15 letters.",
+        // Level up
         'levelUp_part1' : "Level up",
         'levelUp_part2' : "Your health is regenerated and your stats increase",
+        // Simple events
         'healing' : "You use a potion, you regain all your health",
         'noEvent' : "You walk quietly through long corridors",
+        'startGame_part1' : "An old sign. Most of the words are erased by time.",
+        'startGame_part2' : "\"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ...\"",
+        'startGame_part3' : "You continue your journey with a determined step.",
+        // Spirits
         'spiritEarth_part1' : "A <strong>earth spirit</strong> protects you",
         'spiritEarth_part2' : "Your shield increases by ",
         'spiritLight_part1' : "A <strong>light spirit</strong> draws near to you",
@@ -279,6 +291,7 @@ const _ENGLISH = {
         'spiritFire_part2' : "Your strength increases by ",
         'spiritWater_part1' : "A <strong>water spirit</strong> shares its vitality",
         'spiritWater_part2' : "Your health increases by ",
+        // Chest
         'chest' : "You have found a <strong>chest</strong>",
         'chest_notOpened' : "But you decide not to open it",
         'chestTrap_part1' : "But it's a <strong>trap</strong>, the chest attacks you",
@@ -288,6 +301,7 @@ const _ENGLISH = {
         'chestMagic' : "You find a <strong>magic spell</strong>",
         'chestHeal' : "You find a <strong>healing potion</strong>",
         'chestLimit' : "But you don't have enough room",
+        // Fight
         'fightStart' : "appears !",
         'fightWin_part1' : " defeated with ",
         'fightWin_part2' : "You have lost ",
@@ -296,20 +310,13 @@ const _ENGLISH = {
         'fightWin_part5' : "You have won ",
         'fightMagic' : "You have defeated the monster with a magic spell",
         'fightEscape' : "You escape thanks to the escape scroll",
+        // Game over
         'death' : "You're very tired ...",
         'results' : "See the results",
         'gameover' : "The game is over.<br />Your score : ",
         'gameover_part1' : "The game is over.<br />You have been at the floor  ",
         'gameover_part2' : "Score : ",
         'gameoverButton' : "Restart",
-        'shareScore_part1' : "Wow! I just made a score of ",
-        'shareScore_part2' : " points in The Tower!",
-        'shareScore_button' : "Share",
-        'startGame_part1' : "An old sign. Most of the words are erased by time.",
-        'startGame_part2' : "\"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ...\"",
-        'startGame_part3' : "You continue your journey with a determined step.",
-        'confirmRestart' : "Are you sure to restart your game ?",
-        'confirmDelete' : "Are you sure to delete all your data ?"
     },
     'monsters' : {
         'dragon' : "Legendary dragon",
@@ -406,11 +413,11 @@ if (!storage("get", "TOWER-save")) {
 } else GAME = JSON.parse(storage("get", "TOWER-save"))
 
 // Determine language of the application
-const _CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? FRENCH : ENGLISH;
+const _CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? _FRENCH : _ENGLISH;
 get('#manifest').href = navigator.language == "fr" || navigator.language == "fr-FR" ? "french.webmanifest" : "english.webmanifest";
 
-let names = Object.keys(_CONTENT);
-let values = Object.values(_CONTENT);
+let names = Object.keys(_CONTENT.main);
+let values = Object.values(_CONTENT.main);
 
 for (let i = 0; i < names.length; i++) {
     if (get("#" + names[i])) get("#" + names[i]).innerHTML = values[i];
