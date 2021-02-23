@@ -5,7 +5,7 @@
     <meta charset="UTF8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title"></title>
-    <link rel="stylesheet" href="assets/css/main.min.css?v=1.8899">
+    <link rel="stylesheet" href="assets/css/main.min.css?v=1.9000">
     <link rel="manifest" id="manifest">
     <link rel="icon" href="assets/images/favicon.ico" rel="icon" type="image/x-icon">
 </head>
@@ -22,12 +22,14 @@
         
         <!-- START -->
         <div id="startScreen">
-            <img src="assets/images/events/start.png">
+            <img src="assets/images/events/tower.png">
             <h1 id="startScreenTitle"></h1>
 
-            <label id="nameHeroLabel"></label>
-            <input type="text" id="nameHero" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
-            <button id="startGame"></button>
+            <form>
+                <label id="nameHeroLabel"></label>
+                <input type="text" id="nameHero" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
+                <button type='submit' id="startGame" onclick="return false"></button>
+            </form>
 
             <p id="displayTip"></p>
             <p id="startFooter"></p>
@@ -126,7 +128,7 @@
     <!-- // SOUNDS -->
 
     <script src="../../libraries/littleJS.min.js"></script>
-    <script src="assets/js/core.js?v=1.8899"></script>
-    <script src="assets/js/main.js?v=1.8899"></script>
+    <script src="assets/js/core.min.js?v=1.9000"></script>
+    <script src="assets/js/main.min.js?v=1.9000"></script>
 </body>
 </html>

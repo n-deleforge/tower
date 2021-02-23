@@ -1,3 +1,4 @@
 *.webmanifest
 serviceWorker.js
 pwa.png
+Thumbs.db
