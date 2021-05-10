@@ -31,7 +31,7 @@ const _SETTINGS = {
         'score' : 0,
         'lvlUpHealth' : 20,
         'lvlUpStrength' : 2, 
-        'lvlUpShield' : 0,
+        'lvlUpShield' : 1,
         'spiritHealth' : 5,
         'spiritStrength' : 1,
         'spiritShield' : 1
@@ -68,7 +68,6 @@ const _SETTINGS = {
         'iconPotion' : "icons/potion.png",
         'iconMagic' : "icons/magic.png",
         'iconEscape' : "icons/escape.png",
-        'iconHero' : "icons/hero.png",
         'iconHealth' : "icons/health.png",
         'iconExperience' : "icons/xp.png",
         'iconStrength' : "icons/strength.png",

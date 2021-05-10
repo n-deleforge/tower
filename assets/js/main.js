@@ -524,15 +524,11 @@ function changeDisplay(set) {
  **/
 
 function checkInfo() {
-    // Infos
     get('#headerTitle').innerHTML = _CONTENT.vocabulary.floor + ' ' + GAME.character.floor + " - " + _CONTENT.vocabulary.room + ' ' + GAME.character.room;
-    get("#name").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHero + '" alt=""> ' + GAME.core.name + " (" + GAME.character.level + ")";
-    
-    // Stats
-    get("#health").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHealth + '" alt=""> ' + _CONTENT.vocabulary.health + ' ' + GAME.character.health + ' / ' + GAME.character.healthMax;
-    get("#xp").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconExperience + '" alt=""> ' + _CONTENT.vocabulary.experience + ' ' + GAME.character.xp + ' / ' + GAME.character.xpTo;
-    get("#strength").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconStrength + '" alt="">  ' + _CONTENT.vocabulary.strength + ' ' + GAME.character.strength;
-    get("#shield").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconShield + '" alt="">  ' + _CONTENT.vocabulary.shield + ' ' + GAME.character.shield;
+    get("#health").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHealth + '" alt=""> ' + GAME.character.health + ' / ' + GAME.character.healthMax;
+    get("#xp").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconExperience + '" alt=""> ' + GAME.character.xp + ' / ' + GAME.character.xpTo + ' (' + GAME.character.level + ')';
+    get("#strength").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconStrength + '" alt="">  ' + GAME.character.strength;
+    get("#shield").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconShield + '" alt="">  ' + GAME.character.shield;
 }
 
 /**
@@ -546,9 +542,9 @@ function checkItems() {
     get("#useEscape").style.opacity = GAME.character.itemEscape > 0 ? 1 : 0.5;
 
     // Pictures and texts
-    get("#potion").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconPotion + '" alt=""> ' + GAME.character.itemHeal + ' ' + plural(GAME.character.itemHeal, _CONTENT.vocabulary.heal_singular, _CONTENT.vocabulary.heal_plural);
-    get("#magic").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconMagic + '" alt=""> ' + GAME.character.itemMagic + ' ' + plural(GAME.character.itemMagic, _CONTENT.vocabulary.magic_singular, _CONTENT.vocabulary.magic_plural);
-    get("#escape").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconEscape + '"alt=""> ' + GAME.character.itemEscape + ' ' + plural(GAME.character.itemEscape, _CONTENT.vocabulary.escape_singular, _CONTENT.vocabulary.escape_plural);     
+    get("#potion").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconPotion + '" alt=""> ' + GAME.character.itemHeal;
+    get("#magic").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconMagic + '" alt=""> ' + GAME.character.itemMagic;
+    get("#escape").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconEscape + '"alt=""> ' + GAME.character.itemEscape;
 }
 
 /**

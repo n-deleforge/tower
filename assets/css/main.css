@@ -34,14 +34,6 @@
 /* ======================================== */
 /* ======== MAIN */
 
-@font-face {
-    font-family: 'retrogaming';
-    font-style: normal;
-    font-weight: normal;
-    src: url('../../ressources/fonts/retro_gaming.woff2') format('woff2'), url('../../ressources/fonts/retro_gaming.woff') format('woff');
-    font-display: swap;
-}
-
 html,
 body {
     margin: 0;
@@ -323,19 +315,22 @@ a:hover {
 }
 
 #heroStatus img {
-    width: 24px;
+    width: 32px;
     padding-right: 0.5vw;
 }
 
 .heroStatusLine {
     display: flex;
     padding: 0.8vh 0;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .heroStatusBlock {
     display: flex;
     align-items: center;
     padding: 0 1vh;
+    margin: 0.5vh 0.5vw;
 }
 
 #listActions {
