@@ -8,26 +8,25 @@
     --redTextColor: #AA6373;
     --greenTextColor: #7FB285;
     --gameBackground: white;
-    --gameBorder: black;
     --headerBackground: black;
     --headerTitle: white;
-    --headerAndMenuButtonColor1: black;
-    --headerAndMenuButtonColor2: white;
+    --menuButtonColor1: black;
+    --menuButtonColor2: white;
     --errorTextColor: red;
     --gameoverBackground: lightcoral;
     --startScreenTitleBorder: black;
     --startScreenInputBorder: black;
     --startScreenInputColor: #262931;
     --startScreenInputBackground: transparent;
-    --buttonColor1: black;
-    --buttonColor2: white;
-    --buttonColor3: lightcoral;
-    --buttonColor4: lightblue;
-    --buttonColor5: #262931;
+    --buttonColor1: white;
+    --buttonColor2: lightblue;
+    --buttonColor3: #262931;
     --menuBlankPage: rgba(0,0,0,0.8);
     --menuBackground: #262931;
     --menuText: white;
     --menuTitleBorder: white;
+    --actionBackground: black;
+    --actionText: white;
 }
 
 /* ======================================== */
@@ -96,11 +95,11 @@ a:hover {
     right: 3vw;
     padding: 1vh;
     min-width: 3vw;
-    border: 2px solid var(--headerAndMenuButtonColor1);
+    border: 2px solid var(--menuButtonColor1);
     border-radius: 5px;
     font-size: 0.5em;
-    color: var(--headerAndMenuButtonColor2);
-    background: var(--headerAndMenuButtonColor1);
+    color: var(--menuButtonColor2);
+    background-color: var(--menuButtonColor1);
 }
 
 #closeMenu {
@@ -109,7 +108,7 @@ a:hover {
 
 #openMenu:hover,
 #closeMenu:hover {
-    border: 2px solid var(--headerAndMenuButtonColor2);
+    border: 2px solid var(--menuButtonColor2);
 }
 
 #blankPage {
@@ -120,7 +119,7 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--menuBlankPage);
+    background-color: var(--menuBlankPage);
 }
 
 #menu {
@@ -132,7 +131,7 @@ a:hover {
     width: 25vw;
     height: 100%;
     color: var(--menuText);
-    background: var(--menuBackground);
+    background-color: var(--menuBackground);
 }
 
 #menu h1 {
@@ -147,19 +146,19 @@ a:hover {
 
 #menu ul {
     padding-left: 1.5vw;
-    list-style: square;
     line-height: 1.75em;
+    list-style: square;
 }
 
 #menu button {
     margin: 1vh;
     padding: 1vh;
     min-width: 3vw;
-    border: 2px solid var(--headerAndMenuButtonColor1);
+    border: 2px solid var(--menuButtonColor1);
     border-radius: 5px;
     font-size: 1.2em;
-    color: var(--headerAndMenuButtonColor2);
-    background: var(--headerAndMenuButtonColor1);
+    color: var(--menuButtonColor2);
+    background-color: var(--menuButtonColor1);
 }
 
 .buttonList {
@@ -202,7 +201,7 @@ a:hover {
     text-align: center;
     font-size: 1.5em;
     color: var(--startScreenInputColor);
-    background: var(--startScreenInputBackground);
+    background-color: var(--startScreenInputBackground);
 }
 
 #startGame {
@@ -212,13 +211,13 @@ a:hover {
     border-radius: 5px;
     text-transform: uppercase;
     font-size: 1.5em;
-    color: var(--buttonColor2);
-    background: var(--buttonColor1);
+    color: var(--buttonColor1);
+    background-color: var(--buttonColor3);
 }
 
 #startGame:hover {
-    color: var(--buttonColor3);
-    background: var(--buttonColor5);
+    color: var(--buttonColor2);
+    background-color: var(--buttonColor3);
 }
 
 #displayTip {
@@ -250,6 +249,8 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding: 2vh;
+    background-image: url("../images/background.jpg");
+    background-size: cover;
 }
 
 #gameMessage {
@@ -269,7 +270,7 @@ a:hover {
     border-radius: 15px;
     font-size: 2em;
     color: var(--buttonColor2);
-    background: var(--buttonColor1);
+    background-color: var(--buttonColor1);
 }
 
 #gameMessage button:hover {
@@ -284,7 +285,6 @@ a:hover {
     display: none;
     flex-direction: column;
     flex-grow: 1;
-    padding: 1vh 0;
     text-align: center;
     font-size: 1.3em;
 }
@@ -292,8 +292,8 @@ a:hover {
 #gameContent {
     flex-grow: 1;
     padding: 1vh 0.5vw;
-    border-top: 2px solid var(--gameBorder);
-    border-bottom: 2px solid var(--gameBorder);
+    background-image: url("../images/background.jpg");
+    background-size: cover;
 }
 
 #containerImage {
@@ -309,9 +309,10 @@ a:hover {
 }
 
 #heroStatus {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 2vh;
+    border-radius: 5px;
+    color: var(--headerTitle);
+    background-color: var(--headerBackground);
 }
 
 #heroStatus img {
@@ -321,22 +322,21 @@ a:hover {
 
 .heroStatusLine {
     display: flex;
-    padding: 0.8vh 0;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 0.8vh 0;
 }
 
 .heroStatusBlock {
     display: flex;
     align-items: center;
-    padding: 0 1vh;
     margin: 0.5vh 0.5vw;
+    padding: 0 1vh;
 }
 
 #listActions {
-    display: none;
-    flex-direction: column;
-    align-items: center;
+    color: var(--actionText);
+    background-color: var(--actionBackground);
 }
 
 .listActionsLine {
@@ -349,25 +349,18 @@ a:hover {
     margin: 1vh;
     padding: 1.5vh;
     min-height: 8vh;
-    min-width: 15vw;
+    min-width: 10vw;
     border: 0;
-    border-radius: 15px;
+    border: 1px solid var(--buttonColor1);
+    border-radius: 3px;
     font-size: 1em;
-    color: var(--buttonColor2);
-    background: var(--buttonColor1);
+    color: var(--buttonColor1);
+    background-color: var(--buttonColor3);
 }
 
 .listActionsLine button:hover {
-    color: var(--buttonColor4);
-    background: var(--buttonColor5);
-}
-
-.listActionsLine button:disabled {
-    opacity: 0.5;
-}
-
-.listActionsLine button:disabled:hover {
     color: var(--buttonColor2);
+    background-color: var(--buttonColor3);
 }
 
 /* ======================================== */
@@ -406,7 +399,10 @@ a:hover {
     }
 
     #heroStatus {
+        font-size: 0.9em;
+        margin: 1vh;
         padding: 0.8vh 0;
+        background-color: var(--mainBackground);
     }
 
     .heroStatusLine {
@@ -439,7 +435,7 @@ a:hover {
         width: 80vw;
     }
 
-    #listAction button {
-        min-width: 40vw;
+    #listActions button {
+        min-width: 28vw;
     }
 }
