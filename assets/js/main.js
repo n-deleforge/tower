@@ -46,6 +46,7 @@ function startGame(mode) {
     changeDisplay("actionGameMode");
     createMenu();
     createButtons();
+    checkVersion();
     REFRESH_DISPLAY = setInterval(displayGame, 100);
 
     // If it's a new game
@@ -248,8 +249,8 @@ function openChest() {
     let nb = rand(0, 10);
     let limited = false;
 
-    // 8 - 10 : trap chest
-    if (nb > 7) { 
+    // 7 - 10 : trap chest
+    if (nb > 6) { 
         GAME.stats.chestTrap++;
         let damage = rand(1, GAME.character.health / 4);
         GAME.character.health = GAME.character.health - damage;
@@ -259,16 +260,7 @@ function openChest() {
         get("#gameContent").innerHTML += '<p class="red">' + _CONTENT.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _CONTENT.vocabulary.point_singular, _CONTENT.vocabulary.point_plural) + _CONTENT.events.chestTrap_part3 + '.</p>';
     } 
 
-    // 6 - 7 : escape item
-    else if (nb > 5) { 
-        _SETTINGS.data.itemLimit > GAME.character.itemEscape ? GAME.character.itemEscape++ : limited = true;
-
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chestEscape + '" alt=""></div>';
-        get("#gameContent").innerHTML += '<p>' + _CONTENT.events.chestEscape +  '.</p>';
-        if (limited) get("#gameContent").innerHTML += '<p>' + _CONTENT.events.chestLimit + '.</p>';
-    } 
-
-     // 4 - 5 : magic item
+     // 4 - 6 : magic item
     else if (nb > 3) {
         _SETTINGS.data.itemLimit > GAME.character.itemMagic ? GAME.character.itemMagic++ : limited = true;
 
@@ -399,24 +391,6 @@ function magic() {
     else playSound("vibrate", 250);
 }
 
-/**
- * Escape the monster : no experience, no damage
- **/
-
-function runAway() {
-    if (GAME.character.itemEscape > 0) {
-        GAME.character.itemEscape--;
-        GAME.stats.fightEscape++; 
-        playSound("vibrate", 10);
-        playSound("sound", "Escape");
-        changeDisplay("actionFightToGame");
-
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
-        get("#gameContent").innerHTML += '<p>' + _CONTENT.events.fightEscape + '.</p>';
-    }
-    else playSound("vibrate", 250);
-}
-
 // =================================================
 // =================================================
 // ============ DISPLAY
@@ -539,12 +513,9 @@ function checkItems() {
     // Buttons
     get("#useHeal").style.opacity = GAME.character.itemHeal < 1 || GAME.character.health == GAME.character.healthMax ? 0.5 : 1;
     get("#useMagic").style.opacity = GAME.character.itemMagic > 0 ? 1 : 0.5;
-    get("#useEscape").style.opacity = GAME.character.itemEscape > 0 ? 1 : 0.5;
-
     // Pictures and texts
     get("#potion").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconPotion + '" alt=""> ' + GAME.character.itemHeal;
     get("#magic").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconMagic + '" alt=""> ' + GAME.character.itemMagic;
-    get("#escape").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconEscape + '"alt=""> ' + GAME.character.itemEscape;
 }
 
 /**
@@ -627,6 +598,18 @@ function checkStats() {
 // ============ UNCATEGORIZED
 
 /**
+ * Check if there is a new version
+ **/
+
+function checkVersion() {
+    if (GAME.core.version != _VERSION) {
+        GAME.core.version = _VERSION;
+        storage("rem", GAME.character.itemEscape);
+        storage("rem", GAME.stats.fightEspace);
+    }
+}
+
+/**
  * Create the menu (allow opening, closing, restarting etc)
  **/
 
@@ -684,7 +667,6 @@ function createButtons() {
     get("#closeChest").addEventListener("click", closeChest);
     get("#useAttack").addEventListener("click", attack);
     get("#useMagic").addEventListener("click", magic);
-    get("#useEscape").addEventListener("click", runAway);
     get("#move").addEventListener("click", () => {
         playSound("vibrate", 50);
         playTurn();
@@ -717,7 +699,6 @@ function resetGame() {
     GAME.character.xpTo = _SETTINGS.data.xpTo;
     GAME.character.itemHeal = _SETTINGS.data.itemHeal;
     GAME.character.itemMagic = _SETTINGS.data.itemMagic;
-    GAME.character.itemEscape = _SETTINGS.data.itemEscape;
     GAME.character.level = _SETTINGS.data.level;
     GAME.character.floor = _SETTINGS.data.floor;
     GAME.character.room = _SETTINGS.data.room;

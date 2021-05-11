@@ -62,6 +62,10 @@ header {
     background-color: var(--headerBackground);
 }
 
+button {
+    cursor: pointer;
+}
+
 button,
 input {
     font-family: inherit;
@@ -164,6 +168,7 @@ a:hover {
 .buttonList {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
     padding-top: 2vh;
 }
 
@@ -433,7 +438,7 @@ a:hover {
     }
 
     #listActions button {
-        min-width: 28vw;
-        max-width: 28vw;
+        min-width: 40vw;
+        max-width: 40vw;
     }
 }

@@ -9,7 +9,7 @@
 // ============ CORE VARIABLES
 
 let GAME; let REFRESH_DISPLAY; let INTERVAL_RESFRESH;
-const _VERSION = 1.8;
+const _VERSION = 1.9;
 const _GITHUB = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
 const _HOME = "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>";
 const _MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
@@ -26,7 +26,6 @@ const _SETTINGS = {
         'room' : 1,
         'itemHeal' : 0,
         'itemMagic' : 0,
-        'itemEscape' : 0,
         'itemLimit' : 9,
         'score' : 0,
         'lvlUpHealth' : 20,
@@ -67,7 +66,6 @@ const _SETTINGS = {
         'chestHeal' : "events/chestHeal.png",
         'iconPotion' : "icons/potion.png",
         'iconMagic' : "icons/magic.png",
-        'iconEscape' : "icons/escape.png",
         'iconHealth' : "icons/health.png",
         'iconExperience' : "icons/xp.png",
         'iconStrength' : "icons/strength.png",
@@ -88,7 +86,6 @@ const _FRENCH = {
         'closeChest' : "Ne pas l'ouvrir",
         'useAttack' : "Attaque",
         'useMagic' : "Sortilège",
-        'useEscape' : "Fuite",
         'optionMenuTitle' : "Paramètres",
         'statsMenuTitle' : "Statistiques",
         'confirmRestart' : "Recommencer la partie",
@@ -105,7 +102,6 @@ const _FRENCH = {
         'totalExp' : "Total de points d'expérience : ",
         'healUsed' : "Nombre de potion utilisé : ",
         'fightVictory' : "Monstre vaincu : ",
-        'fightEscape' : "Combat esquivé : ",
         'chestOpen': "Coffre ouvert : ",
         'chestTrap' : "Coffre piégé : ",
         'chestNotOpened' : "Coffre non ouvert : ",
@@ -163,7 +159,6 @@ const _FRENCH = {
         'fightWin_part4' : " d'expérience",
         'fightWin_part5' : "Vous avez gagné ",
         'fightMagic' : "Vous avez vaincu le monstre grâce à un sort magique",
-        'fightEscape' : "Vous vous échappez grâce au parchemin de fuite",
         // Game over
         'death' : "Vous tombez de fatigue ...",
         'results' : "Voir les résultats",
@@ -191,18 +186,21 @@ const _FRENCH = {
         'slim' : "Blob"
     },
     'tips' : [
+        // Stats
         "Lorsque la santé du héros tombe à 0, la partie est terminée. Cependant, un gain de niveau ou une potion restaure la totalité des points de santé.",
+        "La statistique de bouclier permet de réduire les dégâts lors d'une attaque dans un combat. Elle peut être uniquement augmentée par l'esprit de la terre.",    
+        // Fights
+        "Les combats se déroulent automatiquement alors veillez à bien choisir votre action de combat entre attaque et sortilège.",
         "Chaque monstre nécessite un nombre de coups pour être vaincu qui est calculé de la manière suivante : <em>\"santé du monstre / force du héros\"</em>",
         "Les dégâts d'un monstre sont calculés selon la formule suivante : <em>\"(nombre de coups pour être vaincu * force du monstre) - le bouclier du héros\"</em>",
-        "Vaincre un monstre avec un sort rapporte seulement 50% de points d'expérience mais peut éviter une morte certaine ou de très gros dégâts.",
-        "Les combats se déroulent automatiquement alors veillez à bien choisir votre action de jeu. La fuite peut être une bonne solution pour rester en vie.",
-        "La statistique de bouclier permet de réduire les dégâts lors d'une attaque dans un combat. Elle peut être uniquement augmentée par l'esprit de la terre.",    
-        "La Tour est peuplée de divers esprits. La plupart d'entre eux vous aideront grandement lors de votre quête, néanmoins certains peuvent être aggressifs.",
+        "Vaincre un monstre avec un sort ne rapporte aucun point d'expérience mais peut éviter une morte certaine ou de très gros dégâts.",
+        // Events
+        "La Tour est peuplée de divers esprits, la plupart d'entre eux vous aideront grandement lors de votre quête.",
         "Lorsque vous ouvrez un coffre, vous avez une chance de tomber sur un monstre qui vous infligera des dégâts qui ignorent votre statistique de bouclier.",
+        // Informations
         "La Tour est divisé par étages. Chaque étage est lui-même composé de 10 salles. A chaque étage, les monstres deviennent plus puissants.",
         "Pour les plus curieux, le score de fin de partie est calculé selon la formule suivante : <em>\"((bouclier + force + santé maximale) * niveau) * étage\"</em>",
-        "Un combat contre un adversaire puissant est plus compliqué. Vous ne pouvez pas fuir et il est nécessaire de posséder au moins 3 sorts pour gagner grâce au sortillège.",
-        "En début de partie, chaque objet que vous pouvez récupérer est limité à une certaine quantité. Par la suite, vous pourrez en garder davantage. "
+        "Chaque objet que vous pouvez récupérer est limité à une certaine quantité. Il faut faire attention à ne pas trop les utiliser et à ne pas trop les accumuler."
     ]
 };
 const _ENGLISH = {
@@ -219,7 +217,6 @@ const _ENGLISH = {
         'closeChest' : "Do not open",
         'useAttack' : "Attack",
         'useMagic' : "Spell",
-        'useEscape' : "Escape",
         'optionMenuTitle' : "Settings",
         'statsMenuTitle' : "Statistics",
         'confirmRestart' : "Restart the game",
@@ -236,7 +233,6 @@ const _ENGLISH = {
         'totalExp' : "Total exp. point : ",
         'healUsed' : "Potion used : ",
         'fightVictory' : "Monsters defeated  : ",
-        'fightEscape' : "Fight escaped : ",
         'chestOpen' : "Chest opened : ",
         'chestTrap' : "Trapped chest : ",
         'chestNotOpened' : "Chest not opened : ",
@@ -294,7 +290,6 @@ const _ENGLISH = {
         'fightWin_part4' : " of experience",
         'fightWin_part5' : "You have won ",
         'fightMagic' : "You have defeated the monster with a magic spell",
-        'fightEscape' : "You escape thanks to the escape scroll",
         // Game over
         'death' : "You're very tired ...",
         'results' : "See the results",
@@ -323,17 +318,20 @@ const _ENGLISH = {
         'slim' : "Blob"
     },
     'tips' : [
+        // Stats
         "When the hero's health drops to 0, the game is over. However, leveling up or a potion restores all health points.",
+        "The shield stat is used to reduce damage when attacked in combat. It can only be increased by the spirit of the earth.",
+        // Fights
+        "The fights take place automatically so be sure to choose your fight action.",
         "Each monster requires a number of hits to be defeated which is calculated as follows: <em>\" monster health / hero strength \"</em>",
         "The damage of a monster is calculated according to the following formula: <em>\" (number of hits to be defeated * strength of the monster) - hero's shield \"</em>",
-        "Defeating a monster with a spell only grants 50% experience points but can prevent certain death or very large damage.",
-        "The fights take place automatically so be sure to choose your game action. Escape can be a good way to stay alive.",
-        "The shield stat is used to reduce damage when attacked in combat. It can only be increased by the spirit of the earth.",
-        "The Tower is populated by various spirits. Most of them will help you greatly on your quest, however some can be aggressive.",
+        "Defeating a monster with a spell doesn't grant experience points but can prevent certain death or very large damage.",
+        // Events
+        "The Tower is populated by various spirits. Most of them will help you greatly on your quest.",
         "When you open a chest, you have a chance to stumble upon a monster that will deal damage to you that ignores your shield stat.",
+        // Informations
         "The Tower is divided by floors. Each floor itself is made up of 10 rooms. On each floor, the monsters become more powerful.",
         "For the more curious, the end-of-game score is calculated according to the following formula: <em>\" ((shield + strength + maximum health) * level) * floor \"</em>",
-        "A fight against a powerful opponent is more complicated. You cannot flee and it is necessary to have at least 3 spells to win thanks to the spell.",
         "At the start of the game, each item you can collect is limited to a certain quantity. Later, you can keep more."
     ]
 };
@@ -371,7 +369,6 @@ if (!storage("get", "TOWER-save")) {
             'totalExp' : 0,
             'healUsed' : 0,
             'fightVictory' : 0,
-            'fightEscape' : 0,
             'chestOpen': 0,
             'chestTrap' : 0,
             'chestNotOpened' : 0,
@@ -389,7 +386,6 @@ if (!storage("get", "TOWER-save")) {
             'room' : _SETTINGS.data.room,
             'itemHeal' : _SETTINGS.data.itemHeal,
             'itemMagic' : _SETTINGS.data.itemMagic,
-            'itemEscape' : _SETTINGS.data.itemEscape,
             'score' : _SETTINGS.data.score
         }
     }
