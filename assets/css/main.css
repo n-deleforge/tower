@@ -346,6 +346,7 @@ a:hover {
     padding: 1.5vh;
     min-height: 8vh;
     min-width: 10vw;
+    max-width: 10vw;
     border: 0;
     border: 1px solid var(--buttonColor1);
     border-radius: 3px;
@@ -433,5 +434,6 @@ a:hover {
 
     #listActions button {
         min-width: 28vw;
+        max-width: 28vw;
     }
 }
