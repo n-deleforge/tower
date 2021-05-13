@@ -28,10 +28,10 @@ const _SETTINGS = {
         'itemMagic' : 0,
         'itemLimit' : 9,
         'score' : 0,
-        'lvlUpHealth' : 20,
+        'lvlUpHealth' : 30,
         'lvlUpStrength' : 2, 
         'lvlUpShield' : 1,
-        'spiritHealth' : 5,
+        'spiritHealth' : 15,
         'spiritStrength' : 1,
         'spiritShield' : 1
     },

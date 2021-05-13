@@ -53,7 +53,7 @@ function startGame(mode) {
     if (mode == "new") {
         GAME.core.name = get("#nameHero").value;
         GAME.core.ongoing = true; 
-        playSound("sound", "Room");
+        playSound("Room");
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.start + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + _CONTENT.events.startGame_part1 +  '.</p>';
@@ -84,7 +84,7 @@ function playTurn() {
         INTERVAL_REFRESH = 2000;
         GAME.character.room = 1; 
         GAME.character.floor++; 
-        playSound("sound", "Floor");
+        playSound("Floor");
 
         get("#gameMessage").innerHTML = "<p class=\"bigger\">" + _CONTENT.vocabulary.floor + ' ' + GAME.character.floor + "</p>";
     } 
@@ -93,7 +93,7 @@ function playTurn() {
     else { 
         INTERVAL_REFRESH = 1000;
         GAME.stats.totalRoom++;
-        playSound("sound", "Room");
+        playSound("Room");
 
         get("#gameMessage").innerHTML = "<p class=\"bigger\">" + _CONTENT.vocabulary.floor + ' ' + parseInt(GAME.character.floor) + "</p>";
         get("#gameMessage").innerHTML += "<p>" + _CONTENT.vocabulary.room + ' ' + GAME.character.room + "</p>";
@@ -152,12 +152,12 @@ function heal() {
         GAME.character.itemHeal --; 
         GAME.character.health = GAME.character.healthMax; 
         GAME.stats.healUsed++;
-        playSound("vibrate", 10);
-        playSound("sound", "Heal");
+        playVibrate(10);
+        playSound("Heal");
 
         get("#gameContent").innerHTML += '<hr><p class="green">' + _CONTENT.events.healing + '</p>';
     }
-    else playSound("vibrate", 250);
+    else playVibrate(250);
 }
 
 /**
@@ -242,8 +242,8 @@ function chest() {
 function openChest() {
     GAME.events.subAction = "chestOver";
     GAME.stats.chestOpen++;
-    playSound("vibrate", 90);
-    playSound("sound", "Chest");
+    playVibrate(90);
+    playSound("Chest");
     changeDisplay("actionChestToGame");
 
     let nb = rand(0, 10);
@@ -286,7 +286,7 @@ function openChest() {
 function closeChest() {
     GAME.events.subAction = "chestOver";
     GAME.stats.chestNotOpened++;
-    playSound("vibrate", 10);
+    playVibrate(10);
     changeDisplay("actionChestToGame");
 
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chest + '" alt=""></div>';
@@ -317,7 +317,7 @@ function fight() {
  **/
 
 function choiceMonster() {
-    let monsterLevel = rand(GAME.character.floor * 2, GAME.character.floor * 4)
+    const monsterLevel = rand(GAME.character.floor * 3, GAME.character.floor * 6);
     if (monsterLevel > 500) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.dragon, _SETTINGS.images.monster17];
     if (monsterLevel > 450) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.supDemon, _SETTINGS.images.monster16];
     if (monsterLevel > 400) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.bigSpirit, _SETTINGS.images.monster15];
@@ -344,20 +344,19 @@ function choiceMonster() {
 function attack() {
     GAME.events.subAction = "fightOver";
     GAME.stats.fightVictory++;
-    playSound("vibrate", 10);
-    playSound("sound", "Attack");
+    playVibrate(10);
+    playSound("Attack");
     changeDisplay("actionFightToGame");
 
     // Damage
-    let nbHit = Math.ceil(GAME.events.monster[0] / GAME.character.strength);
-    let damage = parseInt(nbHit * GAME.events.monster[1] - parseInt(GAME.events.monster[1]) / nbHit) - GAME.character.shield; 
+    const nbHit = Math.ceil(GAME.events.monster[0] / GAME.character.strength);
+    let damage = parseInt(nbHit * GAME.events.monster[1]) - GAME.character.shield; 
     if (nbHit == 1 ) damage = 0; if (damage < 0) damage = 0; // Can't be negative
     GAME.character.health = GAME.character.health - damage;
 
     // Experience
-    let xp= rand(GAME.character.level * (GAME.events.monster[0]), GAME.character.level * GAME.events.monster[0] * 2);
+    const xp = rand(parseInt(GAME.character.xpTo / 8), parseInt(GAME.character.xpTo / 6));
     GAME.character.xp = GAME.character.xp + xp;
-    GAME.stats.totalExp = GAME.stats.totalExp + xp;
 
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
     get("#gameContent").innerHTML += '<p><strong>' + GAME.events.monster[2] + '</strong> ' + _CONTENT.events.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, _CONTENT.vocabulary.hit_singular, _CONTENT.vocabulary.hit_plural) + ' !</p>';
@@ -368,27 +367,21 @@ function attack() {
 }
 
 /**
- * Fight monster by magic : 50% of experience, no damage
+ * Fight monster by magic : no damage but no experience
  **/ 
 function magic() {
     if (GAME.character.itemMagic > 0) {
         GAME.events.subAction = "fightOver"; 
         GAME.character.itemMagic--;
         GAME.stats.fightVictory++; 
-        playSound("vibrate", 10);
-        playSound("sound", "Magic");
+        playVibrate(10);
+        playSound("Magic");
         changeDisplay("actionFightToGame");
 
-        // Experience : 50% with magic
-        let xp = rand(parseInt(GAME.character.level * (GAME.events.monster[0]) / 2), GAME.character.level * GAME.events.monster[0] );
-        GAME.character.xp = GAME.character.xp + xp; 
-        GAME.stats.totalExp = GAME.stats.totalExp + xp;
-        
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
         get("#gameContent").innerHTML += '<p>' + _CONTENT.events.fightMagic + ".</p>";
-        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.events.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, _CONTENT.vocabulary.point_singular, _CONTENT.vocabulary.point_plural) + _CONTENT.events.fightWin_part4 + ".</p>";
     }
-    else playSound("vibrate", 250);
+    else playVibrate(250);
 }
 
 // =================================================
@@ -421,7 +414,7 @@ function displayGame() {
 
 function gameOver() {
     clearInterval(REFRESH_DISPLAY);
-    playSound("vibrate", 500);
+    playVibrate(500);
     changeDisplay('actionGameMode');
 
     get(".listActionsLine")[0].innerHTML = "<button id=\"gameover\">" +_CONTENT.events.results; + "</button>";
@@ -535,7 +528,7 @@ function checkExperience() {
         GAME.character.xp = 0;
         GAME.character.xpTo = rand(parseInt(1.5 *  GAME.character.xpTo), 2 *  GAME.character.xpTo);
 
-        get("#gameContent").innerHTML += '<hr><p class="green">' + _CONTENT.events.levelUp_part1 + '.</p>';
+        get("#gameContent").innerHTML += '<hr><p class="green"><strong>' + _CONTENT.events.levelUp_part1 + '</strong>.</p>';
         get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.events.levelUp_part2 + '.</p>';
     }
 }
@@ -668,20 +661,27 @@ function createButtons() {
     get("#useAttack").addEventListener("click", attack);
     get("#useMagic").addEventListener("click", magic);
     get("#move").addEventListener("click", () => {
-        playSound("vibrate", 50);
+        playVibrate(50);
         playTurn();
     });
 }
 
 /**
- * Play sound / vibration if it's enabled
- * @param {string} action "sound" to play a sound, "vibrate" to vibrate
- * @param {string} value the "id" of the sound or the "length" of the vibration
+ * Play sound if it's enabled
+ * @param {string} value the "id" of the sound
  **/
 
-function playSound(action, value) {
-    if (action == "sound" && GAME.core.sound == true) get("#sound" + value).play();
-    if (action == "vibrate" && GAME.core.vibrate == true) navigator.vibrate(value);
+function playSound(value) {
+    if (GAME.core.sound == true) get("#sound" + value).play();
+}
+
+/**
+ * Play vibration if it's enabled
+ * @param {string} value the "length" of the vibration
+ **/
+
+function playVibrate(length) {
+    if (GAME.core.vibrate == true) navigator.vibrate(length);
 }
 
 /**
