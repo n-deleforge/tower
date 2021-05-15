@@ -12,6 +12,7 @@
     --headerTitle: white;
     --menuButtonColor1: black;
     --menuButtonColor2: white;
+    --menuButtonColor3: lightcoral;
     --errorTextColor: red;
     --gameoverBackground: lightcoral;
     --startScreenTitleBorder: black;
@@ -166,10 +167,14 @@ a:hover {
 }
 
 .buttonList {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-around; */
     padding-top: 2vh;
+}
+
+#confirmDelete {
+    background-color: var(--menuButtonColor3) !important;
 }
 
 /* ======================================== */
@@ -363,6 +368,16 @@ a:hover {
 .listActionsLine button:hover {
     color: var(--buttonColor2);
     background-color: var(--buttonColor3);
+}
+
+#restart {
+    width: auto !important;
+    color: var(--buttonColor1) !important;
+    background-color: var(--buttonColor3) !important;
+}
+
+#restart:hover {
+    color: var(--buttonColor2) !important;
 }
 
 /* ======================================== */

@@ -378,8 +378,13 @@ function magic() {
         playSound("Magic");
         changeDisplay("actionFightToGame");
 
+        // Experience
+        const xp = parseInt(GAME.character.xpTo / 8);
+        GAME.character.xp = GAME.character.xp + xp;
+
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
         get("#gameContent").innerHTML += '<p>' + _CONTENT.events.fightMagic + ".</p>";
+        get("#gameContent").innerHTML += '<p class="green">' + _CONTENT.events.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, _CONTENT.vocabulary.point_singular, _CONTENT.vocabulary.point_plural) + _CONTENT.events.fightWin_part4 + ".</p>";
     }
     else playVibrate(250);
 }
@@ -416,7 +421,6 @@ function gameOver() {
     clearInterval(REFRESH_DISPLAY);
     playVibrate(500);
     changeDisplay('actionGameMode');
-
     get(".listActionsLine")[0].innerHTML = "<button id=\"gameover\">" +_CONTENT.events.results; + "</button>";
     get('#gameover').addEventListener("click", displayScore);
     get("#gameContent").innerHTML += '<p class="red"><strong>' + _CONTENT.events.death + '</strong></p>';  
@@ -427,14 +431,13 @@ function gameOver() {
  **/
 
 function displayScore() {
-    resetGame();
     changeDisplay("screenDisplayMessage");
-
-    get("#gameMessage").style.backgroundColor = getVariableCSS("--gameoverBackground");
+    get("#gameMessage").style.backgroundColor = getVariableCSS("gameoverBackground");
     get('#gameMessage').innerHTML = "<p>" + _CONTENT.events.gameover_part1  + GAME.character.floor + ".</p>";
     get('#gameMessage').innerHTML += '<p class="bigger">' + _CONTENT.events.gameover_part2  + GAME.character.score + '</p>';
     get('#gameMessage').innerHTML += "<button id=\"restart\">" + _CONTENT.events.gameoverButton + "</button>";
     get('#restart').addEventListener("click", () => { location.reload(); });
+    resetGame();
 }
 
 /**
@@ -595,11 +598,8 @@ function checkStats() {
  **/
 
 function checkVersion() {
-    if (GAME.core.version != _VERSION) {
-        GAME.core.version = _VERSION;
-        storage("rem", GAME.character.itemEscape);
-        storage("rem", GAME.stats.fightEspace);
-    }
+    if (GAME.core.version != _VERSION) GAME.core.version = _VERSION;
+    storage("set", "TOWER-save", JSON.stringify(GAME))
 }
 
 /**
