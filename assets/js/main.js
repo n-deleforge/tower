@@ -192,7 +192,7 @@ function spirit() {
 
     // 5-6 : Light spirit : add experience
     else if (nb > 4) {
-        let xp = rand(parseInt(GAME.character.xpTo / 8), parseInt(GAME.character.xpTo / 6));
+        const xp = rand(parseInt(GAME.character.xpTo / 8), parseInt(GAME.character.xpTo / 6));
         GAME.character.xp = GAME.character.xp + xp;
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.lightSpirit + '" alt=""></div>';
@@ -246,13 +246,13 @@ function openChest() {
     playSound("Chest");
     changeDisplay("actionChestToGame");
 
-    let nb = rand(0, 10);
+    const nb = rand(0, 10);
     let limited = false;
 
     // 7 - 10 : trap chest
     if (nb > 6) { 
         GAME.stats.chestTrap++;
-        let damage = rand(1, GAME.character.health / 4);
+        const damage = rand(1, GAME.character.health / 4);
         GAME.character.health = GAME.character.health - damage;
 
         get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.chestTrap + '" alt=""></div>';
@@ -409,7 +409,7 @@ function displayGame() {
 
         // Save content and save all data
         if (get("#gameContent").innerHTML != "") GAME.events.currentEvent = get("#gameContent").innerHTML;
-        storage("set", "TOWER-save", JSON.stringify(GAME))
+        setStorage("TOWER-save", JSON.stringify(GAME))
     }
 }
 
@@ -599,7 +599,7 @@ function checkStats() {
 
 function checkVersion() {
     if (GAME.core.version != _VERSION) GAME.core.version = _VERSION;
-    storage("set", "TOWER-save", JSON.stringify(GAME))
+    setStorage("TOWER-save", JSON.stringify(GAME))
 }
 
 /**
@@ -636,7 +636,7 @@ function createMenu() {
     get('#confirmDelete').addEventListener("click", () => {
         if (confirm(_CONTENT.main.confirmDeleteText))  {
             clearInterval(REFRESH_DISPLAY);
-            storage("rem", "TOWER-save");
+            remStorage("TOWER-save");
             location.reload();
         }
     });
@@ -702,5 +702,5 @@ function resetGame() {
     GAME.character.level = _SETTINGS.data.level;
     GAME.character.floor = _SETTINGS.data.floor;
     GAME.character.room = _SETTINGS.data.room;
-    storage("set", "TOWER-save", JSON.stringify(GAME))
+    setStorage("TOWER-save", JSON.stringify(GAME))
 }

@@ -342,7 +342,7 @@ const _ENGLISH = {
 if (_MOBILE) get("#container").style.minHeight = window.innerHeight + 'px';
 
 // Create data game or parse it if existing
-if (!storage("get", "TOWER-save")) {
+if (!getStorage("TOWER-save")) {
     GAME = {
         'core' : {
             'ongoing' : false, 
@@ -387,8 +387,8 @@ if (!storage("get", "TOWER-save")) {
         }
     }
 
-    storage("set", "TOWER-save", JSON.stringify(GAME));
-} else GAME = JSON.parse(storage("get", "TOWER-save"))
+    setStorage("TOWER-save", JSON.stringify(GAME));
+} else GAME = JSON.parse(getStorage("TOWER-save"))
 
 // Determine language of the application
 const _CONTENT = navigator.language == "fr" || navigator.language == "fr-FR" ? _FRENCH : _ENGLISH;
