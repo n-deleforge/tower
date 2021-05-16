@@ -89,6 +89,29 @@ a:hover {
     color: var(--greenTextColor);
 }
 
+@media(max-width:1024px) {
+    html,
+    body {
+        font-size: 0.9em;
+    }
+
+    button:active,
+    button:focus,
+    input:active,
+    input:focus {
+        outline: 0 !important;
+    }
+
+    #container {
+        margin: 0;
+        border: 0;
+    }
+
+    header {
+        font-size: 1.5em;
+    }
+}
+
 /* ======================================== */
 /* ======================================== */
 /* ======== MENU */
@@ -116,7 +139,7 @@ a:hover {
     border: 2px solid var(--menuButtonColor2);
 }
 
-#blankPage {
+#blankMenu {
     display: none;
     z-index: 1;
     position: absolute;
@@ -155,26 +178,104 @@ a:hover {
     list-style: square;
 }
 
+#menu .buttonList {
+    padding-top: 2vh;
+}
+
 #menu button {
     margin: 1vh;
     padding: 1vh;
     min-width: 3vw;
-    border: 2px solid var(--menuButtonColor1);
+    border: 0;
     border-radius: 5px;
     font-size: 1.2em;
     color: var(--menuButtonColor2);
     background-color: var(--menuButtonColor1);
 }
 
-.buttonList {
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around; */
-    padding-top: 2vh;
-}
-
 #confirmDelete {
     background-color: var(--menuButtonColor3) !important;
+}
+
+@media(max-width:1024px) {
+    #menu {
+        width: 100%;
+        font-size: 1.1em;
+    }
+
+    #menu .buttonList {
+        padding-left: 3vw;
+    }
+
+    #menu ul {
+        padding-left: 10vw;
+    }
+}
+
+/* ======================================== */
+/* ======================================== */
+/* ======== POPUP */
+
+#blankPopup {
+    display: none;
+    z-index: 4;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--menuBlankPage);
+}
+
+#popup {
+    display: none;
+    flex-direction: column;
+    z-index: 5;
+    position: absolute;
+    top: 37%;
+    right: 37%;
+    width: 25vw;
+    height: 25vh;
+    color: var(--menuText);
+    background-color: var(--menuBackground);
+}
+
+#popupContent {
+    padding: 0 2vh;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#popupText {
+    font-size: 1.2em;
+}
+
+#popup .buttonList {
+    display: flex;
+}
+
+#popup button {
+    padding: 1vh;
+    width: 50%;
+    border: 0;
+    border-radius: 0;
+    font-size: 1.2em;
+    color: var(--menuButtonColor2);
+    background-color: var(--menuButtonColor1);
+}
+
+#popupAccept {
+    background-color: var(--menuButtonColor3) !important;
+}
+
+@media(max-width:1024px) {
+    #popup {
+        top: 36%;
+        right: 0;
+        width: 100vw;
+        height: 25vh;
+    }
 }
 
 /* ======================================== */
@@ -248,6 +349,17 @@ a:hover {
     font-size: 0.8em;
 }
 
+@media(max-width:1024px) {
+    #nameHero {
+        width: 80vw;
+    }
+
+    #startScreen button {
+        min-width: 50vw;
+        font-size: 1em;
+    }
+}
+
 /* ======================================== */
 /* ======================================== */
 /* ======== GAME MESSAGE  */
@@ -283,6 +395,17 @@ a:hover {
 
 #gameMessage button:hover {
     color: var(--buttonColor3);
+}
+
+@media(max-width:1024px) {
+    #gameMessage button {
+        min-width: 50vw;
+        font-size: 1em;
+    }
+
+    #gameMessage .bigger {
+        font-size: 1.5em;
+    }
 }
 
 /* ======================================== */
@@ -380,41 +503,7 @@ a:hover {
     color: var(--buttonColor2) !important;
 }
 
-/* ======================================== */
-/* ======================================== */
-/* ======== MOBILE */
-
 @media(max-width:1024px) {
-    html,
-    body {
-        font-size: 0.9em;
-    }
-
-    button:active,
-    button:focus,
-    input:active,
-    input:focus {
-        outline: 0 !important;
-    }
-
-    #container {
-        margin: 0;
-        border: 0;
-    }
-
-    header {
-        font-size: 1.5em;
-    }
-
-    #menu {
-        width: 100%;
-        font-size: 1.1em;
-    }
-
-    #menu ul {
-        padding-left: 6vw;
-    }
-
     #heroStatus {
         font-size: 0.9em;
         margin: 1vh;
@@ -436,20 +525,6 @@ a:hover {
 
     #containerImage img {
         max-width: 95vw;
-    }
-
-    #startScreen button,
-    #gameMessage button {
-        min-width: 50vw;
-        font-size: 1em;
-    }
-
-    #gameMessage .bigger {
-        font-size: 1.5em;
-    }
-
-    #nameHero {
-        width: 80vw;
     }
 
     #listActions button {

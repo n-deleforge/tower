@@ -609,7 +609,7 @@ function checkVersion() {
 function createMenu() {
     // Open menu
     get("#openMenu").addEventListener("click", () => {
-        get("#blankPage").style.display = "block";
+        get("#blankMenu").style.display = "block";
         get("#menu").style.display = "block";
         get("#closeMenu").style.visibility = "visible";
         checkStats();
@@ -617,28 +617,46 @@ function createMenu() {
 
     // Close menu
     get('#closeMenu').addEventListener("click", () => {
-        get("#blankPage").style.display = "none";
+        get("#blankMenu").style.display = "none";
         get("#menu").style.display = "none";
         get("#closeMenu").style.visibility = "hidden";
     });
 
     // Inside menu - restart
     get('#confirmRestart').addEventListener("click", () => {
-        if (confirm(_CONTENT.main.confirmRestartText))  {
+        get("#blankPopup").style.display = "block";
+        get("#popup").style.display = "flex";
+        get("#popupText").innerHTML = _CONTENT.main.popupRestart;
+
+        get("#popupCancel").addEventListener("click", () => {
+            get("#blankPopup").style.display = "none";
+            get("#popup").style.display = "none";
+        });
+
+        get("#popupAccept").addEventListener("click", () => {
             clearInterval(REFRESH_DISPLAY);
             GAME.core.ongoing = false;
             resetGame();
             location.reload();
-        }
+        });
     });
 
     // Inside menu - total restart
     get('#confirmDelete').addEventListener("click", () => {
-        if (confirm(_CONTENT.main.confirmDeleteText))  {
+        get("#blankPopup").style.display = "block";
+        get("#popup").style.display = "flex";
+        get("#popupText").innerHTML = _CONTENT.main.popupDelete;
+
+        get("#popupCancel").addEventListener("click", () => {
+            get("#blankPopup").style.display = "none";
+            get("#popup").style.display = "none";
+        });
+
+        get("#popupAccept").addEventListener("click", () => {
             clearInterval(REFRESH_DISPLAY);
             remStorage("TOWER-save");
             location.reload();
-        }
+        });
     });
 }
 
