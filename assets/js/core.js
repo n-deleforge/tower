@@ -11,7 +11,7 @@
 let GAME; let REFRESH_DISPLAY; let INTERVAL_RESFRESH;
 const _VERSION = 1.9;
 const _GITHUB = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
-const _HOME = "<a href=\"https://nicolas-deleforge.fr\" target=\"_blank\">nd</a>";
+const _HOME = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">NDDev</a>";
 const _MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
 const _SETTINGS = {
     'data' : {
@@ -79,7 +79,7 @@ const _FRENCH = {
         'startScreenTitle' : "Bienvenue aventurier",
         'nameHeroLabel' : "Quel est ton nom ?",
         'startGame' : "Entrer",
-        'startFooter' : "Disponible sur " + _GITHUB + " (v " + _VERSION + ")<br />Hébergé sur " + _HOME,
+        'startFooter' : "Disponible sur " + _GITHUB + " (v " + _VERSION + ") ©  " + _HOME,
         'move' : "Avancer",
         'useHeal' : "Utiliser une potion",
         'openChest' : "Ouvrir le coffre",
@@ -212,7 +212,7 @@ const _ENGLISH = {
         'startScreenTitle' : "Welcome adventurer",
         'nameHeroLabel' : "What's your name ?",
         'startGame' : "Enter",
-        'startFooter' : "Available on " + _GITHUB + " (v " + _VERSION + ")<br />Hosted on  " + _HOME,
+        'startFooter' : "Available on " + _GITHUB + " (v " + _VERSION + ") ©  " + _HOME,
         'move' : "Move",
         'useHeal' : "Use a potion",
         'openChest' : "Open the chest",

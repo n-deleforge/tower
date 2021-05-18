@@ -317,24 +317,24 @@ function fight() {
  **/
 
 function choiceMonster() {
-    const monsterLevel = rand(GAME.character.floor * 3, GAME.character.floor * 6);
-    if (monsterLevel > 500) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.dragon, _SETTINGS.images.monster17];
-    if (monsterLevel > 450) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.supDemon, _SETTINGS.images.monster16];
-    if (monsterLevel > 400) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.bigSpirit, _SETTINGS.images.monster15];
-    if (monsterLevel > 350) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.deadWarrior, _SETTINGS.images.monster14];
-    if (monsterLevel > 290) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.troll, _SETTINGS.images.monster13];
-    if (monsterLevel > 240) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.behemot, _SETTINGS.images.monster12];
-    if (monsterLevel > 190) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.minotaur, _SETTINGS.images.monster11];
-    if (monsterLevel > 160) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.cerberus, _SETTINGS.images.monster10];
-    if (monsterLevel > 130) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.goblin, _SETTINGS.images.monster09];
-    if (monsterLevel > 100) return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.ghost, _SETTINGS.images.monster08];
-    if (monsterLevel > 75)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.cockatrice, _SETTINGS.images.monster07];
-    if (monsterLevel > 50)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.lamia, _SETTINGS.images.monster06];
-    if (monsterLevel > 40)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.imp, _SETTINGS.images.monster05];
-    if (monsterLevel > 30)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.plant, _SETTINGS.images.monster04];
-    if (monsterLevel > 20)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.scorpio,_SETTINGS.images.monster03];
-    if (monsterLevel > 10)   return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.spider, _SETTINGS.images.monster02];
-                                          return [monsterLevel, parseInt(monsterLevel / 3), _CONTENT.monsters.slim, _SETTINGS.images.monster01];
+    const monsterHealth = rand(GAME.character.floor * 3, GAME.character.floor * 6);
+    if (monsterLevel > 500) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.dragon, _SETTINGS.images.monster17];
+    if (monsterLevel > 450) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.supDemon, _SETTINGS.images.monster16];
+    if (monsterLevel > 400) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.bigSpirit, _SETTINGS.images.monster15];
+    if (monsterLevel > 350) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.deadWarrior, _SETTINGS.images.monster14];
+    if (monsterLevel > 290) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.troll, _SETTINGS.images.monster13];
+    if (monsterLevel > 240) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.behemot, _SETTINGS.images.monster12];
+    if (monsterLevel > 190) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.minotaur, _SETTINGS.images.monster11];
+    if (monsterLevel > 160) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.cerberus, _SETTINGS.images.monster10];
+    if (monsterLevel > 130) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.goblin, _SETTINGS.images.monster09];
+    if (monsterLevel > 100) return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.ghost, _SETTINGS.images.monster08];
+    if (monsterLevel > 75)   return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.cockatrice, _SETTINGS.images.monster07];
+    if (monsterLevel > 50)   return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.lamia, _SETTINGS.images.monster06];
+    if (monsterLevel > 40)   return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.imp, _SETTINGS.images.monster05];
+    if (monsterLevel > 30)   return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.plant, _SETTINGS.images.monster04];
+    if (monsterLevel > 20)   return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.scorpio,_SETTINGS.images.monster03];
+    if (monsterLevel > 10)   return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.spider, _SETTINGS.images.monster02];
+                                          return [monsterHealth, rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3)), _CONTENT.monsters.slim, _SETTINGS.images.monster01];
 }
 
 /**
@@ -367,7 +367,7 @@ function attack() {
 }
 
 /**
- * Fight monster by magic : no damage but no experience
+ * Fight monster by magic : no damage but less experience
  **/ 
 function magic() {
     if (GAME.character.itemMagic > 0) {
