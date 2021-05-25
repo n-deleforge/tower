@@ -167,7 +167,9 @@ function heal() {
 function noEvent() {
     GAME.events.lastAction = "noEvent";
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _SETTINGS.images.noEvent + '" alt=""></div>';
+    get("#gameContent").innerHTML = '<div id="containerImage"></div>';
+    get("#containerImage").style.background = "url('assets/images/" + _SETTINGS.images.noEvent + "') no-repeat center"; 
+    get("#containerImage").style.backgroundSize = "cover"; 
     get("#gameContent").innerHTML += '<p>' + _CONTENT.events.noEvent + '.</p>';
 }
 
@@ -304,7 +306,7 @@ function closeChest() {
 
 function fight() {
     GAME.events.lastAction = "fight";
-    GAME.events.monster = choiceMonster();
+    GAME.events.monster = bestiary();
     changeDisplay("actionGameToFight");
 
     get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + GAME.events.monster[3] + '" alt="' + GAME.events.monster[2] + '"></div>';
@@ -316,10 +318,10 @@ function fight() {
  * Choose the monster according the height in the tower
  **/
 
-function choiceMonster() {
+function bestiary() {
     const monsterHealth = rand(GAME.character.floor * 3, GAME.character.floor * 6);
-    let monsterStrenght = rand(parseInt(monsterHealth / 5), parseInt(monsterHealth / 3));
-    if (monsterStrenght == 0) monsterStrenght = 1;
+    let monsterStrenght = parseInt(rand(monsterHealth / 4, monsterHealth / 3));
+    if (monsterStrenght == 0 || monsterStrenght < 0) monsterStrenght = 1;
 
     if (monsterHealth > 500) return [monsterHealth, monsterStrenght, _CONTENT.monsters.dragon, _SETTINGS.images.monster17];
     if (monsterHealth > 450) return [monsterHealth, monsterStrenght, _CONTENT.monsters.supDemon, _SETTINGS.images.monster16];
@@ -337,7 +339,7 @@ function choiceMonster() {
     if (monsterHealth > 30)   return [monsterHealth, monsterStrenght, _CONTENT.monsters.plant, _SETTINGS.images.monster04];
     if (monsterHealth > 20)   return [monsterHealth, monsterStrenght, _CONTENT.monsters.scorpio,_SETTINGS.images.monster03];
     if (monsterHealth > 10)   return [monsterHealth, monsterStrenght, _CONTENT.monsters.spider, _SETTINGS.images.monster02];
-                                            return [monsterHealth, monsterStrenght, _CONTENT.monsters.slim, _SETTINGS.images.monster01];
+    return [monsterHealth, monsterStrenght, _CONTENT.monsters.slim, _SETTINGS.images.monster01];
 }
 
 /**
@@ -372,6 +374,7 @@ function attack() {
 /**
  * Fight monster by magic : no damage but less experience
  **/ 
+
 function magic() {
     if (GAME.character.itemMagic > 0) {
         GAME.events.subAction = "fightOver"; 
@@ -510,8 +513,11 @@ function checkInfo() {
 
 function checkItems() {
     // Buttons
-    get("#useHeal").style.opacity = GAME.character.itemHeal < 1 || GAME.character.health == GAME.character.healthMax ? 0.5 : 1;
-    get("#useMagic").style.opacity = GAME.character.itemMagic > 0 ? 1 : 0.5;
+    if (GAME.character.itemHeal > 0 && GAME.character.health != GAME.character.healthMax) get("#useHeal").classList.remove("disabled"); 
+    else get("#useHeal").classList.add("disabled");
+    if (GAME.character.itemMagic > 0) get("#useMagic").classList.remove("disabled"); 
+    else get("#useMagic").classList.add("disabled");
+
     // Pictures and texts
     get("#potion").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconPotion + '" alt=""> ' + GAME.character.itemHeal;
     get("#magic").innerHTML = '<img src="assets/images/' +_SETTINGS.images.iconMagic + '" alt=""> ' + GAME.character.itemMagic;
@@ -613,7 +619,7 @@ function createMenu() {
     // Open menu
     get("#openMenu").addEventListener("click", () => {
         get("#blankMenu").style.display = "block";
-        get("#menu").style.display = "block";
+        get("#menu").style.display = "flex";
         get("#closeMenu").style.visibility = "visible";
         checkStats();
     });

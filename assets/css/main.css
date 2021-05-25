@@ -152,6 +152,7 @@ a:hover {
 
 #menu {
     display: none;
+    flex-direction: column;
     z-index: 2;
     position: absolute;
     top: 0;
@@ -195,6 +196,14 @@ a:hover {
 
 #confirmDelete {
     background-color: var(--menuButtonColor3) !important;
+}
+
+#listStats {
+    flex-grow: 1;
+}
+
+#gameFooter {
+    text-align: center;
 }
 
 @media(max-width:1024px) {
@@ -491,6 +500,14 @@ a:hover {
 .listActionsLine button:hover {
     color: var(--buttonColor2);
     background-color: var(--buttonColor3);
+}
+
+.disabled,
+.disabled:hover {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    color: var(--buttonColor1) !important;
+    background-color: var(--buttonColor3) !important;
 }
 
 #restart {
