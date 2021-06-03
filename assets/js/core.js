@@ -11,7 +11,7 @@
 let GAME; let REFRESH_DISPLAY; let INTERVAL_RESFRESH;
 const _VERSION = 1.9;
 const _GITHUB = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
-const _HOME = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">NDDev</a>";
+const _HOME = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ForgeCode</a>";
 const _MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
 const _SETTINGS = {
     'data' : {
