@@ -1,10 +1,8 @@
 // =================================================
-// =================================================
 // ============ SERVICE WORKER
 
 "serviceWorker" in navigator && window.addEventListener ("load", function() {navigator.serviceWorker.register("serviceWorker.js")});
 
-// =================================================
 // =================================================
 // ============ CORE VARIABLES
 
@@ -67,6 +65,7 @@ const _SETTINGS = {
         'iconPotion' : "icons/potion.png",
         'iconMagic' : "icons/magic.png",
         'iconHealth' : "icons/health.png",
+        'iconLevel' : "icons/level.png",
         'iconExperience' : "icons/xp.png",
         'iconStrength' : "icons/strength.png",
         'iconShield' : "icons/shield.png"
@@ -342,7 +341,6 @@ const _ENGLISH = {
     ]
 };
 
-// =================================================
 // =================================================
 // ============ CORE INITIALISATION
 

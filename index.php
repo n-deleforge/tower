@@ -1,3 +1,8 @@
+<?php
+    $_VERSION = "1.930";
+    $_SOUNDS = ["attack", "magic", "chest", "heal", "room", "floor"];
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -6,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="black">
     <title id="title"></title>
-    <link rel="stylesheet" href="assets/css/main.min.css?v=1.9331">
+    <link rel="stylesheet" href="assets/css/main.min.css?v=<?php echo $_VERSION; ?>">
     <link rel="manifest" id="manifest">
     <link rel="icon" href="assets/images/favicon.ico" rel="icon" type="image/x-icon">
 </head>
@@ -44,6 +49,7 @@
             <div id="heroStatus">
                 <div class="heroStatusLine">
                     <div class="heroStatusBlock" id="health"></div>
+                    <div class="heroStatusBlock" id="level"></div>
                     <div class="heroStatusBlock" id="xp"></div>
                 </div>
                 <div class="heroStatusLine">
@@ -111,35 +117,18 @@
     </div>
     <!-- // POPUP -->
 
-    <!-- SOUNDS -->
-    <audio preload id="soundAttack">
-        <source src="assets/sounds/attack.ogg" type="audio/ogg">
-        <source src="assets/sounds/attack.mp3" type="audio/mp3">
-        </audio>
-    <audio preload id="soundMagic">
-        <source src="assets/sounds/magic.ogg" type="audio/ogg">
-        <source src="assets/sounds/magic.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundChest">
-        <source src="assets/sounds/openChest.ogg" type="audio/ogg">
-        <source src="assets/sounds/openChest.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundHeal">
-        <source src="assets/sounds/heal.ogg" type="audio/ogg">
-        <source src="assets/sounds/heal.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundRoom">
-        <source src="assets/sounds/room.ogg" type="audio/ogg">
-        <source src="assets/sounds/room.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundFloor">
-        <source src="assets/sounds/floor.ogg" type="audio/ogg">
-        <source src="assets/sounds/floor.mp3" type="audio/mp3">
-    </audio>
-    <!-- // SOUNDS -->
+    <?php 
+    // Add all audio files
+        foreach($_SOUNDS as $file) {
+            echo '<audio preload id="sound' . ucFirst($file) . '">';
+                echo '<source src="assets/sounds/' . $file . '.ogg" type="audio/ogg">';
+                echo '<source src="assets/sounds/' . $file . '.mp3" type="audio/mp3">';
+            echo '</audio>';
+        }
+    ?>
 
-    <script src="../../libraries/littleJS.min.js?v=1.9"></script>
-    <script src="assets/js/core.min.js?v=1.93393"></script>
-    <script src="assets/js/main.min.js?v=1.93393"></script>
+    <script src="../../libraries/littleJS.min.js?v=<?php echo $_VERSION; ?>"></script>
+    <script src="assets/js/core.js?v=<?php echo $_VERSION; ?>"></script>
+    <script src="assets/js/main.js?v=<?php echo $_VERSION; ?>"></script>
 </body>
 </html>

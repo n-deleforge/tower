@@ -1,5 +1,4 @@
 // =================================================
-// =================================================
 // ============ MAIN
 
 /**
@@ -107,7 +106,6 @@ function playTurn() {
     choiceAction();
 }
 
-// =================================================
 // =================================================
 // ============ EVENTS
 
@@ -222,7 +220,6 @@ function spirit() {
 }
 
 // =================================================
-// =================================================
 // ============ CHEST EVENTS
 
 /**
@@ -296,7 +293,6 @@ function closeChest() {
     get("#gameContent").innerHTML += '<p>' + _CONTENT.events.chest_notOpened + '.</p>';
 }
 
-// =================================================
 // =================================================
 // ============ FIGHT EVENTS
 
@@ -396,7 +392,6 @@ function magic() {
 }
 
 // =================================================
-// =================================================
 // ============ DISPLAY
 
 
@@ -492,7 +487,6 @@ function changeDisplay(set) {
 }
 
 // =================================================
-// =================================================
 // ============ CHECKS
 
 /**
@@ -502,7 +496,8 @@ function changeDisplay(set) {
 function checkInfo() {
     get('#headerTitle').innerHTML = _CONTENT.vocabulary.floor + ' ' + GAME.character.floor + " - " + _CONTENT.vocabulary.room + ' ' + GAME.character.room;
     get("#health").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconHealth + '" alt=""> ' + GAME.character.health + ' / ' + GAME.character.healthMax;
-    get("#xp").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconExperience + '" alt=""> ' + GAME.character.xp + ' / ' + GAME.character.xpTo + ' (' + GAME.character.level + ')';
+    get("#level").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconLevel + '" alt=""> ' + GAME.character.level;
+    get("#xp").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconExperience + '" alt=""> ' + GAME.character.xp + ' / ' + GAME.character.xpTo;
     get("#strength").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconStrength + '" alt="">  ' + GAME.character.strength;
     get("#shield").innerHTML = '<img src="assets/images/' + _SETTINGS.images.iconShield + '" alt="">  ' + GAME.character.shield;
 }
@@ -598,7 +593,6 @@ function checkStats() {
     }    
 }
 
-// =================================================
 // =================================================
 // ============ UNCATEGORIZED
 
