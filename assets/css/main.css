@@ -2,31 +2,34 @@
 /* ======== VARIABLES */
 
 :root {
-    --mainBackground: #262931;
-    --linkColor: lightcoral;
-    --redTextColor: #AA6373;
-    --greenTextColor: #7FB285;
-    --gameBackground: white;
-    --headerBackground: black;
-    --headerTitle: white;
-    --menuButtonColor1: black;
-    --menuButtonColor2: white;
-    --menuButtonColor3: lightcoral;
-    --errorTextColor: red;
-    --gameoverBackground: lightcoral;
-    --startScreenTitleBorder: black;
-    --startScreenInputBorder: black;
-    --startScreenInputColor: #262931;
-    --startScreenInputBackground: transparent;
-    --buttonColor1: white;
-    --buttonColor2: lightblue;
-    --buttonColor3: #262931;
-    --menuBlankPage: rgba(0,0,0,0.8);
-    --menuBackground: #262931;
-    --menuText: white;
-    --menuTitleBorder: white;
-    --actionBackground: black;
-    --actionText: white;
+    --background-body: #262931;
+    --background-app: white;
+    --background-header: black;
+    --background-gameover: lightcoral;
+    --background-menu: #262931;
+
+    --text-link: lightcoral;
+    --text-red: #AA6373;
+    --text-green: #7FB285;
+    --text-header: white;
+    --text-error: red;
+    --text-menu: white;
+
+    --button-color-1: white;
+    --button-color-2: lightblue;
+    --button-color-3: #262931;
+    --button-menu-1: black;
+    --button-menu-2: white;
+    --button-menu-3: lightcoral;
+    --button-action-background: black;
+    --button-action-text: white;
+
+    --startScreen-titleBorder: black;
+    --startScreen-inputColor: #262931;
+    --startScreen-inputBorder: black;
+    --startScreen-inputBackground: transparent;
+
+    --transparency: rgba(0,0,0,0.8);
 }
 
 /* ======================================== */
@@ -37,7 +40,7 @@ body {
     margin: 0;
     font-family: sans-serif;
     font-size: 1em;
-    background-color: var(--mainBackground);
+    background-color: var(--background-body);
 }
 
 #container {
@@ -47,7 +50,7 @@ body {
     min-height: 100vh;
     border-right: 2px solid var(--gameBorder);
     border-left: 2px solid var(--gameBorder);
-    background-color: var(--gameBackground);
+    background-color: var(--background-app);
 }
 
 header {
@@ -57,8 +60,8 @@ header {
     padding: 2vh;
     text-transform: uppercase;
     font-size: 2.5em;
-    color: var(--headerTitle);
-    background-color: var(--headerBackground);
+    color: var(--text-header);
+    background-color: var(--background-header);
 }
 
 button {
@@ -72,7 +75,7 @@ input {
 
 a {
     text-decoration: none;
-    color: var(--linkColor);
+    color: var(--text-link);
 }
 
 a:hover {
@@ -80,11 +83,11 @@ a:hover {
 }
 
 .red {
-    color: var(--redTextColor);
+    color: var(--text-red);
 }
 
 .green {
-    color: var(--greenTextColor);
+    color: var(--text-green);
 }
 
 @media(max-width:1024px) {
@@ -120,11 +123,11 @@ a:hover {
     right: 3vw;
     padding: 1vh;
     min-width: 3vw;
-    border: 2px solid var(--menuButtonColor1);
+    border: 2px solid var(--button-menu-1);
     border-radius: 5px;
     font-size: 0.5em;
-    color: var(--menuButtonColor2);
-    background-color: var(--menuButtonColor1);
+    color: var(--button-menu-2);
+    background-color: var(--button-menu-1);
 }
 
 #closeMenu {
@@ -133,7 +136,7 @@ a:hover {
 
 #openMenu:hover,
 #closeMenu:hover {
-    border: 2px solid var(--menuButtonColor2);
+    border: 2px solid var(--button-menu-2);
 }
 
 #blankMenu {
@@ -144,7 +147,7 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--menuBlankPage);
+    background-color: var(--transparency);
 }
 
 #menu {
@@ -156,13 +159,13 @@ a:hover {
     right: 0;
     width: 25vw;
     height: 100%;
-    color: var(--menuText);
-    background-color: var(--menuBackground);
+    color: var(--text-menu);
+    background-color: var(--background-menu);
 }
 
 #menu h1 {
     margin: 2vh 0 0 2vh;
-    border-bottom: 2px solid var(--menuTitleBorder);
+    border-bottom: 2px solid var(--text-menu);
     font-size: 2em;
 }
 
@@ -187,12 +190,12 @@ a:hover {
     border: 0;
     border-radius: 5px;
     font-size: 1.2em;
-    color: var(--menuButtonColor2);
-    background-color: var(--menuButtonColor1);
+    color: var(--button-menu-2);
+    background-color: var(--button-menu-1);
 }
 
 #confirmDelete {
-    background-color: var(--menuButtonColor3) !important;
+    background-color: var(--button-menu-3) !important;
 }
 
 #listStats {
@@ -229,7 +232,7 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--menuBlankPage);
+    background-color: var(--transparency);
 }
 
 #popup {
@@ -241,8 +244,8 @@ a:hover {
     right: 37%;
     width: 25vw;
     height: 25vh;
-    color: var(--menuText);
-    background-color: var(--menuBackground);
+    color: var(--text-menu);
+    background-color: var(--background-menu);
 }
 
 #popupContent {
@@ -266,12 +269,12 @@ a:hover {
     border: 0;
     border-radius: 0;
     font-size: 1.2em;
-    color: var(--menuButtonColor2);
-    background-color: var(--menuButtonColor1);
+    color: var(--button-menu-2);
+    background-color: var(--button-menu-1);
 }
 
 #popupAccept {
-    background-color: var(--menuButtonColor3) !important;
+    background-color: var(--button-menu-3) !important;
 }
 
 @media(max-width:1024px) {
@@ -302,8 +305,8 @@ a:hover {
 
 #startScreenTitle {
     padding: 0.8vh 0 0.5vh 0;
-    border-top: 1px solid var(--startScreenTitleBorder);
-    border-bottom: 1px solid var(--startScreenTitleBorder);
+    border-top: 1px solid var(--startScreen-titleBorder);
+    border-bottom: 1px solid var(--startScreen-titleBorder);
     font-size: 1.5em;
 }
 
@@ -312,11 +315,11 @@ a:hover {
     margin: 4vh 0;
     padding: 0;
     border: 0;
-    border-bottom: 2px solid var(--startScreenInputBorder);
+    border-bottom: 2px solid var(--startScreen-inputBorder);
     text-align: center;
     font-size: 1.5em;
-    color: var(--startScreenInputColor);
-    background-color: var(--startScreenInputBackground);
+    color: var(--startScreen-inputColor);
+    background-color: var(--startScreen-inputBackground);
 }
 
 #startGame {
@@ -326,13 +329,13 @@ a:hover {
     border-radius: 5px;
     text-transform: uppercase;
     font-size: 1.5em;
-    color: var(--buttonColor1);
-    background-color: var(--buttonColor3);
+    color: var(--button-color-1);
+    background-color: var(--button-color-3);
 }
 
 #startGame:hover {
-    color: var(--buttonColor2);
-    background-color: var(--buttonColor3);
+    color: var(--button-color-2);
+    background-color: var(--button-color-3);
 }
 
 #displayTip {
@@ -392,12 +395,12 @@ a:hover {
     border: 0;
     border-radius: 15px;
     font-size: 2em;
-    color: var(--buttonColor2);
-    background-color: var(--buttonColor1);
+    color: var(--button-color-2);
+    background-color: var(--button-color-1);
 }
 
 #gameMessage button:hover {
-    color: var(--buttonColor3);
+    color: var(--button-color-3);
 }
 
 @media(max-width:1024px) {
@@ -442,8 +445,8 @@ a:hover {
 #heroStatus {
     margin: 2vh;
     border-radius: 5px;
-    color: var(--headerTitle);
-    background-color: var(--headerBackground);
+    color: var(--text-header);
+    background-color: var(--background-header);
 }
 
 #heroStatus img {
@@ -466,8 +469,8 @@ a:hover {
 }
 
 #listActions {
-    color: var(--actionText);
-    background-color: var(--actionBackground);
+    color: var(--button-action-text);
+    background-color: var(--button-action-background);
 }
 
 .listActionsLine {
@@ -483,34 +486,34 @@ a:hover {
     min-width: 10vw;
     max-width: 10vw;
     border: 0;
-    border: 1px solid var(--buttonColor1);
+    border: 1px solid var(--button-color-1);
     border-radius: 3px;
     font-size: 1em;
-    color: var(--buttonColor1);
-    background-color: var(--buttonColor3);
+    color: var(--button-color-1);
+    background-color: var(--button-color-3);
 }
 
 .listActionsLine button:hover {
-    color: var(--buttonColor2);
-    background-color: var(--buttonColor3);
+    color: var(--button-color-2);
+    background-color: var(--button-color-3);
 }
 
 .disabled,
 .disabled:hover {
     opacity: 0.5 !important;
     cursor: not-allowed !important;
-    color: var(--buttonColor1) !important;
-    background-color: var(--buttonColor3) !important;
+    color: var(--button-color-1) !important;
+    background-color: var(--button-color-3) !important;
 }
 
 #restart {
     width: auto !important;
-    color: var(--buttonColor1) !important;
-    background-color: var(--buttonColor3) !important;
+    color: var(--button-color-1) !important;
+    background-color: var(--button-color-3) !important;
 }
 
 #restart:hover {
-    color: var(--buttonColor2) !important;
+    color: var(--button-color-2) !important;
 }
 
 @media(max-width:1024px) {
@@ -518,7 +521,7 @@ a:hover {
         font-size: 0.9em;
         margin: 1vh;
         padding: 0.8vh 0;
-        background-color: var(--mainBackground);
+        background-color: var(--background-body);
     }
 
     .heroStatusLine {

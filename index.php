@@ -1,6 +1,6 @@
 <?php
-    $_VERSION = "1.930";
-    $_SOUNDS = ["attack", "magic", "chest", "heal", "room", "floor"];
+    $_version = "1.931";
+    $_sounds = ["attack", "magic", "chest", "heal", "room", "floor"];
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="black">
     <title id="title"></title>
-    <link rel="stylesheet" href="assets/css/main.min.css?v=<?php echo $_VERSION; ?>">
+    <link rel="stylesheet" href="assets/css/main.min.css?v=<?php echo $_version; ?>">
     <link rel="manifest" id="manifest">
     <link rel="icon" href="assets/images/favicon.ico" rel="icon" type="image/x-icon">
 </head>
@@ -119,7 +119,7 @@
 
     <?php 
     // Add all audio files
-        foreach($_SOUNDS as $file) {
+        foreach($_sounds as $file) {
             echo '<audio preload id="sound' . ucFirst($file) . '">';
                 echo '<source src="assets/sounds/' . $file . '.ogg" type="audio/ogg">';
                 echo '<source src="assets/sounds/' . $file . '.mp3" type="audio/mp3">';
@@ -127,8 +127,8 @@
         }
     ?>
 
-    <script src="../../libraries/littleJS.min.js?v=<?php echo $_VERSION; ?>"></script>
-    <script src="assets/js/core.js?v=<?php echo $_VERSION; ?>"></script>
-    <script src="assets/js/main.js?v=<?php echo $_VERSION; ?>"></script>
+    <script src="../../libraries/littleJS.min.js?v=<?php echo $_version; ?>"></script>
+    <script src="assets/js/core.min.js?v=<?php echo $_version; ?>"></script>
+    <script src="assets/js/main.min.js?v=<?php echo $_version; ?>"></script>
 </body>
 </html>
