@@ -3,15 +3,9 @@
 > Version 1.9 :memo:  
 > A little mobile game with RPG mechanics made with native JS.
 
-## How to use it ?
-
-- You can try the app on my website : https://nicolas-deleforge.fr/apps/tower/  
-- You can download the latest release : https://github.com/n-deleforge/game-tower/releases
-- Or you can clone the git : ```git clone https://github.com/n-deleforge/game-tower.git```
-
 ## Note for self-host
 
-If you download or clone the project to host it yourself, then you'll need [**Little JS**](https://github.com/n-deleforge/littleJS) at the line 128 of `index.html`. Also, I do not upload the web manifest and the service worker on Github but they are still present at the line 5 and 409 of `core.js`.
+If you download or clone the project to host it yourself, then you'll need [**Little JS**](https://github.com/n-deleforge/littleJS) at the line 142 of `index.html`. Also, I do not upload the web manifest and the service worker on Github but they are still present at the line 5 and 409 of `core.js`.
 
 ## Ressources
 
