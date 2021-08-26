@@ -54,7 +54,7 @@ function startGame(mode) {
         game.core.ongoing = true; 
         playSound("Room");
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.start + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.start + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + _content.events.startGame_part1 +  '.</p>';
         get("#gameContent").innerHTML += '<em>' + _content.events.startGame_part2 +  '.</em>';
         get("#gameContent").innerHTML += '<p>' + _content.events.startGame_part3 +  '.</p>';
@@ -166,7 +166,7 @@ function noEvent() {
     game.events.lastAction = "noEvent";
 
     get("#gameContent").innerHTML = '<div id="containerImage"></div>';
-    get("#containerImage").style.background = "url('assets/images/" + _settings.images.noEvent + "') no-repeat center"; 
+    get("#containerImage").style.background = "url('assets/image/" + _settings.images.noEvent + "') no-repeat center"; 
     get("#containerImage").style.backgroundSize = "cover"; 
     get("#gameContent").innerHTML += '<p>' + _content.events.noEvent + '.</p>';
 }
@@ -185,7 +185,7 @@ function spirit() {
     if (nb > 6) { 
         game.character.shield = game.character.shield + _settings.data.spiritShield;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.earthSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.earthSpirit + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' +_content.events.spiritEarth_part1 + '.</p>';
         get("#gameContent").innerHTML += '<p class="green">' + _content.events.spiritEarth_part2 + ' <strong>' + _settings.data.spiritShield + '</strong> ' + plural(_settings.data.spiritShield, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + '.</p>';
     } 
@@ -195,7 +195,7 @@ function spirit() {
         const xp = rand(parseInt(game.character.xpTo / 8), parseInt(game.character.xpTo / 6));
         game.character.xp = game.character.xp + xp;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.lightSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.lightSpirit + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + _content.events.spiritLight_part1 + '.</p>';
         get("#gameContent").innerHTML += '<p class="green">' + _content.events.spiritLight_part2 + '<strong>' + xp + '</strong> ' + plural(xp, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.spiritLight_part3 + '.</p>';
     } 
@@ -204,7 +204,7 @@ function spirit() {
     else if (nb > 2) {
         game.character.strength = game.character.strength + _settings.data.spiritStrength;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.fireSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.fireSpirit + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' +_content.events.spiritFire_part1 + '.</p>';
         get("#gameContent").innerHTML += '<p class="green">' + _content.events.spiritFire_part2 + ' <strong>' + _settings.data.spiritStrength + '</strong> ' + plural(_settings.data.spiritStrength, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + '.</p>';
     } 
@@ -213,7 +213,7 @@ function spirit() {
     else {
         game.character.healthMax = game.character.healthMax + _settings.data.spiritHealth;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.waterSpirit + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.waterSpirit + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + _content.events.spiritWater_part1 + '.</p>';
         get("#gameContent").innerHTML += '<p class="green">' + _content.events.spiritWater_part2 + ' <strong>' + _settings.data.spiritHealth + '</strong> ' + plural(_settings.data.spiritHealth, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + '.</p>';
     }
@@ -230,7 +230,7 @@ function chest() {
     game.events.lastAction = "chest";
     changeDisplay("actionGameToChest");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.chest + '" alt=""></div>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chest + '" alt=""></div>';
     get("#gameContent").innerHTML += '<p>' + _content.events.chest + ' !</p>';
 }
 
@@ -254,7 +254,7 @@ function openChest() {
         const damage = rand(1, game.character.health / 4);
         game.character.health = game.character.health - damage;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.chestTrap + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestTrap + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + _content.events.chestTrap_part1 + ' !</p>';
         get("#gameContent").innerHTML += '<p class="red">' + _content.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.chestTrap_part3 + '.</p>';
     } 
@@ -263,7 +263,7 @@ function openChest() {
     else if (nb > 3) {
         _settings.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.chestMagic + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestMagic + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + _content.events.chestMagic + '.</p>';
         if (limited) get("#gameContent").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     } 
@@ -272,7 +272,7 @@ function openChest() {
     else { 
         _settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.chestHeal + '" alt=""></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestHeal + '" alt=""></div>';
         get("#gameContent").innerHTML += '<p>' + _content.events.chestHeal + '.</p>';
         if (limited) get("#gameContent").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     }
@@ -288,7 +288,7 @@ function closeChest() {
     playVibrate(10);
     changeDisplay("actionChestToGame");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + _settings.images.chest + '" alt=""></div>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chest + '" alt=""></div>';
     get("#gameContent").innerHTML += '<p>' + _content.events.chest + ' !</p>';
     get("#gameContent").innerHTML += '<p>' + _content.events.chest_notOpened + '.</p>';
 }
@@ -305,7 +305,7 @@ function fight() {
     game.events.monster = bestiary();
     changeDisplay("actionGameToFight");
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
     get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + _content.events.fightStart + '</p>';
     get("#gameContent").innerHTML += '<p>' + _content.vocabulary.health + ' : <strong>' + game.events.monster[0] + '</strong> / ' + _content.vocabulary.strength + ' : <strong>'  + game.events.monster[1] + '</strong></p>';
 }
@@ -359,7 +359,7 @@ function attack() {
     const xp = rand(parseInt(game.character.xpTo / 8), parseInt(game.character.xpTo / 6));
     game.character.xp = game.character.xp + xp;
 
-    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
+    get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
     get("#gameContent").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + _content.events.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, _content.vocabulary.hit_singular, _content.vocabulary.hit_plural) + ' !</p>';
     get("#gameContent").innerHTML += '<p class="red">' + _content.events.fightWin_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + ' ' + _content.events.fightWin_part3 + '.</p>';
     
@@ -384,7 +384,7 @@ function magic() {
         const xp = parseInt(game.character.xpTo / 8);
         game.character.xp = game.character.xp + xp;
 
-        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/images/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
+        get("#gameContent").innerHTML = '<div id="containerImage"><img src="assets/image/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
         get("#gameContent").innerHTML += '<p>' + _content.events.fightMagic + ".</p>";
         get("#gameContent").innerHTML += '<p class="green">' + _content.events.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.fightWin_part4 + ".</p>";
     }
@@ -495,11 +495,11 @@ function changeDisplay(set) {
 
 function checkInfo() {
     get('#headerTitle').innerHTML = _content.vocabulary.floor + ' ' + game.character.floor + " - " + _content.vocabulary.room + ' ' + game.character.room;
-    get("#health").innerHTML = '<img src="assets/images/' + _settings.images.iconHealth + '" alt=""> ' + game.character.health + ' / ' + game.character.healthMax;
-    get("#level").innerHTML = '<img src="assets/images/' + _settings.images.iconLevel + '" alt=""> ' + game.character.level;
-    get("#xp").innerHTML = '<img src="assets/images/' + _settings.images.iconExperience + '" alt=""> ' + game.character.xp + ' / ' + game.character.xpTo;
-    get("#strength").innerHTML = '<img src="assets/images/' + _settings.images.iconStrength + '" alt="">  ' + game.character.strength;
-    get("#shield").innerHTML = '<img src="assets/images/' + _settings.images.iconShield + '" alt="">  ' + game.character.shield;
+    get("#health").innerHTML = '<img src="assets/image/' + _settings.images.iconHealth + '" alt=""> ' + game.character.health + ' / ' + game.character.healthMax;
+    get("#level").innerHTML = '<img src="assets/image/' + _settings.images.iconLevel + '" alt=""> ' + game.character.level;
+    get("#xp").innerHTML = '<img src="assets/image/' + _settings.images.iconExperience + '" alt=""> ' + game.character.xp + ' / ' + game.character.xpTo;
+    get("#strength").innerHTML = '<img src="assets/image/' + _settings.images.iconStrength + '" alt="">  ' + game.character.strength;
+    get("#shield").innerHTML = '<img src="assets/image/' + _settings.images.iconShield + '" alt="">  ' + game.character.shield;
 }
 
 /**
@@ -514,8 +514,8 @@ function checkItems() {
     else get("#useMagic").classList.add("disabled");
 
     // Pictures and texts
-    get("#potion").innerHTML = '<img src="assets/images/' +_settings.images.iconPotion + '" alt=""> ' + game.character.itemHeal;
-    get("#magic").innerHTML = '<img src="assets/images/' +_settings.images.iconMagic + '" alt=""> ' + game.character.itemMagic;
+    get("#potion").innerHTML = '<img src="assets/image/' +_settings.images.iconPotion + '" alt=""> ' + game.character.itemHeal;
+    get("#magic").innerHTML = '<img src="assets/image/' +_settings.images.iconMagic + '" alt=""> ' + game.character.itemMagic;
 }
 
 /**
