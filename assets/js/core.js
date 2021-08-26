@@ -1,9 +1,4 @@
 // =================================================
-// ============ SERVICE WORKER
-
-"serviceWorker" in navigator && window.addEventListener ("load", function() {navigator.serviceWorker.register("serviceWorker.js")});
-
-// =================================================
 // ============ CORE VARIABLES
 
 let game; let refreshDisplay; let refreshInterval;
@@ -401,7 +396,6 @@ if (!getStorage("TOWER-save")) {
 
 // Determine language of the application
 const _content = navigator.language == "fr" || navigator.language == "fr-FR" ? _french : _english;
-get('#manifest').href = navigator.language == "fr" || navigator.language == "fr-FR" ? "french.webmanifest" : "english.webmanifest";
 let names = Object.keys(_content.main); let values = Object.values(_content.main);
 
 for (let i = 0; i < names.length; i++) {
