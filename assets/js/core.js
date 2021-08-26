@@ -9,7 +9,7 @@
 let game; let refreshDisplay; let refreshInterval;
 const _version = 1.9;
 const _github = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
-const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ForgeCode</a>";
+const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ND</a>";
 const _mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
 
 const _settings = {
@@ -35,41 +35,41 @@ const _settings = {
         'spiritShield' : 1
     },
     'images' : {
-        'start' : "events/firstFloor.png",
-        'monster01' : "monsters/monster_01.png",
-        'monster02' : "monsters/monster_02.png",
-        'monster03' : "monsters/monster_03.png",
-        'monster04' : "monsters/monster_04.png",
-        'monster05' : "monsters/monster_05.png",
-        'monster06' : "monsters/monster_06.png",
-        'monster07' : "monsters/monster_07.png",
-        'monster08' : "monsters/monster_08.png",
-        'monster09' : "monsters/monster_09.png",
-        'monster10' : "monsters/monster_10.png",
-        'monster11' : "monsters/monster_11.png",
-        'monster12' : "monsters/monster_12.png",
-        'monster13' : "monsters/monster_13.png",
-        'monster14' : "monsters/monster_14.png",
-        'monster15' : "monsters/monster_15.png",
-        'monster16' : "monsters/monster_16.png",
-        'monster17' : "monsters/monster_17.png",
-        'noEvent' : "events/noEvent.png",
-        'earthSpirit' : "events/spiritEarth.png",
-        'lightSpirit' : "events/spiritLight.png",
-        'fireSpirit' : "events/spiritFire.png",
-        'waterSpirit' : "events/spiritWater.png",
-        'chest' : "events/chest.png",
-        'chestTrap' : "events/chestTrap.png",
-        'chestEscape' : "events/chestEscape.png",
-        'chestMagic' : "events/chestMagic.png",
-        'chestHeal' : "events/chestHeal.png",
-        'iconPotion' : "icons/potion.png",
-        'iconMagic' : "icons/magic.png",
-        'iconHealth' : "icons/health.png",
-        'iconLevel' : "icons/level.png",
-        'iconExperience' : "icons/xp.png",
-        'iconStrength' : "icons/strength.png",
-        'iconShield' : "icons/shield.png"
+        'start' : "event/firstFloor.png",
+        'monster01' : "monster/monster_01.png",
+        'monster02' : "monster/monster_02.png",
+        'monster03' : "monster/monster_03.png",
+        'monster04' : "monster/monster_04.png",
+        'monster05' : "monster/monster_05.png",
+        'monster06' : "monster/monster_06.png",
+        'monster07' : "monster/monster_07.png",
+        'monster08' : "monster/monster_08.png",
+        'monster09' : "monster/monster_09.png",
+        'monster10' : "monster/monster_10.png",
+        'monster11' : "monster/monster_11.png",
+        'monster12' : "monster/monster_12.png",
+        'monster13' : "monster/monster_13.png",
+        'monster14' : "monster/monster_14.png",
+        'monster15' : "monster/monster_15.png",
+        'monster16' : "monster/monster_16.png",
+        'monster17' : "monster/monster_17.png",
+        'noEvent' : "event/noEvent.png",
+        'earthSpirit' : "event/spiritEarth.png",
+        'lightSpirit' : "event/spiritLight.png",
+        'fireSpirit' : "event/spiritFire.png",
+        'waterSpirit' : "event/spiritWater.png",
+        'chest' : "event/chest.png",
+        'chestTrap' : "event/chestTrap.png",
+        'chestEscape' : "event/chestEscape.png",
+        'chestMagic' : "event/chestMagic.png",
+        'chestHeal' : "event/chestHeal.png",
+        'iconPotion' : "icon/potion.png",
+        'iconMagic' : "icon/magic.png",
+        'iconHealth' : "icon/health.png",
+        'iconLevel' : "icon/level.png",
+        'iconExperience' : "icon/xp.png",
+        'iconStrength' : "icon/strength.png",
+        'iconShield' : "icon/shield.png"
     }
 };
 
