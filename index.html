@@ -5,68 +5,78 @@
     <meta charset="UTF8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title"></title>
-    <link rel="stylesheet" href="assets/css/main.min.css">
+    <link rel="stylesheet" href="assets/css/main.min.css?v=2.0">
+    <link rel="stylesheet" href="assets/css/fontawesome/all.min.css">
     <link rel="icon" href="assets/image/favicon.ico">
 </head>
 
 <body>
     <!-- MAIN CONTAINER -->
-    <div id="container">
+    <div id="app">
 
         <header>
             <span id="headerTitle"></span>
-            <button id="openMenu">⚙️</button>
-            <button id="closeMenu">❌</button>
+            <button class="button" id="openMenu"><i class="fas fa-book"></i></button>
+            <button class="button" id="closeMenu"><i class="fas fa-times"></i></button>
         </header>
         
         <!-- START -->
-        <div id="startScreen">
-            <img src="assets/image/event/tower.png">
-            <h1 id="startScreenTitle"></h1>
+        <div id="start" class="container">
+            <img id="startLogo" src="assets/image/event/tower.png">
+            <h1 id="startTitle"></h1>
 
             <form>
-                <label id="nameHeroLabel"></label>
-                <input type="text" id="nameHero" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
-                <button type='submit' id="startGame" onclick="return false"></button>
+                <label id="nameCharacterLabel"></label>
+                <input type="text" id="nameCharacter" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
+                <button type='submit' id="play" class="button" onclick="return false"></button>
             </form>
 
             <p id="displayTip"></p>
+            <button class="button" id="switchLanguage"></button>
             <p id="startFooter"></p>
         </div>
         <!-- // START -->
 
         <!-- GAME -->
-        <div id="gameMessage"></div>
+        <div id="message" class="container"></div>
 
-        <div id="gameScreen">
-            <div id="heroStatus">
-                <div class="heroStatusLine">
-                    <div class="heroStatusBlock" id="health"></div>
-                    <div class="heroStatusBlock" id="level"></div>
-                    <div class="heroStatusBlock" id="xp"></div>
+        <div id="game" class="container">
+            <div id="character">
+                <div class="characterLine">
+                    <div class="progress" id="healthBar">
+                        <span class="progressData" id="healthData"></span>
+                        <span class="progressBar" id="health">ㅤ</span>
+                    </div>
+                    <div class="progress" id="xpBar">
+                        <span class="progressData" id="level"></span>
+                        <span class="progressBar" id="xp">ㅤ</span>
+                    </div>
                 </div>
-                <div class="heroStatusLine">
-                    <div class="heroStatusBlock" id="strength"></div>
-                    <div class="heroStatusBlock" id="shield"></div>
-                    <div class="heroStatusBlock" id="potion"></div>
-                    <div class="heroStatusBlock" id="magic"></div>
+
+                <div class="characterLine">
+                    <div class="characterElement" id="strength"></div>
+                    <div class="characterElement" id="shield"></div>
+                    <div class="characterElement"></div>
+                    <div class="characterElement" id="potion"></div>
+                    <div class="characterElement" id="magic"></div>
+                    <div class="characterElement" id="mineral"></div>
                 </div>
             </div>
 
-            <div id="gameContent"></div>
+            <div id="screen"></div>
     
-            <div id="listActions">
-                <div class="listActionsLine">
-                    <button class="action" id="move"></button>
-                    <button class="action" id="useHeal"></button>
+            <div id="actions">
+                <div class="actionsLine">
+                    <button class="button buttonAction" id="move"></button>
+                    <button class="button buttonAction" id="useHeal"></button>
                 </div>
-                <div class="listActionsLine">
-                    <button class="action" id="openChest"></button>
-                    <button class="action" id="closeChest"></button>
+                <div class="actionsLine">
+                    <button class="button buttonAction" id="openChest"></button>
+                    <button class="button buttonAction" id="closeChest"></button>
                 </div>
-                <div class="listActionsLine">
-                    <button class="action" id="useAttack"></button>
-                    <button class="action" id="useMagic"></button>
+                <div class="actionsLine">
+                    <button class="button buttonAction" id="useAttack"></button>
+                    <button class="button buttonAction" id="useMagic"></button>
                 </div>
             </div>
         </div>
@@ -78,20 +88,18 @@
     <!-- MENU -->
     <div id="blankMenu"></div>
     <div id="menu">
-        <h1 id="optionMenuTitle"></h1>
-            <div class="buttonList">
-                <button id="volumeButton"></button>
-                <button id="vibrateButton"></button>
-            </div>
-            <div class="buttonList">
-                <button id="confirmRestart"></button>
-                <button id="confirmDelete"></button>
+        <h1 id="settingsTitle" class="menuTitle"></h1>
+            <div class="buttonList buttonListMenu">
+                <button class="button iconButton" id="volumeButton"></button>
+                <button class="button iconButton" id="vibrateButton"></button>     
+                <button class="button iconButton" id="confirmRestart"><i class="fas fa-fast-backward"></i></button>
+                <button class="button iconButton" id="confirmDelete"><i class="fas fa-sign-out-alt"></i></button>
             </div>
 
-        <h1 id="statsMenuTitle"></h1>
+        <h1 id="statsTitle" class="menuTitle"></h1>
             <ul id="listStats"></ul>
 
-        <p id="gameFooter"></p>
+        <p id="gameFooter" class="center"></p>
     </div>
     <!-- // MENU -->
 
@@ -103,41 +111,41 @@
             <p id="popupText"></p>
         </div>
         <div class="buttonList">
-            <button id="popupAccept"></button>
-            <button id="popupCancel"></button>
+            <button class="button buttonLarge" id="popupAccept"></button>
+            <button class="button buttonLarge" id="popupCancel"></button>
         </div>
     </div>
     <!-- // POPUP -->
     
     <!-- SOUNDS -->
-    <audio preload id="soundAttack">';
+    <audio preload id="soundAttack">
         <source src="assets/sound/attack.ogg" type="audio/ogg">';
         <source src="assets/sound/attack.mp3" type="audio/mp3">';
     </audio>
-    <audio preload id="soundMagic">';
+    <audio preload id="soundMagic">
         <source src="assets/sound/magic.ogg" type="audio/ogg">';
         <source src="assets/sound/magic.mp3" type="audio/mp3">';
     </audio>
-    <audio preload id="soundChest">';
+    <audio preload id="soundChest">
         <source src="assets/sound/chest.ogg" type="audio/ogg">';
         <source src="assets/sound/chest.mp3" type="audio/mp3">';
     </audio>
-    <audio preload id="soundHeal">';
+    <audio preload id="soundHeal">
         <source src="assets/sound/heal.ogg" type="audio/ogg">';
         <source src="assets/sound/heal.mp3" type="audio/mp3">';
     </audio>
-    <audio preload id="soundRoom">';
+    <audio preload id="soundRoom">
         <source src="assets/sound/room.ogg" type="audio/ogg">';
         <source src="assets/sound/room.mp3" type="audio/mp3">';
     </audio>
-    <audio preload id="soundFloor">';
+    <audio preload id="soundFloor">
         <source src="assets/sound/floor.ogg" type="audio/ogg">';
         <source src="assets/sound/floor.mp3" type="audio/mp3">';
     </audio>
     <!-- // SOUNDS -->
 
     <!-- <script src="path/to/LittleJS"></script> -->
-    <script src="assets/js/core.min.js"></script>
-    <script src="assets/js/main.min.js"></script>
+    <script src="assets/js/core.js?v=2.0"></script>
+    <script src="assets/js/main.js?v=2.0"></script>
 </body>
 </html>

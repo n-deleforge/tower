@@ -2,7 +2,7 @@
 // ============ CORE VARIABLES
 
 let game; let refreshDisplay; let refreshInterval;
-const _version = 1.9;
+const _version = "2.0";
 const _github = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
 const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ND</a>";
 const _mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
@@ -20,6 +20,7 @@ const _settings = {
         'room' : 1,
         'itemHeal' : 0,
         'itemMagic' : 0,
+        'itemMineral' : 0,
         'itemLimit' : 9,
         'score' : 0,
         'lvlUpHealth' : 20,
@@ -28,6 +29,12 @@ const _settings = {
         'spiritHealth' : 10,
         'spiritStrength' : 1,
         'spiritShield' : 1
+    },
+    'icons' : {
+        'soundOn' : "<i class=\"fas fa-volume-up\"></i>",
+        'soundOff' : "<i class=\"fas fa-volume-mute\"></i>",
+        'vibrateOn' : "<i class=\"fas fa-bell\"></i>",
+        'vibrateOff' : "<i class=\"fas fa-bell-slash\"></i>",
     },
     'images' : {
         'start' : "event/firstFloor.png",
@@ -55,16 +62,14 @@ const _settings = {
         'waterSpirit' : "event/spiritWater.png",
         'chest' : "event/chest.png",
         'chestTrap' : "event/chestTrap.png",
-        'chestEscape' : "event/chestEscape.png",
         'chestMagic' : "event/chestMagic.png",
         'chestHeal' : "event/chestHeal.png",
+        'chestMineral' : "event/chestMineral.png",
         'iconPotion' : "icon/potion.png",
         'iconMagic' : "icon/magic.png",
-        'iconHealth' : "icon/health.png",
-        'iconLevel' : "icon/level.png",
-        'iconExperience' : "icon/xp.png",
         'iconStrength' : "icon/strength.png",
-        'iconShield' : "icon/shield.png"
+        'iconShield' : "icon/shield.png",
+        'iconMineral' : "icon/mineral.png"
     }
 };
 
@@ -72,9 +77,9 @@ const _french = {
     'main' : {
         'title' : "La Tour",
         'headerTitle' : "La Tour",
-        'startScreenTitle' : "Bienvenue aventurier",
-        'nameHeroLabel' : "Quel est ton nom ?",
-        'startGame' : "Entrer",
+        'startTitle' : "Bienvenue aventurier",
+        'nameCharacterLabel' : "Quel est ton nom ?",
+        'play' : "Entrer",
         'startFooter' : "Disponible sur " + _github + " (v " + _version + ") ©  " + _home,
         'gameFooter' : "Disponible sur " + _github + " (v " + _version + ") ©  " + _home,
         'move' : "Avancer",
@@ -83,15 +88,14 @@ const _french = {
         'closeChest' : "Ne pas l'ouvrir",
         'useAttack' : "Attaque",
         'useMagic' : "Sortilège",
-        'optionMenuTitle' : "Paramètres",
-        'statsMenuTitle' : "Statistiques",
-        'confirmRestart' : "Recommencer",
-        'confirmDelete' : "Effacer les données",
-        'popupTitle' : "Attention !",
+        'settingsTitle' : "Paramètres de jeu",
+        'statsTitle' : "Statistiques",
+        'popupTitle' : "Information importante",
         'popupAccept' : "Confirmer",
         'popupCancel' : "Annuler",
         'popupRestart' : "Cette action va arrêter votre partie en cours, vous allez perdre votre progression et reprendre de zéro.",
         'popupDelete' : "Cette action va arrêter votre partie en cours et supprimer toutes les données de jeu sauvegardées.",
+        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Passer en langue anglaise",
     },
     'stats' : {
         'bestScore' : "Meilleur score : ",
@@ -113,6 +117,7 @@ const _french = {
         'shield' : "Bouclier",
         'floor' : "Étage",
         'room' : "Salle",
+        'level' : "Niveau",
         'point_singular' : "point",
         'point_plural' : "points",
         'hit_singular' : "coup",
@@ -146,9 +151,9 @@ const _french = {
         'chestTrap_part1' : "Mais c'est un <strong>piège</strong>, le coffre vous attaque",
         'chestTrap_part2' : "Vous perdez ",
         'chestTrap_part3' : " de santé",
-        'chestEscape' : "Vous trouvez un <strong>parchemin de fuite</strong>",
         'chestMagic' : "Vous trouvez un <strong>sort magique</strong>",
         'chestHeal' : "Vous trouvez une <strong>potion de soin</strong>",
+        'chestMineral' : "Vous trouvez une <strong>pierre précieuse</strong>",
         'chestLimit' : "Mais vous n'avez plus assez de place",
         // Fight
         'fightStart' : "apparaît !",
@@ -185,21 +190,18 @@ const _french = {
         'slim' : "Blob"
     },
     'tips' : [
-        // Stats
-        "Lorsque la santé du héros tombe à 0, la partie est terminée. Cependant, un gain de niveau ou une potion restaure la totalité des points de santé.",
-        "La statistique de bouclier permet de réduire les dégâts lors d'une attaque dans un combat. Elle peut être uniquement augmentée par l'esprit de la terre.",    
-        // Fights
+        "Lorsque la santé de votre personnage tombe à 0, la partie est terminée. Cependant, un gain de niveau ou une potion restaure la totalité des points de santé.",
+        "La statistique de bouclier permet de réduire les dégâts lors d'une attaque dans un combat. Elle est uniquement augmentée par l'esprit de la terre.",
         "Les combats se déroulent automatiquement alors veillez à bien choisir votre action de combat entre attaque et sortilège.",
         "Chaque monstre nécessite un nombre de coups pour être vaincu qui est calculé de la manière suivante : <em>\"santé du monstre / force du héros\"</em>",
         "Les dégâts d'un monstre sont calculés selon la formule suivante : <em>\"(nombre de coups pour être vaincu * force du monstre) - le bouclier du héros\"</em>",
         "Vaincre un monstre avec un sort rapporte peu de points d'expérience mais peut éviter une morte certaine ou de très gros dégâts.",
-        // Events
         "La Tour est peuplée de divers esprits, la plupart d'entre eux vous aideront grandement lors de votre quête.",
         "Lorsque vous ouvrez un coffre, vous avez une chance de tomber sur un monstre qui vous infligera des dégâts qui ignorent votre statistique de bouclier.",
-        // Informations
         "La Tour est divisé par étages. Chaque étage est lui-même composé de 10 salles. A chaque étage, les monstres deviennent plus puissants.",
         "Pour les plus curieux, le score de fin de partie est calculé selon la formule suivante : <em>\"((bouclier + force + santé maximale) * niveau) * étage\"</em>",
-        "Chaque objet que vous pouvez récupérer est limité à une certaine quantité. Il faut faire attention à ne pas trop les utiliser et à ne pas trop les accumuler."
+        "Chaque objet que vous pouvez récupérer est limité à une certaine quantité. Il faut faire attention à ne pas trop les utiliser et à ne pas trop les accumuler.",
+        "Un étrange marchand habite dans la Tour, il est possible qu'il vous propose une transaction contre des pierres précieuses"
     ]
 };
 
@@ -207,26 +209,25 @@ const _english = {
     'main' : {
         'title' : "The Tower",
         'headerTitle' : "The Tower",
-        'startScreenTitle' : "Welcome adventurer",
-        'nameHeroLabel' : "What's your name ?",
-        'startGame' : "Enter",
+        'startTitle' : "Welcome adventurer",
+        'nameCharacterLabel' : "What's your name ?",
+        'play' : "Enter",
         'startFooter' : "Available on " + _github + " (v " + _version + ") ©  " + _home,
-        'gameFooter' : "Disponible sur " + _github + " (v " + _version + ") ©  " + _home,
+        'gameFooter' : "Available on " + _github + " (v " + _version + ") ©  " + _home,
         'move' : "Move",
         'useHeal' : "Use a potion",
         'openChest' : "Open the chest",
         'closeChest' : "Do not open",
         'useAttack' : "Attack",
         'useMagic' : "Spell",
-        'optionMenuTitle' : "Settings",
-        'statsMenuTitle' : "Statistics",
-        'confirmRestart' : "Restart",
-        'confirmDelete' : "Delete all data",
-        'popupTitle' : "Warning !",
+        'settingsTitle' : "Game settings",
+        'statsTitle' : "Statistiques",
+        'popupTitle' : "Important information",
         'popupAccept' : "Confirm",
         'popupCancel' : "Cancel",
         'popupRestart' : "This action is gonna stop your game, you're gonna lost your progression and restart.",
         'popupDelete' : "this action is gonna stop your game and delete all the saved game data.",
+        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to French language",
     },
     'stats' : {
         'bestScore' : "Best score : ",
@@ -248,6 +249,7 @@ const _english = {
         'shield' : "Shield",
         'floor' : "Floor",
         'room' : "Room",
+        'level' : "Level",
         'point_singular' : "point",
         'point_plural' : "points",
         'hit_singular' : "hit",
@@ -281,9 +283,9 @@ const _english = {
         'chestTrap_part1' : "But it's a <strong>trap</strong>, the chest attacks you",
         'chestTrap_part2' : "You lost ",
         'chestTrap_part3' : " of health",
-        'chestEscape' : "You find a <strong>escape scroll</strong>",
         'chestMagic' : "You find a <strong>magic spell</strong>",
         'chestHeal' : "You find a <strong>healing potion</strong>",
+        'chestMineral' : "You find a <strong>precious stone</strong>",
         'chestLimit' : "But you don't have enough room",
         // Fight
         'fightStart' : "appears !",
@@ -321,21 +323,18 @@ const _english = {
         'slim' : "Blob"
     },
     'tips' : [
-        // Stats
         "When the hero's health drops to 0, the game is over. However, leveling up or a potion restores all health points.",
         "The shield stat is used to reduce damage when attacked in combat. It can only be increased by the spirit of the earth.",
-        // Fights
         "The fights take place automatically so be sure to choose your fight action.",
         "Each monster requires a number of hits to be defeated which is calculated as follows: <em>\" monster health / hero strength \"</em>",
         "The damage of a monster is calculated according to the following formula: <em>\" (number of hits to be defeated * strength of the monster) - hero's shield \"</em>",
         "Defeating a monster with a spell doesn't grant much experience points but can prevent certain death or very large damage.",
-        // Events
         "The Tower is populated by various spirits. Most of them will help you greatly on your quest.",
         "When you open a chest, you have a chance to stumble upon a monster that will deal damage to you that ignores your shield stat.",
-        // Informations
         "The Tower is divided by floors. Each floor itself is made up of 10 rooms. On each floor, the monsters become more powerful.",
         "For the more curious, the end-of-game score is calculated according to the following formula: <em>\" ((shield + strength + maximum health) * level) * floor \"</em>",
-        "At the start of the game, each item you can collect is limited to a certain quantity. Later, you can keep more."
+        "At the start of the game, each item you can collect is limited to a certain quantity. Later, you can keep more.",
+        "A mysterious merchant lives in the Tower, it is possible that he offers you a transaction for precious stones" 
     ]
 };
 
@@ -343,7 +342,7 @@ const _english = {
 // ============ CORE INITIALISATION
 
 // Correct the bug of the viewport on mobile
-if (_mobile) get("#container").style.minHeight = window.innerHeight + 'px';
+if (_mobile) get("#app").style.minHeight = window.innerHeight + 'px';
 
 // Create data game or parse it if existing
 if (!getStorage("TOWER-save")) {
@@ -353,7 +352,8 @@ if (!getStorage("TOWER-save")) {
             'name' : null, 
             'sound' : true,
             'vibrate' : true,
-            'version' : _version
+            'version' : _version,
+            'language' : "EN",
         },
         'events' : {
             'lastAction' : null,  
@@ -387,6 +387,7 @@ if (!getStorage("TOWER-save")) {
             'room' : _settings.data.room,
             'itemHeal' : _settings.data.itemHeal,
             'itemMagic' : _settings.data.itemMagic,
+            'itemMineral' : _settings.data.itemMineral,
             'score' : _settings.data.score
         }
     }
@@ -395,11 +396,9 @@ if (!getStorage("TOWER-save")) {
 } else game = JSON.parse(getStorage("TOWER-save"))
 
 // Determine language of the application
-const _content = navigator.language == "fr" || navigator.language == "fr-FR" ? _french : _english;
+const _content = (game.core.language == "FR") ? _french : _english;
 let names = Object.keys(_content.main); let values = Object.values(_content.main);
 
 for (let i = 0; i < names.length; i++) {
-    if (get("#" + names[i])) {
-        get("#" + names[i]).innerHTML = values[i];
-    }
+    if (get("#" + names[i])) get("#" + names[i]).innerHTML = values[i];
 }

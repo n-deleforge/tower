@@ -1,35 +1,61 @@
 /* ======================================== */
 /* ======== VARIABLES */
 
-:root {
-    --background-body: #262931;
-    --background-app: white;
-    --background-header: black;
-    --background-gameover: lightcoral;
-    --background-menu: #262931;
+/* light theme */
 
+@media(prefers-color-scheme:no-preference) ,
+(prefers-color-scheme:light) {
+    :root {
+        --background-body: radial-gradient(circle,#5585b5,#8aa0c7,#b6bed9,#ddddec,#fff);
+        --background-app: white;
+        --background-character: #262931;
+        --text-main: black;
+        --text-character: white;
+        --start-title-border: black;
+        --start-input-border: black;
+        --start-input-text: #262931;
+        --button-color-0: black;
+        --button-color-3: #262931;
+    }
+}
+
+/* dark theme */
+
+@media(prefers-color-scheme:dark) {
+    :root {
+        --background-body: radial-gradient(circle,#262931,#212026,#1a171b,#110e10,#000);
+        --background-app: #262931;
+        --background-character: black;
+        --text-main: white;
+        --text-character: white;
+        --start-title-border: white;
+        --start-input-border: white;
+        --start-input-text: white;
+        --button-color-0: white;
+        --button-color-3: black;
+    }
+}
+
+/* all themes */
+
+:root {
+    --background-header: black;
+    --background-gameover: indianred;
+    --background-menu: #262931;
     --text-link: lightcoral;
     --text-red: #AA6373;
     --text-green: #7FB285;
     --text-header: white;
     --text-error: red;
     --text-menu: white;
-
     --button-color-1: white;
-    --button-color-2: lightblue;
-    --button-color-3: #262931;
-    --button-menu-1: black;
-    --button-menu-2: white;
-    --button-menu-3: lightcoral;
-    --button-action-background: black;
-    --button-action-text: white;
-
-    --startScreen-titleBorder: black;
-    --startScreen-inputColor: #262931;
-    --startScreen-inputBorder: black;
-    --startScreen-inputBackground: transparent;
-
-    --transparency: rgba(0,0,0,0.8);
+    --button-color-2: indianred;
+    --progress-background: lightgrey;
+    --progress-text: #262931;
+    --progress-health: indianred;
+    --progress-xp: lightskyblue;
+    --start-input-background: transparent;
+    --transparency: rgba(0,0,0,0.9);
 }
 
 /* ======================================== */
@@ -40,16 +66,16 @@ body {
     margin: 0;
     font-family: sans-serif;
     font-size: 1em;
-    background-color: var(--background-body);
+    color: var(--text-main);
+    background-image: var(--background-body);
 }
 
-#container {
+#app {
     display: flex;
     flex-direction: column;
     margin: 0 32vw;
     min-height: 100vh;
-    border-right: 2px solid var(--gameBorder);
-    border-left: 2px solid var(--gameBorder);
+    border-radius: 15px;
     background-color: var(--background-app);
 }
 
@@ -58,14 +84,19 @@ header {
     align-items: center;
     justify-content: center;
     padding: 2vh;
+    border-radius: 15px 15px 0 0;
     text-transform: uppercase;
     font-size: 2.5em;
     color: var(--text-header);
     background-color: var(--background-header);
 }
 
-button {
-    cursor: pointer;
+.container {
+    display: none;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
 }
 
 button,
@@ -80,6 +111,10 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+.center {
+    text-align: center;
 }
 
 .red {
@@ -103,239 +138,161 @@ a:hover {
         outline: 0 !important;
     }
 
-    #container {
+    #app {
         margin: 0;
         border: 0;
+        border-radius: 0;
     }
 
     header {
+        border-radius: 0;
         font-size: 1.5em;
+        letter-spacing: 2px;
     }
 }
 
 /* ======================================== */
-/* ======== MENU */
+/* ======== BUTTON */
 
-#openMenu,
-#closeMenu {
-    visibility: hidden;
-    position: absolute;
-    right: 3vw;
-    padding: 1vh;
-    min-width: 3vw;
-    border: 2px solid var(--button-menu-1);
-    border-radius: 5px;
-    font-size: 0.5em;
-    color: var(--button-menu-2);
-    background-color: var(--button-menu-1);
+.buttonList {
+    display: flex;
 }
 
-#closeMenu {
-    z-index: 3;
+.buttonListMenu {
+    justify-content: space-evenly;
 }
 
-#openMenu:hover,
-#closeMenu:hover {
-    border: 2px solid var(--button-menu-2);
-}
-
-#blankMenu {
-    display: none;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--transparency);
-}
-
-#menu {
-    display: none;
-    flex-direction: column;
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 25vw;
-    height: 100%;
-    color: var(--text-menu);
-    background-color: var(--background-menu);
-}
-
-#menu h1 {
-    margin: 2vh 0 0 2vh;
-    border-bottom: 2px solid var(--text-menu);
-    font-size: 2em;
-}
-
-#menu h1:first-child {
-    margin-top: 5vh;
-}
-
-#menu ul {
-    padding-left: 1.5vw;
-    line-height: 1.75em;
-    list-style: square;
-}
-
-#menu .buttonList {
-    padding-top: 2vh;
-}
-
-#menu button {
-    margin: 1vh;
-    padding: 1vh;
-    min-width: 3vw;
+.button {
+    padding: 1.5vh;
     border: 0;
-    border-radius: 5px;
+    border-radius: 20px;
+    color: var(--button-color-1);
+    background-color: var(--button-color-3);
+    transition: all 0.5s ease-out;
+    cursor: pointer;
+}
+
+.button:hover {
+    color: var(--button-color-2);
+}
+
+/* buttons in the action list */
+.buttonAction {
+    width: 15vw;
+    height: 8vh;
+    margin: 1vh;
+    border-radius: 30px;
+    font-size: 1em;
+}
+
+.buttonAction:hover {
     font-size: 1.2em;
-    color: var(--button-menu-2);
-    background-color: var(--button-menu-1);
+    color: var(--button-color-1);
 }
 
-#confirmDelete {
-    background-color: var(--button-menu-3) !important;
+/* buttons in the menu */
+.iconButton {
+    margin: 0 0.5vw;
+    min-width: 3vw;
+    border-radius: 50%;
+    font-size: 1.5em;
+    background-color: var(--button-color-2);
 }
 
-#listStats {
-    flex-grow: 1;
+.iconButton:hover {
+    background-color: var(--button-color-1);
 }
 
-#gameFooter {
-    text-align: center;
-}
-
-@media(max-width:1024px) {
-    #menu {
-        width: 100%;
-        font-size: 1.1em;
-    }
-
-    #menu .buttonList {
-        padding-left: 3vw;
-    }
-
-    #menu ul {
-        padding-left: 10vw;
-    }
-}
-
-/* ======================================== */
-/* ======== POPUP */
-
-#blankPopup {
-    display: none;
-    z-index: 4;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--transparency);
-}
-
-#popup {
-    display: none;
-    flex-direction: column;
-    z-index: 5;
-    position: absolute;
-    top: 37%;
-    right: 37%;
-    width: 25vw;
-    height: 25vh;
-    color: var(--text-menu);
-    background-color: var(--background-menu);
-}
-
-#popupContent {
-    padding: 0 2vh;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-#popupText {
-    font-size: 1.2em;
-}
-
-#popup .buttonList {
-    display: flex;
-}
-
-#popup button {
-    padding: 1vh;
+/* buttons in the popup */
+.buttonLarge {
     width: 50%;
+    padding: 1vh;
     border: 0;
     border-radius: 0;
+    border-radius: 0 0 10px 0;
     font-size: 1.2em;
-    color: var(--button-menu-2);
-    background-color: var(--button-menu-1);
+    color: var(--button-color-3);
+    background-color: var(--button-color-1);
+}
+
+.buttonLarge:hover {
+    opacity: 0.7;
 }
 
 #popupAccept {
-    background-color: var(--button-menu-3) !important;
+    border-radius: 0 0 0 10px;
+    color: var(--button-color-1) !important;
+    background-color: var(--button-color-2) !important;
+}
+
+.disabled,
+.disabled:hover {
+    color: var(--button-color-1) !important;
+    opacity: 0.5 !important;
+    background-color: var(--button-color-3) !important;
+    cursor: not-allowed !important;
+}
+
+#play {
+    width: 15vw;
+    border-radius: 40px;
+    text-transform: uppercase;
+    font-size: 1.5em;
+}
+
+#switchLanguage i {
+    margin-right: 0.5vw;
 }
 
 @media(max-width:1024px) {
-    #popup {
-        top: 36%;
-        right: 0;
-        width: 100vw;
-        height: 25vh;
+    #play {
+        min-width: 50vw;
+        font-size: 1.2em;
+    }
+
+    .buttonAction {
+        width: 45vw;
+        font-size: 1em;
+    }
+
+    .buttonAction:hover {
+        font-size: 1em;
+    }
+
+    .iconButton {
+        min-width: 15vw;
     }
 }
 
 /* ======================================== */
 /* ======== START SCREEN */
 
-#startScreen {
-    display: none;
-    flex-direction: column;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
+#start {
     text-align: center;
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
-#startScreen img {
+#startLogo {
     height: 25vh;
 }
 
-#startScreenTitle {
-    padding: 0.8vh 0 0.5vh 0;
-    border-top: 1px solid var(--startScreen-titleBorder);
-    border-bottom: 1px solid var(--startScreen-titleBorder);
+#startTitle {
+    padding: 1vh 0;
+    border-top: 1px solid var(--start-title-border);
+    border-bottom: 1px solid var(--start-title-border);
     font-size: 1.5em;
 }
 
-#nameHero {
+#nameCharacter {
     width: 30vw;
     margin: 4vh 0;
     padding: 0;
     border: 0;
-    border-bottom: 2px solid var(--startScreen-inputBorder);
+    border-bottom: 2px solid var(--start-input-border);
     text-align: center;
     font-size: 1.5em;
-    color: var(--startScreen-inputColor);
-    background-color: var(--startScreen-inputBackground);
-}
-
-#startGame {
-    width: 20vw;
-    padding: 1.5vh;
-    border: 0;
-    border-radius: 5px;
-    text-transform: uppercase;
-    font-size: 1.5em;
-    color: var(--button-color-1);
-    background-color: var(--button-color-3);
-}
-
-#startGame:hover {
-    color: var(--button-color-2);
-    background-color: var(--button-color-3);
+    color: var(--start-input-text);
+    background-color: var(--start-input-background);
 }
 
 #displayTip {
@@ -357,59 +314,30 @@ a:hover {
 }
 
 @media(max-width:1024px) {
-    #nameHero {
+    #nameCharacter {
         width: 80vw;
     }
 
-    #startScreen button {
-        min-width: 50vw;
-        font-size: 1em;
+    #displayTip {
+        padding: 3vh;
     }
 }
 
 /* ======================================== */
 /* ======== GAME MESSAGE  */
 
-#gameMessage {
-    display: none;
-    flex-direction: column;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
+#message {
     padding: 2vh;
-}
-
-#gameMessage {
     font-size: 2em;
 }
 
-#gameMessage .bigger {
+#message .bigger {
     font-size: 3em;
     font-weight: bold;
 }
 
-#gameMessage button {
-    width: 20vw;
-    margin: 1vh;
-    padding: 1.5vh;
-    border: 0;
-    border-radius: 15px;
-    font-size: 2em;
-    color: var(--button-color-2);
-    background-color: var(--button-color-1);
-}
-
-#gameMessage button:hover {
-    color: var(--button-color-3);
-}
-
 @media(max-width:1024px) {
-    #gameMessage button {
-        min-width: 50vw;
-        font-size: 1em;
-    }
-
-    #gameMessage .bigger {
+    #message .bigger {
         font-size: 1.5em;
     }
 }
@@ -417,17 +345,15 @@ a:hover {
 /* ======================================== */
 /* ======== GAME SCREEN  */
 
-#gameScreen {
-    display: none;
-    flex-direction: column;
-    flex-grow: 1;
-    text-align: center;
+#game {
+    align-items: unset;
     font-size: 1.3em;
 }
 
-#gameContent {
+#screen {
     flex-grow: 1;
     padding: 1vh 0.5vw;
+    text-align: center;
 }
 
 #containerImage {
@@ -442,106 +368,247 @@ a:hover {
     min-height: 15vh;
 }
 
-#heroStatus {
-    margin: 2vh;
-    border-radius: 5px;
-    color: var(--text-header);
-    background-color: var(--background-header);
+/* character information */
+#character {
+    margin: 1vh 1vw 4vh 1vw;
+    border-radius: 15px;
+    color: var(--text-character);
+    background: var(--background-character);
 }
 
-#heroStatus img {
+#character img {
     width: 32px;
     padding-right: 0.5vw;
 }
 
-.heroStatusLine {
+.characterLine {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 0.8vh 0;
 }
 
-.heroStatusBlock {
+.characterElement {
     display: flex;
     align-items: center;
     margin: 0.5vh 0.5vw;
     padding: 0 1vh;
 }
 
-#listActions {
-    color: var(--button-action-text);
-    background-color: var(--button-action-background);
+/* progress bar */
+.progress {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 15vw;
+    height: 25px;
+    margin: 1vh;
+    border-radius: 4px;
+    color: var(--progress-text);
+    background: var(--progress-background);
 }
 
-.listActionsLine {
+.progressData {
+    z-index: 1;
+    position: absolute;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.progressBar {
+    display: block;
+    position: absolute;
+    left: 0;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+#health {
+    background-color: var(--progress-health);
+}
+
+#xp {
+    background-color: var(--progress-xp);
+}
+
+/* character action */
+.actionsLine {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.listActionsLine button {
-    margin: 1vh;
-    padding: 1.5vh;
-    min-height: 8vh;
-    min-width: 10vw;
-    max-width: 10vw;
-    border: 0;
-    border: 1px solid var(--button-color-1);
-    border-radius: 3px;
-    font-size: 1em;
-    color: var(--button-color-1);
-    background-color: var(--button-color-3);
-}
-
-.listActionsLine button:hover {
-    color: var(--button-color-2);
-    background-color: var(--button-color-3);
-}
-
-.disabled,
-.disabled:hover {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-    color: var(--button-color-1) !important;
-    background-color: var(--button-color-3) !important;
-}
-
-#restart {
-    width: auto !important;
-    color: var(--button-color-1) !important;
-    background-color: var(--button-color-3) !important;
-}
-
-#restart:hover {
-    color: var(--button-color-2) !important;
-}
-
 @media(max-width:1024px) {
-    #heroStatus {
-        font-size: 0.9em;
-        margin: 1vh;
-        padding: 0.8vh 0;
-        background-color: var(--background-body);
-    }
-
-    .heroStatusLine {
-        padding: 0.5vh 0;
-    }
-
-    #gameScreen {
+    #game {
         padding: 0;
     }
 
-    #gameContent {
+    #screen {
         padding: 1vh 5vw;
+    }
+
+    #character {
+        margin: 1vh;
+        padding: 0.8vh 0;
+        font-size: 0.9em;
+    }
+
+    #character img {
+        width: 25px;
     }
 
     #containerImage img {
         max-width: 95vw;
     }
 
-    #listActions button {
-        min-width: 40vw;
-        max-width: 40vw;
+    .characterLine {
+        padding: 0.5vh 0;
+    }
+
+    .progress {
+        width: 40vw;
+    }
+
+    .progressBar {
+        height: 25px;
+    }
+}
+
+/* ======================================== */
+/* ======== MENU */
+
+#openMenu,
+#closeMenu {
+    visibility: hidden;
+    position: absolute;
+    top: 1.5vh;
+    right: 1vw;
+    width: 5vw;
+    padding: 1vh;
+    font-size: 0.9em;
+    color: var(--button-color-0);
+    transition: none;
+}
+
+#closeMenu {
+    z-index: 4;
+    color: var(--button-color-1);
+}
+
+#openMenu:hover,
+#closeMenu:hover {
+    color: var(--button-color-2);
+}
+
+#blankMenu {
+    display: none;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--transparency);
+}
+
+#menu {
+    display: none;
+    z-index: 2;
+    position: absolute;
+    top: 2vh;
+    right: 1.5vw;
+    flex-direction: column;
+    width: 25vw;
+    height: 96%;
+    border-radius: 20px;
+    color: var(--text-menu);
+    background-color: var(--background-menu);
+}
+
+.menuTitle {
+    margin: 2vh 0 2vh 2vh;
+    border-bottom: 2px solid var(--text-menu);
+    font-size: 2em;
+}
+
+.menuTitle:first-child {
+    margin-top: 5vh;
+}
+
+#listStats {
+    flex-grow: 1;
+    font-size: 1.1em;
+    line-height: 1.75em;
+    list-style: square;
+}
+
+@media(max-width:1024px) {
+    #openMenu,
+    #closeMenu {
+        top: 1vh;
+        right: 2vw;
+        width: 10vw;
+        padding: 1vh;
+        font-size: 1em;
+    }
+
+    #menu {
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        font-size: 1.1em;
+    }
+}
+
+/* ======================================== */
+/* ======== POPUP */
+
+#blankPopup {
+    display: none;
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--transparency);
+}
+
+#popup {
+    display: none;
+    z-index: 6;
+    position: absolute;
+    top: 38%;
+    right: 38%;
+    flex-direction: column;
+    width: 25vw;
+    height: 20vh;
+    border-radius: 20px;
+    color: var(--text-menu);
+    background-color: var(--background-menu);
+}
+
+#popupContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 2vh;
+}
+
+#popupText {
+    margin: 0;
+    text-align: justify;
+    font-size: 1.2em;
+}
+
+@media(max-width:1024px) {
+    #popup {
+        top: 35vh;
+        right: 2vw;
+        width: 96vw;
+        height: 25vh;
     }
 }

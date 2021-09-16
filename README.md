@@ -1,6 +1,6 @@
 # Tower
 
-> Version 1.9 :memo:  
+> Version 2 :memo:  
 > A little mobile game with RPG mechanics made with native JS.
 
 ## Note for self-host
@@ -13,6 +13,7 @@ The majority of the resources (images and sounds) are from the basic library of 
 
 ## Changelog
 
+- 2.0 : Big rewriting of the app. CSS cleaned. Language switchable between French and English. Design much improved. Introduction to new mechanics (with minerals)
 - 1.9 : New design (more is to come), escape removed, difficulty more balanced and quality of life improvements
 - 1.8 : New menu, vibration added, wind spirit event removed, more JS and CSS cleaning
 - 1.7 : End and special events removed to keep this version simplier, much JS rewriting and cleaning, CSS variables added and general cleaning
