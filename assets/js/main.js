@@ -251,44 +251,44 @@ function openChest() {
     const nb = rand(0, 13);
     let limited = false;
 
-    // // 10 - 13 : trap chest
-    // if (nb > 9) { 
-    //     game.stats.chestTrap++;
-    //     const damage = rand(1, game.character.health / 4);
-    //     game.character.health = game.character.health - damage;
+    // 10 - 13 : trap chest
+    if (nb > 9) { 
+        game.stats.chestTrap++;
+        const damage = rand(1, game.character.health / 4);
+        game.character.health = game.character.health - damage;
 
-    //     get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestTrap + '" alt=""></div>';
-    //     get("#screen").innerHTML += '<p>' + _content.events.chestTrap_part1 + ' !</p>';
-    //     get("#screen").innerHTML += '<p class="red">' + _content.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.chestTrap_part3 + '.</p>';
-    // } 
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestTrap + '" alt=""></div>';
+        get("#screen").innerHTML += '<p>' + _content.events.chestTrap_part1 + ' !</p>';
+        get("#screen").innerHTML += '<p class="red">' + _content.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.chestTrap_part3 + '.</p>';
+    } 
 
-    // // 7 - 10 : mineral item
-    // else if (nb > 6) { 
+    // 7 - 10 : mineral item
+    else if (nb > 6) { 
         _settings.data.itemLimit > game.character.itemMineral ? game.character.itemMineral++ : limited = true;
         console.log(game.character.itemMineral);
         console.log(_settings.data.itemLimit)
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestMineral + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' + _content.events.chestMineral + '.</p>';
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
-    // } 
+    } 
 
-    //  // 4 - 6 : magic item
-    // else if (nb > 3) {
-    //     _settings.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
+     // 4 - 6 : magic item
+    else if (nb > 3) {
+        _settings.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
 
-    //     get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestMagic + '" alt=""></div>';
-    //     get("#screen").innerHTML += '<p>' + _content.events.chestMagic + '.</p>';
-    //     if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
-    // } 
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestMagic + '" alt=""></div>';
+        get("#screen").innerHTML += '<p>' + _content.events.chestMagic + '.</p>';
+        if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
+    } 
 
-    // // 1 - 3 : heal item
-    // else { 
-    //     _settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
+    // 1 - 3 : heal item
+    else { 
+        _settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
 
-    //     get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestHeal + '" alt=""></div>';
-    //     get("#screen").innerHTML += '<p>' + _content.events.chestHeal + '.</p>';
-    //     if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
-    // }
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestHeal + '" alt=""></div>';
+        get("#screen").innerHTML += '<p>' + _content.events.chestHeal + '.</p>';
+        if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
+    }
 }
 
 /**
@@ -624,6 +624,7 @@ function checkStats() {
 
 function checkVersion() {
     game.core.version = _version;
+    if (!game.core.language) game.core.language = "EN";
     if (!game.character.itemMineral) game.character.itemMineral = 0;
 
     setStorage("TOWER-save", JSON.stringify(game));

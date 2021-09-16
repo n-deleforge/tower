@@ -262,6 +262,10 @@ a:hover {
     .iconButton {
         min-width: 15vw;
     }
+
+    .iconButton:hover {
+        background-color: var(--button-color-2);
+    }
 }
 
 /* ======================================== */
@@ -314,6 +318,10 @@ a:hover {
 }
 
 @media(max-width:1024px) {
+    #startLogo {
+        height: 20vh;
+    }
+
     #nameCharacter {
         width: 80vw;
     }
