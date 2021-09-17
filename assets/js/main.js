@@ -222,6 +222,14 @@ function spirit() {
     }
 }
 
+/**
+ * Meeting with the merchant : exchange of minerals
+ **/
+
+function merchant() {
+
+}
+
 // =================================================
 // ============ CHEST EVENTS
 
@@ -257,7 +265,7 @@ function openChest() {
         const damage = rand(1, game.character.health / 4);
         game.character.health = game.character.health - damage;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestTrap + '" alt=""></div>';
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' + _content.events.chestTrap_part1 + ' !</p>';
         get("#screen").innerHTML += '<p class="red">' + _content.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.chestTrap_part3 + '.</p>';
     } 
@@ -267,7 +275,7 @@ function openChest() {
         _settings.data.itemLimit > game.character.itemMineral ? game.character.itemMineral++ : limited = true;
         console.log(game.character.itemMineral);
         console.log(_settings.data.itemLimit)
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestMineral + '" alt=""></div>';
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' + _content.events.chestMineral + '.</p>';
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     } 
@@ -276,7 +284,7 @@ function openChest() {
     else if (nb > 3) {
         _settings.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestMagic + '" alt=""></div>';
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' + _content.events.chestMagic + '.</p>';
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     } 
@@ -285,7 +293,7 @@ function openChest() {
     else { 
         _settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestHeal + '" alt=""></div>';
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' + _content.events.chestHeal + '.</p>';
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     }
@@ -331,23 +339,23 @@ function bestiary() {
     const monsterHealth = rand(game.character.floor * 3, game.character.floor * 6);
     let monsterStrenght = parseInt(rand(monsterHealth / 4, monsterHealth / 3));
     if (monsterStrenght == 0 || monsterStrenght < 0) monsterStrenght = 1;
-
-    if (monsterHealth > 500) return [monsterHealth, monsterStrenght, _content.monsters.dragon, _settings.images.monster17];
-    if (monsterHealth > 450) return [monsterHealth, monsterStrenght, _content.monsters.supDemon, _settings.images.monster16];
-    if (monsterHealth > 400) return [monsterHealth, monsterStrenght, _content.monsters.bigSpirit, _settings.images.monster15];
+    
+    if (monsterHealth > 500) return [monsterHealth, monsterStrenght, _content.monsters.lich, _settings.images.monster17];
+    if (monsterHealth > 450) return [monsterHealth, monsterStrenght, _content.monsters.lightSword, _settings.images.monster16];
+    if (monsterHealth > 400) return [monsterHealth, monsterStrenght, _content.monsters.golem, _settings.images.monster15];
     if (monsterHealth > 350) return [monsterHealth, monsterStrenght, _content.monsters.deadWarrior, _settings.images.monster14];
-    if (monsterHealth > 290) return [monsterHealth, monsterStrenght, _content.monsters.troll, _settings.images.monster13];
-    if (monsterHealth > 240) return [monsterHealth, monsterStrenght, _content.monsters.behemot, _settings.images.monster12];
-    if (monsterHealth > 190) return [monsterHealth, monsterStrenght, _content.monsters.minotaur, _settings.images.monster11];
-    if (monsterHealth > 160) return [monsterHealth, monsterStrenght, _content.monsters.cerberus, _settings.images.monster10];
-    if (monsterHealth > 130) return [monsterHealth, monsterStrenght, _content.monsters.goblin, _settings.images.monster09];
-    if (monsterHealth > 100) return [monsterHealth, monsterStrenght, _content.monsters.ghost, _settings.images.monster08];
-    if (monsterHealth > 75)   return [monsterHealth, monsterStrenght, _content.monsters.cockatrice, _settings.images.monster07];
-    if (monsterHealth > 50)   return [monsterHealth, monsterStrenght, _content.monsters.lamia, _settings.images.monster06];
-    if (monsterHealth > 40)   return [monsterHealth, monsterStrenght, _content.monsters.imp, _settings.images.monster05];
-    if (monsterHealth > 30)   return [monsterHealth, monsterStrenght, _content.monsters.plant, _settings.images.monster04];
-    if (monsterHealth > 20)   return [monsterHealth, monsterStrenght, _content.monsters.scorpio,_settings.images.monster03];
-    if (monsterHealth > 10)   return [monsterHealth, monsterStrenght, _content.monsters.spider, _settings.images.monster02];
+    if (monsterHealth > 290) return [monsterHealth, monsterStrenght, _content.monsters.daemon, _settings.images.monster13];
+    if (monsterHealth > 240) return [monsterHealth, monsterStrenght, _content.monsters.minotaur, _settings.images.monster12];
+    if (monsterHealth > 190) return [monsterHealth, monsterStrenght, _content.monsters.cerberus, _settings.images.monster11];
+    if (monsterHealth > 160) return [monsterHealth, monsterStrenght, _content.monsters.troll, _settings.images.monster10];
+    if (monsterHealth > 130) return [monsterHealth, monsterStrenght, _content.monsters.eyeghost, _settings.images.monster09];
+    if (monsterHealth > 100) return [monsterHealth, monsterStrenght, _content.monsters.werewolf, _settings.images.monster08];
+    if (monsterHealth > 75)   return [monsterHealth, monsterStrenght, _content.monsters.monster, _settings.images.monster07];
+    if (monsterHealth > 50)   return [monsterHealth, monsterStrenght, _content.monsters.lizard, _settings.images.monster06];
+    if (monsterHealth > 40)   return [monsterHealth, monsterStrenght, _content.monsters.gargoyle, _settings.images.monster05];
+    if (monsterHealth > 30)   return [monsterHealth, monsterStrenght, _content.monsters.gobelin, _settings.images.monster04];
+    if (monsterHealth > 20)   return [monsterHealth, monsterStrenght, _content.monsters.snake,_settings.images.monster03];
+    if (monsterHealth > 10)   return [monsterHealth, monsterStrenght, _content.monsters.bat, _settings.images.monster02];
     return [monsterHealth, monsterStrenght, _content.monsters.slim, _settings.images.monster01];
 }
 

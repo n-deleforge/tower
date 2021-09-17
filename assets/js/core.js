@@ -2,7 +2,7 @@
 // ============ CORE VARIABLES
 
 let game; let refreshDisplay; let refreshInterval;
-const _version = "2.0";
+const _version = "2.01";
 const _github = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
 const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ND</a>";
 const _mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
@@ -61,10 +61,7 @@ const _settings = {
         'fireSpirit' : "event/spiritFire.png",
         'waterSpirit' : "event/spiritWater.png",
         'chest' : "event/chest.png",
-        'chestTrap' : "event/chestTrap.png",
-        'chestMagic' : "event/chestMagic.png",
-        'chestHeal' : "event/chestHeal.png",
-        'chestMineral' : "event/chestMineral.png",
+        'chestOpen' : "event/chestOpen.png",
         'iconPotion' : "icon/potion.png",
         'iconMagic' : "icon/magic.png",
         'iconStrength' : "icon/strength.png",
@@ -148,7 +145,7 @@ const _french = {
         // Chest
         'chest' : "Vous avez trouvé un <strong>coffre</strong>",
         'chest_notOpened' : "Mais vous décidez de ne pas l'ouvrir",
-        'chestTrap_part1' : "Mais c'est un <strong>piège</strong>, le coffre vous attaque",
+        'chestTrap_part1' : "Mais c'est un <strong>piège</strong>, un poison se répand",
         'chestTrap_part2' : "Vous perdez ",
         'chestTrap_part3' : " de santé",
         'chestMagic' : "Vous trouvez un <strong>sort magique</strong>",
@@ -171,22 +168,22 @@ const _french = {
         'gameoverButton' : "Recommencer"
     },
     'monsters' : {
-        'dragon' : "Dragon légendaire",
-        'supDemon' : "Démon supérieur",
-        'bigSpirit' : "Esprit errant",
+        'lich' : "Liche des ténèbres",
+        'lightSword' : "Épée de lumière",
+        'golem' : "Golem de pierre",
         'deadWarrior' : "Guerrier mort-vivant",
-        'troll' : "Chef-troll",
-        'behemot' : "Béhémot",
+        'daemon' : "Daémon",
         'minotaur' : "Minotaure",
         'cerberus' : "Cerbère",
-        'goblin' : "Gobelin",
-        'ghost' : "Fantôme",
-        'cockatrice' : "Basilic",
-        'lamia' : "Lamia",
-        'imp' : "Diablotin",
-        'plant' : "Plante venimeuse",
-        'scorpio' : "Grand scorpion",
-        'spider' : "Araignée géante",
+        'troll' : "Troll",
+        'eyeghost' : "Oeil maléfique",
+        'werewolf' : "Loup-garou",
+        'monster' : "Monstre marin",
+        'lizard' : "Homme-lézard",
+        'gargoyle' : "Gargouille",
+        'gobelin' : "Gobelin",
+        'snake' : "Serpent",
+        'bat' : "Chauve souris",
         'slim' : "Blob"
     },
     'tips' : [
@@ -280,7 +277,7 @@ const _english = {
         // Chest
         'chest' : "You have found a <strong>chest</strong>",
         'chest_notOpened' : "But you decide not to open it",
-        'chestTrap_part1' : "But it's a <strong>trap</strong>, the chest attacks you",
+        'chestTrap_part1' : "But it's a <strong>trap</strong>, a poison is spreading",
         'chestTrap_part2' : "You lost ",
         'chestTrap_part3' : " of health",
         'chestMagic' : "You find a <strong>magic spell</strong>",
@@ -304,22 +301,22 @@ const _english = {
         'gameoverButton' : "Restart",
     },
     'monsters' : {
-        'dragon' : "Legendary dragon",
-        'supDemon' : "Superior demon",
-        'bigSpirit' : "Wandering spirit",
+        'lich' : "Darkness lich",
+        'lightSword' : "Sword of light",
+        'golem' : "Stone Golem",
         'deadWarrior' : "Undead warrior",
-        'troll' : "Chief troll",
-        'behemot' : "Behemot",
+        'daemon' : "Daemon",
         'minotaur' : "Minotaur",
         'cerberus' : "Cerberus",
-        'goblin' : "Goblin",
-        'ghost' : "Ghost",
-        'cockatrice' : "Cockatrice",
-        'lamia' : "Lamia",
-        'imp' : "Imp",
-        'plant' : "Poisonous plant",
-        'scorpio' : "Big scorpion",
-        'spider' : "Giant spider",
+        'troll' : "Troll",
+        'eyeghost' : "Evil eye",
+        'werewolf' : "Werewolf",
+        'monster' : "Sea monster",
+        'lizard' : "Lizard man",
+        'gargoyle' : "Gargoyle",
+        'gobelin' : "Gobelin",
+        'snake' : "Snake",
+        'bat' : "Bat",
         'slim' : "Blob"
     },
     'tips' : [

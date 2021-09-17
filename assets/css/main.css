@@ -264,6 +264,7 @@ a:hover {
     }
 
     .iconButton:hover {
+        color: var(--button-color-1);
         background-color: var(--button-color-2);
     }
 }
@@ -496,6 +497,7 @@ a:hover {
     padding: 1vh;
     font-size: 0.9em;
     color: var(--button-color-0);
+    background: none;
     transition: none;
 }
 
