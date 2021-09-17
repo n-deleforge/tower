@@ -3,8 +3,7 @@
 
 /* light theme */
 
-@media(prefers-color-scheme:no-preference) ,
-(prefers-color-scheme:light) {
+@media(prefers-color-scheme:no-preference), (prefers-color-scheme:light) {
     :root {
         --background-body: radial-gradient(circle,#5585b5,#8aa0c7,#b6bed9,#ddddec,#fff);
         --background-app: white;
