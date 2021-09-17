@@ -2,7 +2,7 @@
 // ============ CORE VARIABLES
 
 let game; let refreshDisplay; let refreshInterval;
-const _version = "2.01";
+const _version = "2.010";
 const _github = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
 const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ND</a>";
 const _mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
