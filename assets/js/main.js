@@ -45,7 +45,7 @@ function startGame(mode) {
     // Display the game screen
     get('#start').style.display = "none";
     get('#game').style.display = "flex";
-    changeDisplay("actionGameMode");
+    changeDisplay("normal-game");
     createMenu();
     createButtons();
     checkVersion();
@@ -65,8 +65,9 @@ function startGame(mode) {
     
     // If it's not a new game
     else if (mode == "load") {
-        if (game.events.lastAction == "fight" && game.events.subAction != "fightOver") changeDisplay("actionGameToFight");
-        if (game.events.lastAction == "chest" && game.events.subAction != "chestOver") changeDisplay("actionGameToChest");
+        if (game.events.lastAction == "fight" && game.events.subAction != "fightOver") changeDisplay("normal-to-fight");
+        if (game.events.lastAction == "chest" && game.events.subAction != "chestOver") changeDisplay("normal-to-chest");
+        if (game.events.lastAction == "merchant" && game.events.subAction != "merchantOver") changeDisplay("normal-to-merchant");
 
         get('#screen').innerHTML = game.events.currentEvent;
     }
@@ -79,7 +80,7 @@ function startGame(mode) {
 function playTurn() {
     game.events.subAction = null;
     game.character.room++;
-    changeDisplay("screenDisplayMessage");
+    changeDisplay("screen-to-message");
 
     // At the 10th room
     if (game.character.room > 10) {
@@ -103,7 +104,7 @@ function playTurn() {
 
     // Timeout to show the game again
     setTimeout(function () {
-        changeDisplay("screenHideMessage");
+        changeDisplay("message-to-screen");
     }, refreshInterval);
     
     choiceAction();
@@ -117,30 +118,37 @@ function playTurn() {
  **/
 
 function choiceAction() {
-    let nb = rand(1, 9);
+    // The merchant is only accessible after the floor 10
+    let event = (game.character.floor > 5) ? rand(1,5) : rand(1,4);
 
-    // 8-9 : spirit event
-    if (nb > 7) {
+    // Merchant event
+    if (event == 5) {
+        game.events.newAction = "merchant";
+        (game.events.newAction != game.events.lastAction) ? merchant() : choiceAction();
+    } 
+
+    // Spirit event
+    else if (event == 4) {
         game.events.newAction = "spirit";
-        game.events.newAction != game.events.lastAction ? spirit() : choiceAction();
+        (game.events.newAction != game.events.lastAction) ? spirit() : choiceAction();
     } 
     
-    // 5-7 : fight event
-    else if (nb > 4) { 
+    // Fight event
+    else if (event == 3) { 
         game.events.newAction = "fight";
-        game.events.newAction != game.events.lastAction ? fight() : choiceAction();
+        (game.events.newAction != game.events.lastAction) ? fight() : choiceAction();
     } 
     
-    // 3-4 : chest event
-    else if (nb > 2) { 
+    // Chest event
+    else if (event == 2) { 
         game.events.newAction = "chest";
-        game.events.newAction != game.events.lastAction ? chest() : choiceAction();
+        (game.events.newAction != game.events.lastAction) ? chest() : choiceAction();
     } 
     
-    // 1-2 : no event
+    // No event
     else { 
         game.events.newAction = "noEvent";
-        game.events.newAction != game.events.lastAction ? noEvent() : choiceAction();
+        (game.events.newAction != game.events.lastAction) ? noEvent() : choiceAction();
     }
 }
 
@@ -182,10 +190,10 @@ function spirit() {
     game.events.lastAction = "spirit";
     game.stats.spiritMeet++;
 
-    let nb = rand(1, 8)
+    let meeting = rand(1, 4)
 
     // 7-8 : Earth spirit : add shield
-    if (nb > 6) { 
+    if (meeting == 4) { 
         game.character.shield = game.character.shield + _settings.data.spiritShield;
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.earthSpirit + '" alt=""></div>';
@@ -194,7 +202,7 @@ function spirit() {
     } 
 
     // 5-6 : Light spirit : add experience
-    else if (nb > 4) {
+    else if (meeting == 3) {
         const xp = rand(parseInt(game.character.xpTo / 8), parseInt(game.character.xpTo / 6));
         game.character.xp = game.character.xp + xp;
 
@@ -204,7 +212,7 @@ function spirit() {
     } 
 
     // 3-4 : Fire spirit : add strenght
-    else if (nb > 2) {
+    else if (meeting == 2) {
         game.character.strength = game.character.strength + _settings.data.spiritStrength;
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.fireSpirit + '" alt=""></div>';
@@ -222,12 +230,87 @@ function spirit() {
     }
 }
 
+// =================================================
+// ============ MERCHANT EVENTS
+
 /**
  * Meeting with the merchant : exchange of minerals
  **/
 
 function merchant() {
+    game.events.lastAction = "merchant";
+    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
+    get("#screen").innerHTML += '<p>' + _content.events.merchant + '.</p>';
 
+    // If enough mineral
+    if (game.character.itemMineral > 1) {
+        changeDisplay("normal-to-merchant");
+        get("#screen").innerHTML += '<p>' + _content.events.merchant_proposition + ' ... </p>';
+    } 
+
+    // If not
+    else {
+        game.events.subAction = "merchantOver";
+        get("#screen").innerHTML += '<p>' + _content.events.merchant_noMineral + ' ...</p>';
+    }
+}
+
+
+/**
+ * Accept the offer of the merchant
+ **/
+
+function acceptMerchant() {
+    game.events.subAction = "merchantOver";
+    game.stats.merchantAccepted++;
+    playVibrate(90);
+    playSound("Merchant");
+    changeDisplay("merchant-to-normal");
+
+    const deal = rand(1,3);
+
+    // Offer 1 : strength + 2
+    if (deal == 3) { 
+        game.character.strength = game.character.strength + 2;
+
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
+        get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
+        get("#screen").innerHTML += '<p class="green">' + _content.events.merchant_offer1 + '.</p>';
+    } 
+
+    // Offer 2 : health + 5 and stamina + 1
+    else if (deal == 2) {
+    game.character.healthMax = game.character.healthMax + 5;
+    game.character.shield = game.character.shield + 1;
+
+    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
+    get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
+    get("#screen").innerHTML += '<p class="green">' + _content.events.merchant_offer2 + '.</p>';
+    }
+
+    // Offer 3 : nothing
+    else if (deal == 3) {
+    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
+    get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
+    get("#screen").innerHTML += '<p class="green">' + _content.events.merchant_offer3 + '.</p>';
+    }
+
+    game.character.itemMineral = game.character.itemMineral - 2;
+}
+
+/**
+ * Refuse the offer of the merchant
+ **/
+
+function refuseMerchant() {
+    game.events.subAction = "merchantOver";
+    game.stats.merchantRefused++;
+    playVibrate(10);
+    changeDisplay("merchant-to-normal");
+
+    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
+    get("#screen").innerHTML += '<p>' + _content.events.merchant + ' ... </p>';
+    get("#screen").innerHTML += '<p>' + _content.events.merchant_refused + ' !</p>';
 }
 
 // =================================================
@@ -239,7 +322,7 @@ function merchant() {
 
 function chest() {
     game.events.lastAction = "chest";
-    changeDisplay("actionGameToChest");
+    changeDisplay("normal-to-chest");
 
     get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chest + '" alt=""></div>';
     get("#screen").innerHTML += '<p>' + _content.events.chest + ' !</p>';
@@ -254,13 +337,13 @@ function openChest() {
     game.stats.chestOpen++;
     playVibrate(90);
     playSound("Chest");
-    changeDisplay("actionChestToGame");
+    changeDisplay("chest-to-normal");
 
-    const nb = rand(0, 13);
+    const chest = rand(1, 4);
     let limited = false;
 
-    // 10 - 13 : trap chest
-    if (nb > 9) { 
+    // Trap
+    if (chest == 4) { 
         game.stats.chestTrap++;
         const damage = rand(1, game.character.health / 4);
         game.character.health = game.character.health - damage;
@@ -270,18 +353,17 @@ function openChest() {
         get("#screen").innerHTML += '<p class="red">' + _content.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.chestTrap_part3 + '.</p>';
     } 
 
-    // 7 - 10 : mineral item
-    else if (nb > 6) { 
+    // Mineral
+    else if (chest == 3) { 
         _settings.data.itemLimit > game.character.itemMineral ? game.character.itemMineral++ : limited = true;
-        console.log(game.character.itemMineral);
-        console.log(_settings.data.itemLimit)
+
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' + _content.events.chestMineral + '.</p>';
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     } 
 
-     // 4 - 6 : magic item
-    else if (nb > 3) {
+     // Spell
+    else if (chest == 2) {
         _settings.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
@@ -289,7 +371,7 @@ function openChest() {
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     } 
 
-    // 1 - 3 : heal item
+    // Potion
     else { 
         _settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
 
@@ -307,7 +389,7 @@ function closeChest() {
     game.events.subAction = "chestOver";
     game.stats.chestNotOpened++;
     playVibrate(10);
-    changeDisplay("actionChestToGame");
+    changeDisplay("chest-to-normal");
 
     get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chest + '" alt=""></div>';
     get("#screen").innerHTML += '<p>' + _content.events.chest + ' !</p>';
@@ -324,7 +406,7 @@ function closeChest() {
 function fight() {
     game.events.lastAction = "fight";
     game.events.monster = bestiary();
-    changeDisplay("actionGameToFight");
+    changeDisplay("normal-to-fight");
 
     get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + game.events.monster[3] + '" alt="' + game.events.monster[2] + '"></div>';
     get("#screen").innerHTML += '<p><strong>' + game.events.monster[2] + '</strong> ' + _content.events.fightStart + '</p>';
@@ -336,26 +418,26 @@ function fight() {
  **/
 
 function bestiary() {
-    const monsterHealth = rand(game.character.floor * 3, game.character.floor * 6);
+    const monsterHealth = rand(game.character.floor * 3, game.character.floor * 5);
     let monsterStrenght = parseInt(rand(monsterHealth / 4, monsterHealth / 3));
     if (monsterStrenght == 0 || monsterStrenght < 0) monsterStrenght = 1;
     
     if (monsterHealth > 500) return [monsterHealth, monsterStrenght, _content.monsters.lich, _settings.images.monster17];
-    if (monsterHealth > 450) return [monsterHealth, monsterStrenght, _content.monsters.lightSword, _settings.images.monster16];
-    if (monsterHealth > 400) return [monsterHealth, monsterStrenght, _content.monsters.golem, _settings.images.monster15];
-    if (monsterHealth > 350) return [monsterHealth, monsterStrenght, _content.monsters.deadWarrior, _settings.images.monster14];
-    if (monsterHealth > 290) return [monsterHealth, monsterStrenght, _content.monsters.daemon, _settings.images.monster13];
-    if (monsterHealth > 240) return [monsterHealth, monsterStrenght, _content.monsters.minotaur, _settings.images.monster12];
-    if (monsterHealth > 190) return [monsterHealth, monsterStrenght, _content.monsters.cerberus, _settings.images.monster11];
-    if (monsterHealth > 160) return [monsterHealth, monsterStrenght, _content.monsters.troll, _settings.images.monster10];
-    if (monsterHealth > 130) return [monsterHealth, monsterStrenght, _content.monsters.eyeghost, _settings.images.monster09];
-    if (monsterHealth > 100) return [monsterHealth, monsterStrenght, _content.monsters.werewolf, _settings.images.monster08];
-    if (monsterHealth > 75)   return [monsterHealth, monsterStrenght, _content.monsters.monster, _settings.images.monster07];
-    if (monsterHealth > 50)   return [monsterHealth, monsterStrenght, _content.monsters.lizard, _settings.images.monster06];
-    if (monsterHealth > 40)   return [monsterHealth, monsterStrenght, _content.monsters.gargoyle, _settings.images.monster05];
-    if (monsterHealth > 30)   return [monsterHealth, monsterStrenght, _content.monsters.gobelin, _settings.images.monster04];
-    if (monsterHealth > 20)   return [monsterHealth, monsterStrenght, _content.monsters.snake,_settings.images.monster03];
-    if (monsterHealth > 10)   return [monsterHealth, monsterStrenght, _content.monsters.bat, _settings.images.monster02];
+    if (monsterHealth > 400) return [monsterHealth, monsterStrenght, _content.monsters.lightSword, _settings.images.monster16];
+    if (monsterHealth > 300) return [monsterHealth, monsterStrenght, _content.monsters.golem, _settings.images.monster15];
+    if (monsterHealth > 200) return [monsterHealth, monsterStrenght, _content.monsters.deadWarrior, _settings.images.monster14];
+    if (monsterHealth > 185) return [monsterHealth, monsterStrenght, _content.monsters.daemon, _settings.images.monster13];
+    if (monsterHealth > 170) return [monsterHealth, monsterStrenght, _content.monsters.minotaur, _settings.images.monster12];
+    if (monsterHealth > 155) return [monsterHealth, monsterStrenght, _content.monsters.cerberus, _settings.images.monster11];
+    if (monsterHealth > 140) return [monsterHealth, monsterStrenght, _content.monsters.troll, _settings.images.monster10];
+    if (monsterHealth > 125) return [monsterHealth, monsterStrenght, _content.monsters.eyeghost, _settings.images.monster09];
+    if (monsterHealth > 110) return [monsterHealth, monsterStrenght, _content.monsters.werewolf, _settings.images.monster08];
+    if (monsterHealth > 95)   return [monsterHealth, monsterStrenght, _content.monsters.monster, _settings.images.monster07];
+    if (monsterHealth > 80)   return [monsterHealth, monsterStrenght, _content.monsters.lizard, _settings.images.monster06];
+    if (monsterHealth > 65)   return [monsterHealth, monsterStrenght, _content.monsters.gargoyle, _settings.images.monster05];
+    if (monsterHealth > 50)   return [monsterHealth, monsterStrenght, _content.monsters.gobelin, _settings.images.monster04];
+    if (monsterHealth > 35)   return [monsterHealth, monsterStrenght, _content.monsters.snake,_settings.images.monster03];
+    if (monsterHealth > 20)   return [monsterHealth, monsterStrenght, _content.monsters.bat, _settings.images.monster02];
     return [monsterHealth, monsterStrenght, _content.monsters.slim, _settings.images.monster01];
 }
 
@@ -368,7 +450,7 @@ function attack() {
     game.stats.fightVictory++;
     playVibrate(10);
     playSound("Attack");
-    changeDisplay("actionFightToGame");
+    changeDisplay("fight-to-normal");
 
     // Damage
     const nbHit = Math.ceil(game.events.monster[0] / game.character.strength);
@@ -399,7 +481,7 @@ function magic() {
         game.stats.fightVictory++; 
         playVibrate(10);
         playSound("Magic");
-        changeDisplay("actionFightToGame");
+        changeDisplay("fight-to-normal");
 
         // Experience
         const xp = parseInt(game.character.xpTo / 8);
@@ -436,28 +518,17 @@ function displayGame() {
 }
 
 /**
- * Display the game over (called by the displayGame function)
+ * Display the score and allow to restart the game
  **/
 
 function gameOver() {
     clearInterval(refreshDisplay);
     playVibrate(500);
-    changeDisplay('actionGameMode');
-    get(".actionsLine")[0].innerHTML = "<button class=\"button\" id=\"gameover\">" +_content.events.results; + "</button>";
-    get('#gameover').addEventListener("click", displayScore);
-    get("#screen").innerHTML += '<p class="red"><strong>' + _content.events.death + '</strong></p>';  
-}
-
-/**
- * Display the score and allow to restart the game (called by the gameOver function)
- **/
-
-function displayScore() {
-    changeDisplay("screenDisplayMessage");
+    changeDisplay("screen-to-message");
     get("#message").style.backgroundColor = getVariableCSS("background-gameover");
     get('#message').innerHTML = "<p>" + _content.events.gameover_part1  + game.character.floor + ".</p>";
     get('#message').innerHTML += '<p class="bigger">' + _content.events.gameover_part2  + game.character.score + '</p>';
-    get('#message').innerHTML += "<button id=\"restart\">" + _content.events.gameoverButton + "</button>";
+    get('#message').innerHTML += "<button class=\"button buttonAction\" id=\"restart\">" + _content.events.gameoverButton + "</button>";
     get('#restart').addEventListener("click", () => { location.reload(); });
     resetGame();
 }
@@ -469,38 +540,49 @@ function displayScore() {
 
 function changeDisplay(set) {
     // Classic game mode
-    if (set == "actionGameMode") {
-        get(".actionsLine")[1].style.display = "none";
-        get(".actionsLine")[2].style.display = "none";
+    if (set == "normal-game") {
+        get("#chestMode").style.display = "none";
+        get("#merchantMode").style.display = "none";
+        get("#fightMode").style.display = "none";
     }
 
     // Chest event
-    if (set == "actionGameToChest") {
-        get(".actionsLine")[0].style.display = "none";
-        get(".actionsLine")[1].style.display = "flex";
+    if (set == "normal-to-chest") {
+        get("#classicMode").style.display = "none";
+        get("#chestMode").style.display = "flex";
     }
-    if (set == "actionChestToGame") {
-        get(".actionsLine")[0].style.display = "flex";
-        get(".actionsLine")[1].style.display = "none";
+    if (set == "chest-to-normal") {
+        get("#classicMode").style.display = "flex";
+        get("#chestMode").style.display = "none";
+    }
+
+    // Merchant event
+    if (set == "normal-to-merchant") {
+        get("#classicMode").style.display = "none";
+        get("#merchantMode").style.display = "flex";
+    }
+    if (set == "merchant-to-normal") {
+        get("#classicMode").style.display = "flex";
+        get("#merchantMode").style.display = "none";
     }
 
     // Fight event
-    if (set == "actionGameToFight") {
-        get(".actionsLine")[0].style.display = "none";
-        get(".actionsLine")[2].style.display = "flex";
+    if (set == "normal-to-fight") {
+        get("#classicMode").style.display = "none";
+        get("#fightMode").style.display = "flex";
     }
-    if (set == "actionFightToGame") {
-        get(".actionsLine")[0].style.display = "flex";
-        get(".actionsLine")[2].style.display = "none";
+    if (set == "fight-to-normal") {
+        get("#classicMode").style.display = "flex";
+        get("#fightMode").style.display = "none";
     }
 
     // Screen message
-    if (set == "screenDisplayMessage") {
+    if (set == "screen-to-message") {
         get('~header').style.display = "none";
         get('#game').style.display = "none";
         get('#message').style.display = "flex";
     }
-    if (set == "screenHideMessage") {
+    if (set == "message-to-screen") {
         get('~header').style.display = "flex";
         get('#game').style.display = "flex";
         get('#message').style.display = "none";
@@ -516,13 +598,10 @@ function changeDisplay(set) {
 
 function checkInfo() {
     get('#headerTitle').innerHTML = _content.vocabulary.floor + ' ' + game.character.floor + " - " + _content.vocabulary.room + ' ' + game.character.room;
-    
     get("#healthData").innerHTML = game.character.health + ' / ' + game.character.healthMax;
     get("#health").style.width = ((game.character.health * 100) / game.character.healthMax) + "%";
-
     get("#level").innerHTML = _content.vocabulary.level + ' ' + game.character.level;
     get("#xp").style.width = ((game.character.xp * 100) / game.character.xpTo) + "%";
-
     get("#strength").innerHTML = '<img src="assets/image/' + _settings.images.iconStrength + '" alt="">  ' + game.character.strength;
     get("#shield").innerHTML = '<img src="assets/image/' + _settings.images.iconShield + '" alt="">  ' + game.character.shield;
 }
@@ -634,7 +713,8 @@ function checkVersion() {
     game.core.version = _version;
     if (!game.core.language) game.core.language = "EN";
     if (!game.character.itemMineral) game.character.itemMineral = 0;
-
+    if (!game.stats.merchantAccepted) game.stats.merchantAccepted = 0;
+    if (!game.stats.merchantRefused) game.stats.merchantRefused = 0;
     setStorage("TOWER-save", JSON.stringify(game));
 }
 
@@ -737,6 +817,8 @@ function createButtons() {
     get("#useHeal").addEventListener("click", heal);
     get("#openChest").addEventListener("click", openChest);
     get("#closeChest").addEventListener("click", closeChest);
+    get("#acceptOffer").addEventListener("click", acceptMerchant);
+    get("#refuseOffer").addEventListener("click", refuseMerchant);
     get("#useAttack").addEventListener("click", attack);
     get("#useMagic").addEventListener("click", magic);
     get("#move").addEventListener("click", () => {
@@ -778,6 +860,7 @@ function resetGame() {
     game.character.xpTo = _settings.data.xpTo;
     game.character.itemHeal = _settings.data.itemHeal;
     game.character.itemMagic = _settings.data.itemMagic;
+    game.character.itemMineral = _settings.data.itemMineral;
     game.character.level = _settings.data.level;
     game.character.floor = _settings.data.floor;
     game.character.room = _settings.data.room;

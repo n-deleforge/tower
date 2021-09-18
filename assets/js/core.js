@@ -2,7 +2,7 @@
 // ============ CORE VARIABLES
 
 let game; let refreshDisplay; let refreshInterval;
-const _version = "2.010";
+const _version = "2.06";
 const _github = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
 const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ND</a>";
 const _mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
@@ -24,11 +24,11 @@ const _settings = {
         'itemLimit' : 9,
         'score' : 0,
         'lvlUpHealth' : 20,
-        'lvlUpStrength' : 2, 
+        'lvlUpStrength' : 2,
         'lvlUpShield' : 1,
         'spiritHealth' : 10,
         'spiritStrength' : 1,
-        'spiritShield' : 1
+        'spiritShield' : 1,
     },
     'icons' : {
         'soundOn' : "<i class=\"fas fa-volume-up\"></i>",
@@ -67,6 +67,7 @@ const _settings = {
         'iconStrength' : "icon/strength.png?" + _version,
         'iconShield' : "icon/shield.png?" + _version,
         'iconMineral' : "icon/mineral.png?" + _version,
+        'merchant' : "event/merchant.png?" + _version,
     }
 };
 
@@ -83,6 +84,8 @@ const _french = {
         'useHeal' : "Utiliser une potion",
         'openChest' : "Ouvrir le coffre",
         'closeChest' : "Ne pas l'ouvrir",
+        'acceptOffer' : "Accepter l'offre",
+        'refuseOffer' : "Refuser l'offre",
         'useAttack' : "Attaque",
         'useMagic' : "Sortilège",
         'settingsTitle' : "Paramètres de jeu",
@@ -90,8 +93,8 @@ const _french = {
         'popupTitle' : "Information importante",
         'popupAccept' : "Confirmer",
         'popupCancel' : "Annuler",
-        'popupRestart' : "Cette action va arrêter votre partie en cours, vous allez perdre votre progression et reprendre de zéro.",
-        'popupDelete' : "Cette action va arrêter votre partie en cours et supprimer toutes les données de jeu sauvegardées.",
+        'popupRestart' : "Voulez-vous recommencer la partie en cours ? Votre progression actuelle sera perdue.",
+        'popupDelete' : "Voulez-vous effacer toutes les données de jeu ? L'application sera réinitialisée.",
         'switchLanguage' : "<i class=\"fas fa-sync\"></i> Passer en langue anglaise",
     },
     'stats' : {
@@ -106,12 +109,14 @@ const _french = {
         'chestTrap' : "Coffre piégé : ",
         'chestNotOpened' : "Coffre non ouvert : ",
         'spiritMeet' : "Esprit rencontré : ",
+        'merchantAccepted' : "Propostion du marchant accepté : ",
+        'merchantRefused' : "Proposition du marchant refusé : ",
     },
     'vocabulary': {
         'health' : "Santé",
         'score' : "Score",
         'strength' : "Force",
-        'shield' : "Bouclier",
+        'shield' : "Endurance",
         'floor' : "Étage",
         'room' : "Salle",
         'level' : "Niveau",
@@ -142,6 +147,15 @@ const _french = {
         'spiritFire_part2' : "Votre force augmente de ",
         'spiritWater_part1' : "Un <strong>esprit d'eau</strong> partage sa vitalité",
         'spiritWater_part2' : "Votre santé augmente de ",
+        // Merchant
+        'merchant' : "Un individu se dresse devant vous. Il propose un marché",
+        'merchant_noMineral' : "Mais vous n'avez pas assez de <strong>pierre précieuse</strong>",
+        'merchant_proposition' : "Deux <strong>pierre précieuse</strong> contre",
+        'merchant_offer1' : "Votre statistique de puissance augmente beaucoup",
+        'merchant_offer2' : "Votre statistique de vitalité et d'endurance augmente",
+        'merchant_offer3' : "Mais rien ne se passe",
+        'merchant_accepted' : "L'individu se met à rire avant de vous lancer un sort",
+        'merchant_refused' : "Mais vous refusez l'offre",
         // Chest
         'chest' : "Vous avez trouvé un <strong>coffre</strong>",
         'chest_notOpened' : "Mais vous décidez de ne pas l'ouvrir",
@@ -161,9 +175,7 @@ const _french = {
         'fightWin_part5' : "Vous avez gagné ",
         'fightMagic' : "Vous avez vaincu le monstre grâce à un sort magique",
         // Game over
-        'death' : "Vous tombez de fatigue ...",
-        'results' : "Voir les résultats",
-        'gameover_part1' : "La partie est terminée.<br />Vous êtes arrivé à l'étage ",
+        'gameover_part1' : "Vous avez été vaincu, la partie est terminée.<br />Vous êtes arrivé à l'étage ",
         'gameover_part2' : "Score : ",
         'gameoverButton' : "Recommencer"
     },
@@ -222,8 +234,8 @@ const _english = {
         'popupTitle' : "Important information",
         'popupAccept' : "Confirm",
         'popupCancel' : "Cancel",
-        'popupRestart' : "This action is gonna stop your game, you're gonna lost your progression and restart.",
-        'popupDelete' : "this action is gonna stop your game and delete all the saved game data.",
+        'popupRestart' : "Do you want to restart the current game? Your current progress will be lost. ",
+        'popupDelete' : "Do you want to erase all game data? The application will be reset. ",
         'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to French language",
     },
     'stats' : {
@@ -238,12 +250,14 @@ const _english = {
         'chestTrap' : "Trapped chest : ",
         'chestNotOpened' : "Chest not opened : ",
         'spiritMeet' : "Spirit meet : ",
+        'merchantAccepted' : "Merchant deals accepted : ",
+        'merchantRefused' : "Merchant deals refused : ",
     },
     'vocabulary' : {
         'health' : "Health",
         'score' : "Score",
         'strength' : "Strength",
-        'shield' : "Shield",
+        'shield' : "Stamina",
         'floor' : "Floor",
         'room' : "Room",
         'level' : "Level",
@@ -266,7 +280,7 @@ const _english = {
         'startGame_part3' : "You continue your journey with a determined step.",
         // Spirits
         'spiritEarth_part1' : "A <strong>earth spirit</strong> protects you",
-        'spiritEarth_part2' : "Your shield increases by ",
+        'spiritEarth_part2' : "Your stamina increases by ",
         'spiritLight_part1' : "A <strong>light spirit</strong> draws near to you",
         'spiritLight_part2' : "You win ",
         'spiritLight_part3' : " of experience",
@@ -274,6 +288,15 @@ const _english = {
         'spiritFire_part2' : "Your strength increases by ",
         'spiritWater_part1' : "A <strong>water spirit</strong> shares its vitality",
         'spiritWater_part2' : "Your health increases by ",
+        // Merchant
+        'merchant' : "A person stands in front of you. He proposes you a deal ",
+        'merchant_noMineral' : "But you don't have enough <strong>gemstone</strong> ",
+        'merchant_proposition' : "Two <strong>gemstones</strong> for",
+        'merchant_offer1' : "Your strength increases a lot",
+        'merchant_offer2' : "Your health and your stamina increase",
+        'merchant_offer3' : "But nothing happened.",
+        'merchant_accepted' : "The person laughs before casting a spell on you ",
+        'merchant_refused' : "But you refuse the deal",
         // Chest
         'chest' : "You have found a <strong>chest</strong>",
         'chest_notOpened' : "But you decide not to open it",
@@ -293,9 +316,7 @@ const _english = {
         'fightWin_part5' : "You have won ",
         'fightMagic' : "You have defeated the monster with a magic spell",
         // Game over
-        'death' : "You're very tired ...",
-        'results' : "See the results",
-        'gameover' : "The game is over.<br />Your score : ",
+        'gameover' : "You have lost, the game is over.<br />Your score : ",
         'gameover_part1' : "The game is over.<br />You have been at the floor  ",
         'gameover_part2' : "Score : ",
         'gameoverButton' : "Restart",
@@ -331,7 +352,7 @@ const _english = {
         "The Tower is divided by floors. Each floor itself is made up of 10 rooms. On each floor, the monsters become more powerful.",
         "For the more curious, the end-of-game score is calculated according to the following formula: <em>\" ((shield + strength + maximum health) * level) * floor \"</em>",
         "At the start of the game, each item you can collect is limited to a certain quantity. Later, you can keep more.",
-        "A mysterious merchant lives in the Tower, it is possible that he offers you a transaction for precious stones" 
+        "A mysterious merchant lives in the Tower, it is possible that he offers you a transaction for gemstones" 
     ]
 };
 
@@ -371,6 +392,8 @@ if (!getStorage("TOWER-save")) {
             'chestTrap' : 0,
             'chestNotOpened' : 0,
             'spiritMeet' : 0,
+            'merchantAccepted' : 0,
+            'merchantRefused' : 0,
         },
         'character' : {
             'health' : _settings.data.health,
