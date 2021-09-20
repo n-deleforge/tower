@@ -2,7 +2,7 @@
 // ============ CORE VARIABLES
 
 let game; let refreshDisplay; let refreshInterval;
-const _version = "2.10";
+const _version = "2.13";
 const _github = "<a href=\"https://github.com/n-deleforge/game-tower\" target=\"_blank\">GitHub</a>";
 const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ND</a>";
 const _mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
@@ -115,7 +115,7 @@ const _french = {
     'vocabulary': {
         'health' : "Santé",
         'score' : "Score",
-        'strength' : "Force",
+        'strength' : "Puissance",
         'shield' : "Endurance",
         'floor' : "Étage",
         'room' : "Salle",
@@ -130,29 +130,29 @@ const _french = {
         'nameHeroCheck' : "Votre nom doit être composé de 2 à 15 lettres",
         // Level up
         'levelUp_part1' : "Votre niveau augmente",
-        'levelUp_part2' : "Votre santé est regénérée et vos statistiques augmentent",
+        'levelUp_part2' : "Votre santé est regénérée, votre puissance et votre endurance augmentent",
         // Simple events
-        'healing' : "Vous avez utilisé une potion, vous regagnez toute votre santé",
+        'healing' : "Vous avez utilisé une potion, votre santé est regénérée",
         'noEvent' : "Vous traversez tranquillement de longs couloirs",
         'startGame_part1' : "Une vieille pancarte. La plupart des mots sont effacés par le temps.",
         'startGame_part2' : "\"Celui qui ... le sommet pourra ... l'un de ses ... ! ... le danger, restez en ... et grimpez le ... haut ...\"",
         'startGame_part3' : "Vous continuez votre chemin d'un pas déterminé..",
         // Spirits
-        'spiritEarth_part1' : "Un <strong>esprit de la terre</strong> vous protège",
-        'spiritEarth_part2' : "Votre bouclier augmente de ",
-        'spiritLight_part1' : "Un <strong>esprit de lumière</strong> se rapproche de vous",
+        'spiritEarth_part1' : "Un <strong>esprit de la terre</strong> partage son énergie",
+        'spiritEarth_part2' : "Votre endurance augmente de ",
+        'spiritLight_part1' : "Un <strong>esprit de lumière</strong> partage son énergie",
         'spiritLight_part2' : "Vous gagnez ",
         'spiritLight_part3' : " d'expérience",
         'spiritFire_part1' : "Un <strong>esprit de feu</strong> partage son énergie",
-        'spiritFire_part2' : "Votre force augmente de ",
-        'spiritWater_part1' : "Un <strong>esprit d'eau</strong> partage sa vitalité",
+        'spiritFire_part2' : "Votre puissance augmente de ",
+        'spiritWater_part1' : "Un <strong>esprit d'eau</strong> partage son énergie",
         'spiritWater_part2' : "Votre santé augmente de ",
         // Merchant
         'merchant' : "Un individu se dresse devant vous. Il propose un marché",
         'merchant_noMineral' : "Mais vous n'avez pas assez de <strong>pierre précieuse</strong>",
         'merchant_proposition' : "Deux <strong>pierre précieuse</strong> contre",
         'merchant_offer1' : "Votre statistique de puissance augmente beaucoup",
-        'merchant_offer2' : "Votre statistique de vitalité et d'endurance augmente",
+        'merchant_offer2' : "Votre santé et votre endurance augmente",
         'merchant_offer3' : "Mais rien ne se passe",
         'merchant_accepted' : "L'individu se met à rire avant de vous lancer un sort",
         'merchant_refused' : "Mais vous refusez l'offre",
@@ -175,7 +175,7 @@ const _french = {
         'fightWin_part5' : "Vous avez gagné ",
         'fightMagic' : "Vous avez vaincu le monstre grâce à un sort magique",
         // Game over
-        'gameover_part1' : "Vous avez été vaincu, la partie est terminée.<br />Vous êtes arrivé à l'étage ",
+        'gameover_part1' : "Vous avez été vaincu.<br />Vous êtes arrivé à l'étage ",
         'gameover_part2' : "Score : ",
         'gameoverButton' : "Recommencer"
     },
@@ -227,6 +227,8 @@ const _english = {
         'useHeal' : "Use a potion",
         'openChest' : "Open the chest",
         'closeChest' : "Do not open",
+        'acceptOffer' : "Accept offer",
+        'refuseOffer' : "Refuse offer",
         'useAttack' : "Attack",
         'useMagic' : "Spell",
         'settingsTitle' : "Game settings",
@@ -256,7 +258,7 @@ const _english = {
     'vocabulary' : {
         'health' : "Health",
         'score' : "Score",
-        'strength' : "Strength",
+        'strength' : "Power",
         'shield' : "Stamina",
         'floor' : "Floor",
         'room' : "Room",
@@ -271,22 +273,22 @@ const _english = {
         'nameHeroCheck' : "Your name must be composed between 2 to 15 letters.",
         // Level up
         'levelUp_part1' : "Level up",
-        'levelUp_part2' : "Your health is regenerated and your stats increase",
+        'levelUp_part2' : "Your health is regenerated, your power and your stamina increase",
         // Simple events
-        'healing' : "You use a potion, you regain all your health",
+        'healing' : "You use a potion, your health is regenerated",
         'noEvent' : "You walk quietly through long corridors",
         'startGame_part1' : "An old sign. Most of the words are erased by time.",
         'startGame_part2' : "\"Whoever ... the top may ... one of its ...! ... danger, stay in ... and climb the ... top ...\"",
         'startGame_part3' : "You continue your journey with a determined step.",
         // Spirits
-        'spiritEarth_part1' : "A <strong>earth spirit</strong> protects you",
+        'spiritEarth_part1' : "A <strong>earth spirit</strong> shares its energy",
         'spiritEarth_part2' : "Your stamina increases by ",
-        'spiritLight_part1' : "A <strong>light spirit</strong> draws near to you",
+        'spiritLight_part1' : "A <strong>light spirit</strong> shares its energy",
         'spiritLight_part2' : "You win ",
         'spiritLight_part3' : " of experience",
         'spiritFire_part1' : "A <strong>fire spirit</strong> shares its energy",
-        'spiritFire_part2' : "Your strength increases by ",
-        'spiritWater_part1' : "A <strong>water spirit</strong> shares its vitality",
+        'spiritFire_part2' : "Your power increases by ",
+        'spiritWater_part1' : "A <strong>water spirit</strong> shares its energy",
         'spiritWater_part2' : "Your health increases by ",
         // Merchant
         'merchant' : "A person stands in front of you. He proposes you a deal ",
@@ -316,8 +318,7 @@ const _english = {
         'fightWin_part5' : "You have won ",
         'fightMagic' : "You have defeated the monster with a magic spell",
         // Game over
-        'gameover' : "You have lost, the game is over.<br />Your score : ",
-        'gameover_part1' : "The game is over.<br />You have been at the floor  ",
+        'gameover_part1' : "You have lost.<br />You have been at the floor  ",
         'gameover_part2' : "Score : ",
         'gameoverButton' : "Restart",
     },

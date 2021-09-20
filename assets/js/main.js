@@ -5,6 +5,7 @@
  * Initialize the application
  **/
 
+checkVersion();
 game.core.ongoing == false ? launcher() : startGame("load");
 
 /**
@@ -48,7 +49,6 @@ function startGame(mode) {
     changeDisplay("normal-game");
     createMenu();
     createButtons();
-    checkVersion();
     refreshDisplay = setInterval(displayGame, 100);
 
     // If it's a new game
@@ -107,7 +107,11 @@ function playTurn() {
         changeDisplay("message-to-screen");
     }, refreshInterval);
     
-    choiceAction();
+    // Starting the floor 5, there is one chance on two to meet the merchant each floor
+    if (game.character.floor > 5 && game.character.room == 5) {
+        const merchantMeeting = rand(1,2);
+        (merchantMeeting == 2) ? merchant() : choiceAction();
+    } else choiceAction();
 }
 
 // =================================================
@@ -118,17 +122,10 @@ function playTurn() {
  **/
 
 function choiceAction() {
-    // The merchant is only accessible after the floor 10
-    let event = (game.character.floor > 5) ? rand(1,5) : rand(1,4);
-
-    // Merchant event
-    if (event == 5) {
-        game.events.newAction = "merchant";
-        (game.events.newAction != game.events.lastAction) ? merchant() : choiceAction();
-    } 
+    let event = rand(1,4);
 
     // Spirit event
-    else if (event == 4) {
+    if (event == 4) {
         game.events.newAction = "spirit";
         (game.events.newAction != game.events.lastAction) ? spirit() : choiceAction();
     } 
@@ -255,7 +252,6 @@ function merchant() {
     }
 }
 
-
 /**
  * Accept the offer of the merchant
  **/
@@ -271,7 +267,7 @@ function acceptMerchant() {
 
     // Offer 1 : strength + 2
     if (deal == 3) { 
-        game.character.strength = game.character.strength + 2;
+        game.character.strength = game.character.strength + 4;
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
@@ -280,19 +276,19 @@ function acceptMerchant() {
 
     // Offer 2 : health + 5 and stamina + 1
     else if (deal == 2) {
-    game.character.healthMax = game.character.healthMax + 5;
-    game.character.shield = game.character.shield + 1;
+        game.character.healthMax = game.character.healthMax + 10;
+        game.character.shield = game.character.shield + 2;
 
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
-    get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
-    get("#screen").innerHTML += '<p class="green">' + _content.events.merchant_offer2 + '.</p>';
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
+        get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
+        get("#screen").innerHTML += '<p class="green">' + _content.events.merchant_offer2 + '.</p>';
     }
 
     // Offer 3 : nothing
-    else if (deal == 3) {
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
-    get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
-    get("#screen").innerHTML += '<p class="green">' + _content.events.merchant_offer3 + '.</p>';
+    else {
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.merchant + '" alt=""></div>';
+        get("#screen").innerHTML += '<p>' + _content.events.merchant_accepted + ' !</p>';
+        get("#screen").innerHTML += '<p class="green">' + _content.events.merchant_offer3 + '.</p>';
     }
 
     game.character.itemMineral = game.character.itemMineral - 2;
@@ -339,31 +335,20 @@ function openChest() {
     playSound("Chest");
     changeDisplay("chest-to-normal");
 
-    const chest = rand(1, 4);
+    const loot = rand(1, 15);
     let limited = false;
 
-    // Trap
-    if (chest == 4) { 
-        game.stats.chestTrap++;
-        const damage = rand(1, game.character.health / 4);
-        game.character.health = game.character.health - damage;
+    // Potion (11,12,13,14,15)
+    if (loot > 10) {
+        _settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + _content.events.chestTrap_part1 + ' !</p>';
-        get("#screen").innerHTML += '<p class="red">' + _content.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.chestTrap_part3 + '.</p>';
-    } 
-
-    // Mineral
-    else if (chest == 3) { 
-        _settings.data.itemLimit > game.character.itemMineral ? game.character.itemMineral++ : limited = true;
-
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + _content.events.chestMineral + '.</p>';
+        get("#screen").innerHTML += '<p>' + _content.events.chestHeal + '.</p>';
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
-    } 
+    }
 
-     // Spell
-    else if (chest == 2) {
+    // Spell (6,7,8,9,10)
+    else if (loot > 5) {
         _settings.data.itemLimit > game.character.itemMagic ? game.character.itemMagic++ : limited = true;
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
@@ -371,13 +356,24 @@ function openChest() {
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
     } 
 
-    // Potion
-    else { 
-        _settings.data.itemLimit > game.character.itemHeal ? game.character.itemHeal++ : limited = true;
+    // Mineral (2,3,4,5)
+    else if (loot > 1) { 
+        _settings.data.itemLimit > game.character.itemMineral ? game.character.itemMineral++ : limited = true;
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + _content.events.chestHeal + '.</p>';
+        get("#screen").innerHTML += '<p>' + _content.events.chestMineral + '.</p>';
         if (limited) get("#screen").innerHTML += '<p>' + _content.events.chestLimit + '.</p>';
+    } 
+
+    // Trap (0,1)
+    else {
+        game.stats.chestTrap++;
+        const damage = rand(1, game.character.health / 5);
+        game.character.health = game.character.health - damage;
+
+        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _settings.images.chestOpen + '" alt=""></div>';
+        get("#screen").innerHTML += '<p>' + _content.events.chestTrap_part1 + ' !</p>';
+        get("#screen").innerHTML += '<p class="red">' + _content.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, _content.vocabulary.point_singular, _content.vocabulary.point_plural) + _content.events.chestTrap_part3 + '.</p>';
     }
 }
 
@@ -418,26 +414,26 @@ function fight() {
  **/
 
 function bestiary() {
-    const monsterHealth = rand(game.character.floor * 3, game.character.floor * 5);
+    const monsterHealth = rand(game.character.floor * 2, game.character.floor * 5);
     let monsterStrenght = parseInt(rand(monsterHealth / 4, monsterHealth / 3));
     if (monsterStrenght == 0 || monsterStrenght < 0) monsterStrenght = 1;
     
-    if (monsterHealth > 500) return [monsterHealth, monsterStrenght, _content.monsters.lich, _settings.images.monster17];
-    if (monsterHealth > 400) return [monsterHealth, monsterStrenght, _content.monsters.lightSword, _settings.images.monster16];
-    if (monsterHealth > 300) return [monsterHealth, monsterStrenght, _content.monsters.golem, _settings.images.monster15];
-    if (monsterHealth > 200) return [monsterHealth, monsterStrenght, _content.monsters.deadWarrior, _settings.images.monster14];
-    if (monsterHealth > 185) return [monsterHealth, monsterStrenght, _content.monsters.daemon, _settings.images.monster13];
-    if (monsterHealth > 170) return [monsterHealth, monsterStrenght, _content.monsters.minotaur, _settings.images.monster12];
-    if (monsterHealth > 155) return [monsterHealth, monsterStrenght, _content.monsters.cerberus, _settings.images.monster11];
-    if (monsterHealth > 140) return [monsterHealth, monsterStrenght, _content.monsters.troll, _settings.images.monster10];
-    if (monsterHealth > 125) return [monsterHealth, monsterStrenght, _content.monsters.eyeghost, _settings.images.monster09];
+    if (monsterHealth > 900) return [monsterHealth, monsterStrenght, _content.monsters.lich, _settings.images.monster17];
+    if (monsterHealth > 700) return [monsterHealth, monsterStrenght, _content.monsters.lightSword, _settings.images.monster16];
+    if (monsterHealth > 500) return [monsterHealth, monsterStrenght, _content.monsters.golem, _settings.images.monster15];
+    if (monsterHealth > 400) return [monsterHealth, monsterStrenght, _content.monsters.deadWarrior, _settings.images.monster14];
+    if (monsterHealth > 300) return [monsterHealth, monsterStrenght, _content.monsters.daemon, _settings.images.monster13];
+    if (monsterHealth > 250) return [monsterHealth, monsterStrenght, _content.monsters.minotaur, _settings.images.monster12];
+    if (monsterHealth > 200) return [monsterHealth, monsterStrenght, _content.monsters.cerberus, _settings.images.monster11];
+    if (monsterHealth > 170) return [monsterHealth, monsterStrenght, _content.monsters.troll, _settings.images.monster10];
+    if (monsterHealth > 140) return [monsterHealth, monsterStrenght, _content.monsters.eyeghost, _settings.images.monster09];
     if (monsterHealth > 110) return [monsterHealth, monsterStrenght, _content.monsters.werewolf, _settings.images.monster08];
-    if (monsterHealth > 95)   return [monsterHealth, monsterStrenght, _content.monsters.monster, _settings.images.monster07];
-    if (monsterHealth > 80)   return [monsterHealth, monsterStrenght, _content.monsters.lizard, _settings.images.monster06];
-    if (monsterHealth > 65)   return [monsterHealth, monsterStrenght, _content.monsters.gargoyle, _settings.images.monster05];
-    if (monsterHealth > 50)   return [monsterHealth, monsterStrenght, _content.monsters.gobelin, _settings.images.monster04];
-    if (monsterHealth > 35)   return [monsterHealth, monsterStrenght, _content.monsters.snake,_settings.images.monster03];
-    if (monsterHealth > 20)   return [monsterHealth, monsterStrenght, _content.monsters.bat, _settings.images.monster02];
+    if (monsterHealth > 90)   return [monsterHealth, monsterStrenght, _content.monsters.monster, _settings.images.monster07];
+    if (monsterHealth > 75)   return [monsterHealth, monsterStrenght, _content.monsters.lizard, _settings.images.monster06];
+    if (monsterHealth > 60)   return [monsterHealth, monsterStrenght, _content.monsters.gargoyle, _settings.images.monster05];
+    if (monsterHealth > 45)   return [monsterHealth, monsterStrenght, _content.monsters.gobelin, _settings.images.monster04];
+    if (monsterHealth > 30)   return [monsterHealth, monsterStrenght, _content.monsters.snake,_settings.images.monster03];
+    if (monsterHealth > 15)   return [monsterHealth, monsterStrenght, _content.monsters.bat, _settings.images.monster02];
     return [monsterHealth, monsterStrenght, _content.monsters.slim, _settings.images.monster01];
 }
 
@@ -698,7 +694,7 @@ function checkStats() {
     let values = Object.values(game.stats);
     
     for (let i = 0; i < titles.length; i++) {
-        (i == 0) ? get('#listStats').innerHTML = "<li>" + titles[i] + values[i] + "</li>" : get('#listStats').innerHTML += "<li>" + titles[i] + values[i] + "</li>"
+        (i == 0) ? get('#listStats').innerHTML = "<li>" + titles[i] + values[i] + "</li>" : get('#listStats').innerHTML += "<li>" + titles[i] + values[i] + "</li>";
     }    
 }
 
