@@ -1,6 +1,6 @@
 # Tower
 
-> Version 2.01 :memo:  
+> Version 2.1.5.0 :memo:  
 > A little mobile game with RPG mechanics made with native JS.
 
 ## Note for self-host
@@ -14,6 +14,7 @@ If you download or clone the project to host it yourself, then you'll need [**Li
 
 ## Changelog
 
+- 2.1.5.0 : A lot of game balancing. Rewriting some JS parts. New sounds, new sprites. Merchant added.
 - 2.01 : I decided to change almost every sprites. Some CSS fixes too.
 - 2.0 : Big rewriting of the app. CSS cleaned. Language switchable between French and English. Design much improved. Introduction to new mechanics (with minerals)
 - 1.9 : New design (more is to come), escape removed, difficulty more balanced and quality of life improvements

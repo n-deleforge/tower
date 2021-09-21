@@ -430,6 +430,7 @@ a:hover {
     left: 0;
     border-radius: 4px;
     font-size: 0.95em;
+    transition: normal 1s ease-in-out;
 }
 
 #health {
@@ -558,8 +559,12 @@ a:hover {
         top: 1vh;
         right: 2vw;
         width: 10vw;
-        padding: 1vh;
         font-size: 1em;
+    }
+
+    #openMenu img,
+    #closeMenu img {
+        width: 100%;
     }
 
     #menu {
@@ -594,7 +599,7 @@ a:hover {
     right: 38%;
     flex-direction: column;
     width: 25vw;
-    height: 20vh;
+    margin-left: 20vh;
     border-radius: 20px;
     color: var(--text-menu);
     background-color: var(--background-menu);
@@ -611,6 +616,7 @@ a:hover {
     margin: 0;
     text-align: justify;
     font-size: 1.2em;
+    padding-bottom: 2vh;
 }
 
 @media(max-width:1024px) {

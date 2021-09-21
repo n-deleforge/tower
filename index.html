@@ -16,8 +16,8 @@
 
         <header>
             <span id="headerTitle"></span>
-            <button class="button" id="openMenu"><i class="fas fa-book"></i></button>
-            <button class="button" id="closeMenu"><i class="fas fa-times"></i></button>
+            <button class="button" id="openMenu"><img src="assets/image/icon/book-a.png"></button>
+            <button class="button" id="closeMenu"><img src="assets/image/icon/book-b.png"></button>
         </header>
         
         <!-- START -->
@@ -54,11 +54,11 @@
                 </div>
 
                 <div class="characterLine">
-                    <div class="characterElement" id="strength"></div>
-                    <div class="characterElement" id="shield"></div>
+                    <div class="characterElement" id="power"></div>
+                    <div class="characterElement" id="stamina"></div>
                     <div class="characterElement"></div>
                     <div class="characterElement" id="potion"></div>
-                    <div class="characterElement" id="magic"></div>
+                    <div class="characterElement" id="scroll"></div>
                     <div class="characterElement" id="mineral"></div>
                 </div>
             </div>
@@ -66,17 +66,21 @@
             <div id="screen"></div>
     
             <div id="actions">
-                <div class="actionsLine">
+                <div class="actionsLine" id="classicMode">
                     <button class="button buttonAction" id="move"></button>
-                    <button class="button buttonAction" id="useHeal"></button>
+                    <button class="button buttonAction" id="usePotion"></button>
                 </div>
-                <div class="actionsLine">
+                <div class="actionsLine" id="chestMode">
                     <button class="button buttonAction" id="openChest"></button>
                     <button class="button buttonAction" id="closeChest"></button>
                 </div>
-                <div class="actionsLine">
-                    <button class="button buttonAction" id="useAttack"></button>
-                    <button class="button buttonAction" id="useMagic"></button>
+                <div class="actionsLine" id="merchantMode">
+                    <button class="button buttonAction" id="acceptOffer"></button>
+                    <button class="button buttonAction" id="refuseOffer"></button>
+                </div>
+                <div class="actionsLine" id="fightMode">
+                    <button class="button buttonAction" id="attack"></button>
+                    <button class="button buttonAction" id="useScroll"></button>
                 </div>
             </div>
         </div>
@@ -122,17 +126,21 @@
         <source src="assets/sound/attack.ogg" type="audio/ogg">';
         <source src="assets/sound/attack.mp3" type="audio/mp3">';
     </audio>
-    <audio preload id="soundMagic">
-        <source src="assets/sound/magic.ogg" type="audio/ogg">';
-        <source src="assets/sound/magic.mp3" type="audio/mp3">';
+    <audio preload id="soundScroll">
+        <source src="assets/sound/scroll.ogg" type="audio/ogg">';
+        <source src="assets/sound/scroll.mp3" type="audio/mp3">';
+    </audio>
+    <audio preload id="soundMerchant">
+        <source src="assets/sound/merchant.ogg" type="audio/ogg">';
+        <source src="assets/sound/merchant.mp3" type="audio/mp3">';
     </audio>
     <audio preload id="soundChest">
         <source src="assets/sound/chest.ogg" type="audio/ogg">';
         <source src="assets/sound/chest.mp3" type="audio/mp3">';
     </audio>
-    <audio preload id="soundHeal">
-        <source src="assets/sound/heal.ogg" type="audio/ogg">';
-        <source src="assets/sound/heal.mp3" type="audio/mp3">';
+    <audio preload id="soundPotion">
+        <source src="assets/sound/potion.ogg" type="audio/ogg">';
+        <source src="assets/sound/potion.mp3" type="audio/mp3">';
     </audio>
     <audio preload id="soundRoom">
         <source src="assets/sound/room.ogg" type="audio/ogg">';
@@ -145,7 +153,7 @@
     <!-- // SOUNDS -->
 
     <!-- <script src="path/to/LittleJS"></script> -->
-    <script src="assets/js/core.min.js"></script>
-    <script src="assets/js/main.min.js"></script>
+    <script src="assets/js/core.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
