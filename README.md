@@ -1,18 +1,35 @@
-# Tower
+![Header](/docs/header.png)
 
-> Version 2.1.5.0 :memo:  
-> A little mobile game with RPG mechanics made with native JS.
+<div align="center">
 
-## Note for self-host
+[![GitHub license](https://img.shields.io/github/license/n-deleforge/tower?style=for-the-badge)](https://github.com/n-deleforge/tower/blob/main/LICENCE)
+![GitHub last commit](https://img.shields.io/github/last-commit/n-deleforge/tower?style=for-the-badge)
+[![GitHub forks](https://img.shields.io/github/forks/n-deleforge/tower?style=for-the-badge)](https://github.com/n-deleforge/tower/network)
+[![GitHub stars](https://img.shields.io/github/stars/n-deleforge/tower?style=for-the-badge)](https://github.com/n-deleforge/tower/stargazers)
+[![Paypal](https://img.shields.io/badge/DONATE-PAYPAL.ME-lightgrey?style=for-the-badge)](https://www.paypal.com/paypalme/nicolasdeleforge)
 
-If you download or clone the project to host it yourself, then you'll need [**Little JS**](https://github.com/n-deleforge/littleJS) at the line 147 of `index.html`.
+</div>
 
-## Ressources
+# Overview
 
-- The icons of the top bar are from this [pack on Itchio](https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack).
-- Most of the other icons(monsters, events) are from RPG Maker MV and this [pack on Itchio](https://beowulf.itch.io/rpg-boss-monsters-minions-huge-pack).
+![Overview](/docs/overview.gif)
 
-## Changelog
+# Quick start
+
+You can try the application directly in your browser [here](https://nicolas-deleforge.fr//tower/).  
+
+If you want to selfhost **Tower** :
+- Clone the repository.
+- Download [littleJS](https://github.com/n-deleforge/littleJS) and include it in the `assets/js` folder.
+- Edit `index.html` and replace the line 155 with `<script src="assets/littleJS.min.js"></script>`.
+
+# Ressources
+
+All the sprites and icons comes from two itch.io pack :
+- [Kyrise's Free 16x16 RPG Icon Pack](https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack)
+- [RPG minions & boss pack](https://beowulf.itch.io/rpg-boss-monsters-minions-huge-pack)
+
+# Changelog
 
 - 2.1.5.0 : A lot of game balancing. Rewriting some JS parts. New sounds, new sprites. Merchant added.
 - 2.01 : I decided to change almost every sprites. Some CSS fixes too.
