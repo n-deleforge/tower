@@ -1,13 +1,12 @@
 // =================================================
 // ============ CORE VARIABLES
 
+const VERSION = "2.1.5.0";
+const GITHUB = "<a href=\"https://github.com/n-deleforge/tower\" target=\"_blank\">GitHub</a>";
+const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
 let game; let refreshDisplay; let refreshInterval;
-const _version = "2.1.5.0";
-const _github = "<a href=\"https://github.com/n-deleforge/tower\" target=\"_blank\">GitHub</a>";
-const _home = "<a target=\"_blank\" href=\"https://nicolas-deleforge.fr/\">ND</a>";
-const _mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
 
-const _settings = {
+const SETTINGS = {
     'data' : {
         'health' : 25,
         'healthMax' : 25,
@@ -38,51 +37,51 @@ const _settings = {
     },
     'images' : {
         // events
-        'start' : "event/firstFloor.png?" + _version,
-        'noEvent' : "event/noEvent.png?" + _version,
-        'chest' : "event/chest.png?" + _version,
-        'chestOpen' : "event/chestOpen.png?" + _version,
-        'merchant' : "event/merchant.png?" + _version,
-        'earthSpirit' : "event/spiritEarth.png?" + _version,
-        'lightSpirit' : "event/spiritLight.png?" + _version,
-        'fireSpirit' : "event/spiritFire.png?" + _version,
-        'waterSpirit' : "event/spiritWater.png?" + _version,
+        'start' : "event/firstFloor.png?" + VERSION,
+        'noEvent' : "event/noEvent.png?" + VERSION,
+        'chest' : "event/chest.png?" + VERSION,
+        'chestOpen' : "event/chestOpen.png?" + VERSION,
+        'merchant' : "event/merchant.png?" + VERSION,
+        'earthSpirit' : "event/spiritEarth.png?" + VERSION,
+        'lightSpirit' : "event/spiritLight.png?" + VERSION,
+        'fireSpirit' : "event/spiritFire.png?" + VERSION,
+        'waterSpirit' : "event/spiritWater.png?" + VERSION,
         // icons
-        'iconPower' : "icon/sword.png?" + _version,
-        'iconStamina' : "icon/shield.png?" + _version,
-        'iconPotion' : "icon/potion.png?" + _version,
-        'iconScroll' : "icon/scroll.png?" + _version,
-        'iconMineral' : "icon/mineral.png?" + _version,
+        'iconPower' : "icon/sword.png?" + VERSION,
+        'iconStamina' : "icon/shield.png?" + VERSION,
+        'iconPotion' : "icon/potion.png?" + VERSION,
+        'iconScroll' : "icon/scroll.png?" + VERSION,
+        'iconMineral' : "icon/mineral.png?" + VERSION,
         // monsters
-        'monster01' : "monster/monster_01.png?" + _version,
-        'monster02' : "monster/monster_02.png?" + _version,
-        'monster03' : "monster/monster_03.png?" + _version,
-        'monster04' : "monster/monster_04.png?" + _version,
-        'monster05' : "monster/monster_05.png?" + _version,
-        'monster06' : "monster/monster_06.png?" + _version,
-        'monster07' : "monster/monster_07.png?" + _version,
-        'monster08' : "monster/monster_08.png?" + _version,
-        'monster09' : "monster/monster_09.png?" + _version,
-        'monster10' : "monster/monster_10.png?" + _version,
-        'monster11' : "monster/monster_11.png?" + _version,
-        'monster12' : "monster/monster_12.png?" + _version,
-        'monster13' : "monster/monster_13.png?" + _version,
-        'monster14' : "monster/monster_14.png?" + _version,
-        'monster15' : "monster/monster_15.png?" + _version,
-        'monster16' : "monster/monster_16.png?" + _version,
-        'monster17' : "monster/monster_17.png?" + _version,
+        'monster01' : "monster/monster_01.png?" + VERSION,
+        'monster02' : "monster/monster_02.png?" + VERSION,
+        'monster03' : "monster/monster_03.png?" + VERSION,
+        'monster04' : "monster/monster_04.png?" + VERSION,
+        'monster05' : "monster/monster_05.png?" + VERSION,
+        'monster06' : "monster/monster_06.png?" + VERSION,
+        'monster07' : "monster/monster_07.png?" + VERSION,
+        'monster08' : "monster/monster_08.png?" + VERSION,
+        'monster09' : "monster/monster_09.png?" + VERSION,
+        'monster10' : "monster/monster_10.png?" + VERSION,
+        'monster11' : "monster/monster_11.png?" + VERSION,
+        'monster12' : "monster/monster_12.png?" + VERSION,
+        'monster13' : "monster/monster_13.png?" + VERSION,
+        'monster14' : "monster/monster_14.png?" + VERSION,
+        'monster15' : "monster/monster_15.png?" + VERSION,
+        'monster16' : "monster/monster_16.png?" + VERSION,
+        'monster17' : "monster/monster_17.png?" + VERSION,
     }
 };
 
-const _french = {
+const FRENCH = {
     'main' : {
         'title' : "La Tour",
         'headerTitle' : "La Tour",
         'startTitle' : "Bienvenue aventurier",
         'nameCharacterLabel' : "Quel est ton nom ?",
         'play' : "Entrer",
-        'startFooter' : "Disponible sur " + _github + " (v " + _version + ") ©  " + _home,
-        'gameFooter' : "Disponible sur " + _github + " (v " + _version + ") ©  " + _home,
+        'startFooter' : "Disponible sur " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
+        'gameFooter' : "Disponible sur " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
         'move' : "Avancer",
         'usePotion' : "Utiliser une potion",
         'Attack' : "Attaque",
@@ -218,15 +217,15 @@ const _french = {
     ]
 };
 
-const _english = {
+const ENGLISH = {
     'main' : {
         'title' : "The Tower",
         'headerTitle' : "The Tower",
         'startTitle' : "Welcome adventurer",
         'nameCharacterLabel' : "What's your name ?",
         'play' : "Enter",
-        'startFooter' : "Available on " + _github + " (v " + _version + ") ©  " + _home,
-        'gameFooter' : "Available on " + _github + " (v " + _version + ") ©  " + _home,
+        'startFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
+        'gameFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
         'move' : "Move",
         'usePotion' : "Use a potion",
         'attack' : "Attack",
@@ -366,7 +365,7 @@ const _english = {
 // ============ CORE INITIALISATION
 
 // Correct the bug of the viewport on mobile
-if (_mobile) get("#app").style.minHeight = window.innerHeight + 'px';
+if (MOBILE) get("#app").style.minHeight = window.innerHeight + 'px';
 
 // Create data game or parse it if existing
 if (!getStorage("TOWER-save")) {
@@ -376,7 +375,7 @@ if (!getStorage("TOWER-save")) {
             'name' : null, 
             'sound' : true,
             'vibrate' : true,
-            'version' : _version,
+            'version' : VERSION,
             'language' : "EN",
         },
         'events' : {
@@ -402,19 +401,19 @@ if (!getStorage("TOWER-save")) {
             'merchantRefused' : 0,
         },
         'character' : {
-            'health' : _settings.data.health,
-            'healthMax' : _settings.data.healthMax,
-            'power' : _settings.data.power,
-            'stamina' : _settings.data.stamina,
-            'xp' : _settings.data.xp,
-            'xpTo' : _settings.data.xpTo,
-            'level' : _settings.data.level,
-            'floor' : _settings.data.floor,
-            'room' : _settings.data.room,
-            'itemPotion' : _settings.data.itemPotion,
-            'itemScroll' : _settings.data.itemScroll,
-            'itemMineral' : _settings.data.itemMineral,
-            'score' : _settings.data.score
+            'health' : SETTINGS.data.health,
+            'healthMax' : SETTINGS.data.healthMax,
+            'power' : SETTINGS.data.power,
+            'stamina' : SETTINGS.data.stamina,
+            'xp' : SETTINGS.data.xp,
+            'xpTo' : SETTINGS.data.xpTo,
+            'level' : SETTINGS.data.level,
+            'floor' : SETTINGS.data.floor,
+            'room' : SETTINGS.data.room,
+            'itemPotion' : SETTINGS.data.itemPotion,
+            'itemScroll' : SETTINGS.data.itemScroll,
+            'itemMineral' : SETTINGS.data.itemMineral,
+            'score' : SETTINGS.data.score
         }
     }
 
@@ -422,8 +421,9 @@ if (!getStorage("TOWER-save")) {
 } else game = JSON.parse(getStorage("TOWER-save"))
 
 // Determine language of the application
-const _content = (game.core.language == "FR") ? _french : _english;
-let names = Object.keys(_content.main); let values = Object.values(_content.main);
+const CONTENT = (game.core.language == "FR") ? FRENCH : ENGLISH;
+let names = Object.keys(CONTENT.main); 
+let values = Object.values(CONTENT.main);
 
 for (let i = 0; i < names.length; i++) {
     if (get("#" + names[i])) get("#" + names[i]).innerHTML = values[i];
