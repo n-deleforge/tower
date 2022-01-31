@@ -4,7 +4,7 @@
 const VERSION = "2.1.5.0";
 const GITHUB = "<a href=\"https://github.com/n-deleforge/tower\" target=\"_blank\">GitHub</a>";
 const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
-let game; let refreshDisplay; let refreshInterval;
+let game, refreshDisplay, refreshInterval;
 
 const SETTINGS = {
     'data' : {
@@ -84,7 +84,7 @@ const FRENCH = {
         'gameFooter' : "Disponible sur " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
         'move' : "Avancer",
         'usePotion' : "Utiliser une potion",
-        'Attack' : "Attaque",
+        'attack' : "Attaque",
         'useScroll' : "Sortilège",
         'openChest' : "Ouvrir le coffre",
         'closeChest' : "Ne pas l'ouvrir",
@@ -97,8 +97,8 @@ const FRENCH = {
         'popupCancel' : "Annuler",
         'popupRestart' : "Voulez-vous recommencer la partie en cours ? Votre progression actuelle sera perdue.",
         'popupDelete' : "Voulez-vous effacer toutes les données de jeu ? L'application sera réinitialisée.",
-        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Passer en langue anglaise",
-        'updated' : "L'application a été mise à jou et une réinitialisation est requise. Vous allez perdre votre progression dans le jeu."
+        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to English",
+        'updated' : "L'application a été mise à jour et une réinitialisation est requise. Vous allez perdre votre progression dans le jeu."
     },
     'stats' : {
         'bestScore' : "Meilleur score : ",
@@ -241,7 +241,7 @@ const ENGLISH = {
         'popupCancel' : "Cancel",
         'popupRestart' : "Do you want to restart the current game? Your current progress will be lost. ",
         'popupDelete' : "Do you want to erase all game data? The application will be reset. ",
-        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to French language",
+        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to French",
         'updated' : "The application has been updated and needs to be reset. You're gonna lose your progression."
     },
     'stats' : {

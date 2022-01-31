@@ -214,7 +214,7 @@ function spirit() {
 
         get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.fireSpirit + '" alt=""></div>';
         get("#screen").innerHTML += '<p>' +CONTENT.events.spiritFire_part1 + '.</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.spiritFire_part2 + ' <strong>' + SETTINGS.data.spiritStrength + '</strong> ' + plural(SETTINGS.data.spiritPower, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
+        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.spiritFire_part2 + ' <strong>' + SETTINGS.data.spiritPower + '</strong> ' + plural(SETTINGS.data.spiritPower, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
     } 
 
     // 1-2 : Water spirit : add health
@@ -492,7 +492,6 @@ function useScroll() {
 
 // =================================================
 // ============ DISPLAY
-
 
 /**
  * Display all the informations, check death and save game
