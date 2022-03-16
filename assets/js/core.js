@@ -1,9 +1,8 @@
 // =================================================
 // ============ CORE VARIABLES
 
-const VERSION = "2.1.5.0";
+const VERSION = "2.1.52";
 const GITHUB = "<a href=\"https://github.com/n-deleforge/tower\" target=\"_blank\">GitHub</a>";
-const MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
 let game, refreshDisplay, refreshInterval;
 
 const SETTINGS = {
@@ -36,6 +35,9 @@ const SETTINGS = {
         'vibrateOff' : "<i class=\"fas fa-bell-slash\"></i>",
     },
     'images' : {
+        // ux
+        'menuClosed' : "assets/image/icon/book-a.png",
+        'menuOpened' : "assets/image/icon/book-b.png",
         // events
         'start' : "event/firstFloor.png?" + VERSION,
         'noEvent' : "event/noEvent.png?" + VERSION,
@@ -78,10 +80,10 @@ const FRENCH = {
         'title' : "La Tour",
         'headerTitle' : "La Tour",
         'startTitle' : "Bienvenue aventurier",
-        'nameCharacterLabel' : "Quel est ton nom ?",
+        'nameCharacterPlaceholder' : "Quel est ton nom ?",
         'play' : "Entrer",
-        'startFooter' : "Disponible sur " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
-        'gameFooter' : "Disponible sur " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
+        'startFooter' : "V. " + VERSION + " | © 2020-22 | " + GITHUB,
+        'gameFooter' : "V. " + VERSION + " | © 2020-22 | " + GITHUB,
         'move' : "Avancer",
         'usePotion' : "Utiliser une potion",
         'attack' : "Attaque",
@@ -95,10 +97,10 @@ const FRENCH = {
         'popupTitle' : "Information importante",
         'popupAccept' : "Confirmer",
         'popupCancel' : "Annuler",
-        'popupRestart' : "Voulez-vous recommencer la partie en cours ? Votre progression actuelle sera perdue.",
-        'popupDelete' : "Voulez-vous effacer toutes les données de jeu ? L'application sera réinitialisée.",
+        'popupRestart' : "Voulez-vous recommencer la partie en cours ?<br />Votre progression actuelle sera perdue mais vos statistiques seront gardées.",
+        'popupDelete' : "Voulez-vous effacer toutes les données de jeu ? L'application sera réinitialisée, vous perdrez votre progression et vos statistiques.",
         'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to English",
-        'updated' : "L'application a été mise à jour et une réinitialisation est requise. Vous allez perdre votre progression dans le jeu."
+        'updated' : "L'application a été mise à jour et une réinitialisation est requise. Vous allez perdre votre progression et vos statistiques."
     },
     'stats' : {
         'bestScore' : "Meilleur score : ",
@@ -129,8 +131,6 @@ const FRENCH = {
         'hit_plural' : "coups",
     },
     'events' : {
-        // Regex check
-        'nameHeroCheck' : "Votre nom doit être composé de 2 à 15 lettres",
         // Level up
         'levelUp_part1' : "Votre niveau augmente",
         'levelUp_part2' : "Votre santé est regénérée, votre puissance et votre endurance augmentent",
@@ -222,10 +222,10 @@ const ENGLISH = {
         'title' : "The Tower",
         'headerTitle' : "The Tower",
         'startTitle' : "Welcome adventurer",
-        'nameCharacterLabel' : "What's your name ?",
+        'nameCharacterPlaceholder' : "What's your name ?",
         'play' : "Enter",
-        'startFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
-        'gameFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020 - 2021",
+        'startFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020-22",
+        'gameFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020-22",
         'move' : "Move",
         'usePotion' : "Use a potion",
         'attack' : "Attack",
@@ -239,10 +239,10 @@ const ENGLISH = {
         'popupTitle' : "Important information",
         'popupAccept' : "Confirm",
         'popupCancel' : "Cancel",
-        'popupRestart' : "Do you want to restart the current game? Your current progress will be lost. ",
-        'popupDelete' : "Do you want to erase all game data? The application will be reset. ",
+        'popupRestart' : "Do you want to restart the current game? Your current progress will be lost but your stats will be saved.",
+        'popupDelete' : "Do you want to erase all game data? The application will be reset and you'll lose your data and your stats.",
         'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to French",
-        'updated' : "The application has been updated and needs to be reset. You're gonna lose your progression."
+        'updated' : "The application has been updated and needs to be reset. You're gonna lose your progression and your stats."
     },
     'stats' : {
         'bestScore' : "Best score : ",
@@ -273,8 +273,6 @@ const ENGLISH = {
         'hit_plural' : "hits",
     },
     'events' : {
-        // Regex check
-        'nameHeroCheck' : "Your name must be composed between 2 to 15 letters.",
         // Level up
         'levelUp_part1' : "Level up",
         'levelUp_part2' : "Your health is regenerated, your power and your stamina increase",
@@ -364,9 +362,6 @@ const ENGLISH = {
 // =================================================
 // ============ CORE INITIALISATION
 
-// Correct the bug of the viewport on mobile
-if (MOBILE) get("#app").style.minHeight = window.innerHeight + 'px';
-
 // Create data game or parse it if existing
 if (!getStorage("TOWER-save")) {
     game = {
@@ -425,6 +420,8 @@ const CONTENT = (game.core.language == "FR") ? FRENCH : ENGLISH;
 let names = Object.keys(CONTENT.main); 
 let values = Object.values(CONTENT.main);
 
+// Fulfill the page
+get("#nameCharacter").placeholder = CONTENT.main.nameCharacterPlaceholder;
 for (let i = 0; i < names.length; i++) {
     if (get("#" + names[i])) get("#" + names[i]).innerHTML = values[i];
 }

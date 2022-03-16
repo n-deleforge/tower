@@ -30,8 +30,7 @@ function launcher() {
     // Check of the regex and start of the game
     get("#play").addEventListener("click", function () {
         if (!get("#nameCharacter").checkValidity() || get("#nameCharacter").value == "") {
-            get("#nameCharacterLabel").innerHTML = CONTENT.events.nameHeroCheck;
-            get("#nameCharacterLabel").style.color = getVariableCSS("text-error");
+            get("#nameCharacter").style.borderColor = getVariableCSS("text-error");
         }
         else startGame("new");
     });
@@ -746,26 +745,21 @@ function checkVersion() {
  **/
 
 function createMenu() {
-    // Open menu
+    // Open/close menu
     get("#openMenu").addEventListener("click", () => {
-        get("#blankMenu").style.display = "block";
-        get("#menu").style.display = "flex";
-        get("#closeMenu").style.visibility = "visible";
-        checkStats();
-    });
-
-    // Close menu with the button
-    get('#closeMenu').addEventListener("click", () => {
-        get("#closeMenu").style.visibility = "hidden";
-        get("#blankMenu").style.display = "none";
-        get("#menu").style.display = "none";
-    });
-
-    // Close the menu with the void
-    get('#blankMenu').addEventListener("click", () => {
-        get("#closeMenu").style.visibility = "hidden";
-        get("#blankMenu").style.display = "none";
-        get("#menu").style.display = "none";
+        if (get("#menu").style.display == "" || get("#menu").style.display == "none") {
+            get("#blankMenu").style.display = "block";
+            get("#menu").style.display = "flex";
+            get("#openMenu").style.zIndex = "50";
+            get("#openMenuImg").src = SETTINGS.images.menuOpened;
+            checkStats();
+        }
+        else {
+            get("#blankMenu").style.display = "none";
+            get("#menu").style.display = "none";
+            get("#openMenu").style.zIndex = "5";
+            get("#openMenuImg").src = SETTINGS.images.menuClosed;
+        }
     });
 
     // Inside menu - restart
@@ -812,7 +806,9 @@ function createMenu() {
 
 function createButtons() {
     // Menu
+    get("#openMenu").style.display = "block";
     get("#openMenu").style.visibility = "visible";
+    get("#openMenuImg").src =   SETTINGS.images.menuClosed;
     get("#volumeButton").addEventListener("click", checkSound);
     get("#vibrateButton").addEventListener("click", checkVibrate);
 

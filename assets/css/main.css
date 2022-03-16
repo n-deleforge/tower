@@ -90,6 +90,11 @@ header {
     background-color: var(--background-header);
 }
 
+#headerTitle {
+    flex-grow: 1;
+    text-align: center;
+}
+
 .container {
     display: none;
     flex-direction: column;
@@ -284,7 +289,7 @@ a:hover {
     padding: 1vh 0;
     border-top: 1px solid var(--start-title-border);
     border-bottom: 1px solid var(--start-title-border);
-    font-size: 1.5em;
+    font-size: 1.3em;
 }
 
 #nameCharacter {
@@ -487,28 +492,11 @@ a:hover {
 /* ======================================== */
 /* ======== MENU */
 
-#openMenu,
-#closeMenu {
+#openMenu {
+    display: none;
     visibility: hidden;
-    position: absolute;
-    top: 1.5vh;
-    right: 1vw;
-    width: 5vw;
     padding: 1vh;
-    font-size: 0.9em;
-    color: var(--button-color-0);
-    background: none;
     transition: none;
-}
-
-#closeMenu {
-    z-index: 4;
-    color: var(--button-color-1);
-}
-
-#openMenu:hover,
-#closeMenu:hover {
-    color: var(--button-color-2);
 }
 
 #blankMenu {
@@ -554,16 +542,11 @@ a:hover {
 }
 
 @media(max-width:1024px) {
-    #openMenu,
-    #closeMenu {
-        top: 1vh;
-        right: 2vw;
+    #openMenu {
         width: 10vw;
-        font-size: 1em;
     }
 
-    #openMenu img,
-    #closeMenu img {
+    #openMenu img {
         width: 100%;
     }
 
@@ -593,7 +576,7 @@ a:hover {
 
 #popup {
     display: none;
-    z-index: 6;
+    z-index: 10;
     position: absolute;
     top: 38%;
     right: 38%;
