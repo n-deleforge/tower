@@ -5,7 +5,7 @@ const VERSION = "2.1.52";
 const GITHUB = "<a href=\"https://github.com/n-deleforge/tower\" target=\"_blank\">GitHub</a>";
 const FOOTER = "V. " + VERSION + " | © 2020-22 | " + GITHUB + " |  <a id=\"switchLanguage\"></a>";
 const FOOTER_INGAME = "V. " + VERSION + " | © 2020-22 | " + GITHUB;
-let game, refreshDisplay, refreshInterval;
+let _game, _refreshDisplay, _refreshInterval;
 
 const SETTINGS = {
     'data' : {
@@ -366,7 +366,7 @@ const ENGLISH = {
 
 // Create data game or parse it if existing
 if (!getStorage("TOWER-save")) {
-    game = {
+    _game = {
         'core' : {
             'ongoing' : false, 
             'name' : null, 
@@ -414,16 +414,25 @@ if (!getStorage("TOWER-save")) {
         }
     }
 
-    setStorage("TOWER-save", JSON.stringify(game));
-} else game = JSON.parse(getStorage("TOWER-save"))
+    setStorage("TOWER-save", JSON.stringify(_game));
+} else _game = JSON.parse(getStorage("TOWER-save"))
 
-// Determine language of the application
-const CONTENT = (game.core.language == "FR") ? FRENCH : ENGLISH;
-let names = Object.keys(CONTENT.main); 
-let values = Object.values(CONTENT.main);
+// Setup language data
+const CONTENT = (_game.core.language == "FR") ? FRENCH : ENGLISH;
+let _names = Object.keys(CONTENT.main);
+let _values = Object.values(CONTENT.main);
 
-// Fulfill the page
-get("#nameCharacter").placeholder = CONTENT.main.nameCharacterPlaceholder;
-for (let i = 0; i < names.length; i++) {
-    if (get("#" + names[i])) get("#" + names[i]).innerHTML = values[i];
+for (let i = 0; i < _names.length; i++) {
+    if (get("#" + _names[i])) {
+        get("#" + _names[i]).innerHTML = _values[i];
+    }
 }
+
+// Able to switch language between French and English
+if (get("#switchLanguage")) {
+    get("#switchLanguage").addEventListener("click", () => {
+        _game.core.language = (_game.core.language == "FR") ? "EN" : "FR";
+        setStorage("TOWER-save", JSON.stringify(_game));
+        location.reload();
+    });
+};
