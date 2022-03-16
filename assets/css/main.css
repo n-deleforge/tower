@@ -111,6 +111,7 @@ input {
 a {
     text-decoration: none;
     color: var(--text-link);
+    cursor: pointer;
 }
 
 a:hover {
@@ -244,10 +245,6 @@ a:hover {
     font-size: 1.5em;
 }
 
-#switchLanguage i {
-    margin-right: 0.5vw;
-}
-
 @media(max-width:1024px) {
     #play {
         min-width: 50vw;
@@ -279,10 +276,13 @@ a:hover {
 #start {
     text-align: center;
     font-size: 1.2em;
+    align-items: unset !important;
 }
 
 #startLogo {
     height: 25vh;
+    width: 40%;
+    margin: auto;
 }
 
 #startTitle {
@@ -319,7 +319,12 @@ a:hover {
 }
 
 #startFooter {
+    color: var(--text-header);
+    background-color: var(--background-header);
     font-size: 0.8em;
+    margin: 0;
+    padding: 1.5vh;
+    border-radius: 0 0 16px 16px;
 }
 
 @media(max-width:1024px) {

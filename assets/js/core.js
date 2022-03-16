@@ -3,6 +3,8 @@
 
 const VERSION = "2.1.52";
 const GITHUB = "<a href=\"https://github.com/n-deleforge/tower\" target=\"_blank\">GitHub</a>";
+const FOOTER = "V. " + VERSION + " | © 2020-22 | " + GITHUB + " |  <a id=\"switchLanguage\"></a>";
+const FOOTER_INGAME = "V. " + VERSION + " | © 2020-22 | " + GITHUB;
 let game, refreshDisplay, refreshInterval;
 
 const SETTINGS = {
@@ -82,8 +84,8 @@ const FRENCH = {
         'startTitle' : "Bienvenue aventurier",
         'nameCharacterPlaceholder' : "Quel est ton nom ?",
         'play' : "Entrer",
-        'startFooter' : "V. " + VERSION + " | © 2020-22 | " + GITHUB,
-        'gameFooter' : "V. " + VERSION + " | © 2020-22 | " + GITHUB,
+        'startFooter' : FOOTER,
+        'gameFooter' : FOOTER_INGAME,
         'move' : "Avancer",
         'usePotion' : "Utiliser une potion",
         'attack' : "Attaque",
@@ -99,7 +101,7 @@ const FRENCH = {
         'popupCancel' : "Annuler",
         'popupRestart' : "Voulez-vous recommencer la partie en cours ?<br />Votre progression actuelle sera perdue mais vos statistiques seront gardées.",
         'popupDelete' : "Voulez-vous effacer toutes les données de jeu ? L'application sera réinitialisée, vous perdrez votre progression et vos statistiques.",
-        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to English",
+        'switchLanguage' : "<i class=\"fas fa-sync\"></i> EN",
         'updated' : "L'application a été mise à jour et une réinitialisation est requise. Vous allez perdre votre progression et vos statistiques."
     },
     'stats' : {
@@ -224,8 +226,8 @@ const ENGLISH = {
         'startTitle' : "Welcome adventurer",
         'nameCharacterPlaceholder' : "What's your name ?",
         'play' : "Enter",
-        'startFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020-22",
-        'gameFooter' : "Available on " + GITHUB + " (v " + VERSION + ") © 2020-22",
+        'startFooter' : FOOTER,
+        'gameFooter' : FOOTER_INGAME,
         'move' : "Move",
         'usePotion' : "Use a potion",
         'attack' : "Attack",
@@ -241,7 +243,7 @@ const ENGLISH = {
         'popupCancel' : "Cancel",
         'popupRestart' : "Do you want to restart the current game? Your current progress will be lost but your stats will be saved.",
         'popupDelete' : "Do you want to erase all game data? The application will be reset and you'll lose your data and your stats.",
-        'switchLanguage' : "<i class=\"fas fa-sync\"></i> Switch to French",
+        'switchLanguage' : "<i class=\"fas fa-sync\"></i> FR",
         'updated' : "The application has been updated and needs to be reset. You're gonna lose your progression and your stats."
     },
     'stats' : {

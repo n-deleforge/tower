@@ -31,7 +31,8 @@ All the sprites and icons comes from two itch.io pack :
 
 # Changelog
 
-- 2.1.5.0 : A lot of game balancing. Rewriting some JS parts. New sounds, new sprites. Merchant added.
+- 2.1.52 : Some rewriting in the JS code, new menu mecanic, some aestethic changes
+- 2.1.51 : A lot of game balancing. Rewriting some JS parts. New sounds, new sprites. Merchant added.
 - 2.01 : I decided to change almost every sprites. Some CSS fixes too.
 - 2.0 : Big rewriting of the app. CSS cleaned. Language switchable between French and English. Design much improved. Introduction to new mechanics (with minerals)
 - 1.9 : New design (more is to come), escape removed, difficulty more balanced and quality of life improvements
