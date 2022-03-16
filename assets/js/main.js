@@ -726,8 +726,6 @@ function checkVersion() {
             location.reload();
         });
     }
-
-    setStorage("TOWER-save", JSON.stringify(game));
 }
 
 /**
