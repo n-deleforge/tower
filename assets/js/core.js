@@ -415,18 +415,18 @@ if (!getStorage("TOWER-save")) {
     }
 
     setStorage("TOWER-save", JSON.stringify(_game));
-} else _game = JSON.parse(getStorage("TOWER-save"))
-
-// Setup language data
-const CONTENT = (_game.core.language == "FR") ? FRENCH : ENGLISH;
-let _names = Object.keys(CONTENT.main);
-let _values = Object.values(CONTENT.main);
-
-for (let i = 0; i < _names.length; i++) {
-    if (get("#" + _names[i])) {
-        get("#" + _names[i]).innerHTML = _values[i];
-    }
+} 
+else {
+    _game = JSON.parse(getStorage("TOWER-save"));
 }
+
+// Setup content according language
+const CONTENT = (_game.core.language == "FR") ? FRENCH : ENGLISH;
+Object.keys(CONTENT.main).forEach(key => {
+    if (get("#" + key)) {
+        get("#" + key).innerHTML = CONTENT.main[key];
+    }
+});
 
 // Able to switch language between French and English
 if (get("#switchLanguage")) {

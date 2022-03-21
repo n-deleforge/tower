@@ -78,23 +78,6 @@ body {
     background-color: var(--background-app);
 }
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2vh;
-    border-radius: 15px 15px 0 0;
-    text-transform: uppercase;
-    font-size: 2.5em;
-    color: var(--text-header);
-    background-color: var(--background-header);
-}
-
-#headerTitle {
-    flex-grow: 1;
-    text-align: center;
-}
-
 .container {
     display: none;
     flex-direction: column;
@@ -147,12 +130,6 @@ a:hover {
         margin: 0;
         border: 0;
         border-radius: 0;
-    }
-
-    header {
-        border-radius: 0;
-        font-size: 1.5em;
-        letter-spacing: 2px;
     }
 }
 
@@ -271,6 +248,34 @@ a:hover {
 }
 
 /* ======================================== */
+/* ======== HEADER */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh;
+    border-radius: 15px 15px 0 0;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    color: var(--text-header);
+    background-color: var(--background-header);
+}
+
+#headerTitle {
+    flex-grow: 1;
+    text-align: center;
+}
+
+@media(max-width:1024px) {
+    header {
+        border-radius: 0;
+        font-size: 1.5em;
+        letter-spacing: 2px;
+    }
+}
+
+/* ======================================== */
 /* ======== START SCREEN */
 
 #start {
@@ -338,6 +343,10 @@ a:hover {
 
     #displayTip {
         padding: 3vh;
+    }
+
+    #startFooter {
+        border-radius: 0;
     }
 }
 
