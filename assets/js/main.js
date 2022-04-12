@@ -14,25 +14,26 @@ _game.core.ongoing == false ? launcher() : startGame("load");
 
 function launcher() {
     // Display the start screen
-    get('#start').style.display = "flex";
-    get('#displayTip').innerHTML = CONTENT.tips[rand(0, CONTENT.tips.length)];
+    get('#titleScreen').style.display = "flex";
+    get('#titleTip').innerHTML = CONTENT.tips[rand(0, CONTENT.tips.length)];
 
     // Check if the name is registred
     if (_game.core.name != null && _game.core.name != "") {
-        get("#nameCharacter").value = _game.core.name
+        get("#titleCharacter").value = _game.core.name
     }
     else {
-        get("#nameCharacter").value = "";
-        get('#nameCharacter').focus();
+        get("#titleCharacter").value = "";
+        get('#titleCharacter').placeholder = CONTENT.main.titleCharacterPlaceholder;
+        get('#titleCharacter').focus();
     }
 
     // Check of the regex and start of the game
     get("#play").addEventListener("click", () => {
-        if (get("#nameCharacter").checkValidity() || get("#nameCharacter").value !== "") {
+        if (get("#titleCharacter").checkValidity()) {
             startGame("new");
         }
         else {
-            get("#nameCharacter").style.borderColor = getVariableCSS("text-error");
+            get("#titleCharacter").style.borderColor = getVariableCSS("error-color");
         }
     });
 }
@@ -43,26 +44,31 @@ function launcher() {
  **/
 
 function startGame(mode) {
-    // Display the game screen
-    get('#start').style.display = "none";
-    get('#game').style.display = "flex";
+    // Modify the display
+    get('#titleScreen').style.display = "none";
+    get('#board').style.display = "flex";
     changeDisplay("normal-game");
-    createMenu();
-    createButtons();
+
+    // Add sounds, create menu and add listeners
+    addSound();
+    createActionMenu();
+    createActionButton();
+
+    // Refresh game display every 100ms
     _refreshDisplay = setInterval(displayGame, 100);
 
     // If it's a new game
     if (mode == "new") {
-        _game.core.name = get("#nameCharacter").value;
+        _game.core.name = get("#titleCharacter").value;
         _game.events.lastAction = null;
         _game.events.newAction = null;
         _game.core.ongoing = true; 
         playSound("Room");
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.start + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.startGame_part1 +  '.</p>';
-        get("#screen").innerHTML += '<em>' + CONTENT.events.startGame_part2 +  '.</em>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.startGame_part3 +  '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.start + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.startGame_part1 +  '.</p>';
+        get("#game").innerHTML += '<em>' + CONTENT.events.startGame_part2 +  '.</em>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.startGame_part3 +  '.</p>';
     } 
     
     // If it's not a new game
@@ -82,7 +88,7 @@ function startGame(mode) {
             changeDisplay("normal-to-merchant");
         }
 
-        get('#screen').innerHTML = _game.events.currentEvent;
+        get('#game').innerHTML = _game.events.currentEvent;
     }
 }
 
@@ -93,7 +99,7 @@ function startGame(mode) {
 function playTurn() {
     _game.events.subAction = null;
     _game.character.room++;
-    changeDisplay("screen-to-message");
+    changeDisplay("game-to-info");
 
     // At the 10th room
     if (_game.character.room > 10) {
@@ -102,7 +108,7 @@ function playTurn() {
         _game.character.floor++; 
         playSound("Floor");
 
-        get("#message").innerHTML = "<p class=\"bigger\">" + CONTENT.vocabulary.floor + ' ' + _game.character.floor + "</p>";
+       get("#information").innerHTML = "<p class=\"important\">" + CONTENT.vocabulary.floor + ' ' + _game.character.floor + "</p>";
     }
 
     // All rooms expect the 10th
@@ -111,13 +117,13 @@ function playTurn() {
         _game.stats.totalRoom++;
         playSound("Room");
 
-        get("#message").innerHTML = "<p class=\"bigger\">" + CONTENT.vocabulary.floor + ' ' + parseInt(_game.character.floor) + "</p>";
-        get("#message").innerHTML += "<p>" + CONTENT.vocabulary.room + ' ' + _game.character.room + "</p>";
+       get("#information").innerHTML = "<p class=\"important\">" + CONTENT.vocabulary.floor + ' ' + parseInt(_game.character.floor) + "</p>";
+       get("#information").innerHTML += "<p>" + CONTENT.vocabulary.room + ' ' + _game.character.room + "</p>";
     }
 
     // Timeout to show the game again
     setTimeout(function () {
-        changeDisplay("message-to-screen");
+        changeDisplay("info-to-game");
     }, _refreshInterval);
     
     // Starting the floor 5, there is one chance on two to meet the merchant each floor
@@ -131,7 +137,7 @@ function playTurn() {
 }
 
 // =================================================
-// ============ EVENTS
+// ============ MAIN EVENTS
 
 /**
  * Randomly choose between no event, fight, chest or meeting a spirit
@@ -174,13 +180,9 @@ function usePotion() {
         _game.character.itemPotion --; 
         _game.character.health = _game.character.healthMax; 
         _game.stats.potionUsed++;
-        playVibrate(10);
         playSound("Potion");
 
-        get("#screen").innerHTML += '<hr><p class="green">' + CONTENT.events.healing + '</p>';
-    }
-    else {
-        playVibrate(250);
+        get("#game").innerHTML += '<hr><p class="goodInformation">' + CONTENT.events.healing + '</p>';
     }
 }
 
@@ -191,10 +193,10 @@ function usePotion() {
 function noEvent() {
     _game.events.lastAction = "noEvent";
 
-    get("#screen").innerHTML = '<div id="containerImage"></div>';
+    get("#game").innerHTML = '<div id="containerImage"></div>';
     get("#containerImage").style.background = "url('assets/image/" + SETTINGS.images.noEvent + "') no-repeat center"; 
     get("#containerImage").style.backgroundSize = "cover"; 
-    get("#screen").innerHTML += '<p>' + CONTENT.events.noEvent + '.</p>';
+    get("#game").innerHTML += '<p>' + CONTENT.events.noEvent + '.</p>';
 }
 
 /**
@@ -211,9 +213,9 @@ function spirit() {
     if (meeting == 4) { 
         _game.character.stamina = _game.character.stamina + SETTINGS.data.spiritStamina;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.earthSpirit + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' +CONTENT.events.spiritEarth_part1 + '.</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.spiritEarth_part2 + ' <strong>' + SETTINGS.data.spiritStamina + '</strong> ' + plural(SETTINGS.data.spiritStamina, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.earthSpirit + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' +CONTENT.events.spiritEarth_part1 + '.</p>';
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.spiritEarth_part2 + ' <strong>' + SETTINGS.data.spiritStamina + '</strong> ' + plural(SETTINGS.data.spiritStamina, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
     } 
 
     // 5-6 : Light spirit : add experience
@@ -221,32 +223,32 @@ function spirit() {
         const xp = rand(parseInt(_game.character.xpTo / 10), parseInt(_game.character.xpTo / 5));
         _game.character.xp = _game.character.xp + xp;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.lightSpirit + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.spiritLight_part1 + '.</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.spiritLight_part2 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.spiritLight_part3 + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.lightSpirit + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.spiritLight_part1 + '.</p>';
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.spiritLight_part2 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.spiritLight_part3 + '.</p>';
     } 
 
     // 3-4 : Fire spirit : add power
     else if (meeting == 2) {
         _game.character.power = _game.character.power + SETTINGS.data.spiritPower;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.fireSpirit + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' +CONTENT.events.spiritFire_part1 + '.</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.spiritFire_part2 + ' <strong>' + SETTINGS.data.spiritPower + '</strong> ' + plural(SETTINGS.data.spiritPower, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.fireSpirit + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' +CONTENT.events.spiritFire_part1 + '.</p>';
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.spiritFire_part2 + ' <strong>' + SETTINGS.data.spiritPower + '</strong> ' + plural(SETTINGS.data.spiritPower, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
     } 
 
     // 1-2 : Water spirit : add health
     else {
         _game.character.healthMax = _game.character.healthMax + SETTINGS.data.spiritHealth;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.waterSpirit + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.spiritWater_part1 + '.</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.spiritWater_part2 + ' <strong>' + SETTINGS.data.spiritHealth + '</strong> ' + plural(SETTINGS.data.spiritHealth, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.waterSpirit + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.spiritWater_part1 + '.</p>';
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.spiritWater_part2 + ' <strong>' + SETTINGS.data.spiritHealth + '</strong> ' + plural(SETTINGS.data.spiritHealth, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + '.</p>';
     }
 }
 
 // =================================================
-// ============ MERCHANT EVENTS
+// ============ SPECIAL EVENT : MERCHANT
 
 /**
  * Meeting with the merchant : exchange of minerals
@@ -254,19 +256,19 @@ function spirit() {
 
 function merchant() {
     _game.events.lastAction = "merchant";
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
-    get("#screen").innerHTML += '<p>' + CONTENT.events.merchant + '.</p>';
+    get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
+    get("#game").innerHTML += '<p>' + CONTENT.events.merchant + '.</p>';
 
     // If enough mineral
     if (_game.character.itemMineral > 1) {
         changeDisplay("normal-to-merchant");
-        get("#screen").innerHTML += '<p>' + CONTENT.events.merchant_proposition + ' ... </p>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.merchant_proposition + ' ... </p>';
     }
 
     // If not
     else {
         _game.events.subAction = "merchantOver";
-        get("#screen").innerHTML += '<p>' + CONTENT.events.merchant_noMineral + ' ...</p>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.merchant_noMineral + ' ...</p>';
     }
 }
 
@@ -277,7 +279,6 @@ function merchant() {
 function acceptMerchant() {
     _game.events.subAction = "merchantOver";
     _game.stats.merchantAccepted++;
-    playVibrate(90);
     playSound("Merchant");
     changeDisplay("merchant-to-normal");
 
@@ -287,9 +288,9 @@ function acceptMerchant() {
     if (deal == 3) { 
         _game.character.power = _game.character.power + 3;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.merchant_accepted + ' !</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.merchant_offer1 + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.merchant_accepted + ' !</p>';
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.merchant_offer1 + '.</p>';
     }
 
     // Offer 2 : health + 5 and stamina + 1
@@ -297,16 +298,16 @@ function acceptMerchant() {
         _game.character.healthMax = _game.character.healthMax + 10;
         _game.character.stamina = _game.character.stamina + 2;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.merchant_accepted + ' !</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.merchant_offer2 + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.merchant_accepted + ' !</p>';
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.merchant_offer2 + '.</p>';
     }
 
     // Offer 3 : nothing
     else {
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.merchant_accepted + ' !</p>';
-        get("#screen").innerHTML += '<p class="red">' + CONTENT.events.merchant_offer3 + ' ...</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.merchant_accepted + ' !</p>';
+        get("#game").innerHTML += '<p class="badInformation">' + CONTENT.events.merchant_offer3 + ' ...</p>';
     }
 
     _game.character.itemMineral = _game.character.itemMineral - 2;
@@ -319,16 +320,15 @@ function acceptMerchant() {
 function refuseMerchant() {
     _game.events.subAction = "merchantOver";
     _game.stats.merchantRefused++;
-    playVibrate(10);
     changeDisplay("merchant-to-normal");
 
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
-    get("#screen").innerHTML += '<p>' + CONTENT.events.merchant + ' ... </p>';
-    get("#screen").innerHTML += '<p>' + CONTENT.events.merchant_refused + ' !</p>';
+    get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.merchant + '" alt=""></div>';
+    get("#game").innerHTML += '<p>' + CONTENT.events.merchant + ' ... </p>';
+    get("#game").innerHTML += '<p>' + CONTENT.events.merchant_refused + ' !</p>';
 }
 
 // =================================================
-// ============ CHEST EVENTS
+// ============ SPECIAL EVENT : CHEST
 
 /**
  * Initialize the chest event : allow open / avoid
@@ -338,8 +338,8 @@ function chest() {
     _game.events.lastAction = "chest";
     changeDisplay("normal-to-chest");
 
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chest + '" alt=""></div>';
-    get("#screen").innerHTML += '<p>' + CONTENT.events.chest + ' !</p>';
+    get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chest + '" alt=""></div>';
+    get("#game").innerHTML += '<p>' + CONTENT.events.chest + ' !</p>';
 }
 
 /**
@@ -349,7 +349,6 @@ function chest() {
 function openChest() {
     _game.events.subAction = "chestOver";
     _game.stats.chestOpen++;
-    playVibrate(90);
     playSound("Chest");
     changeDisplay("chest-to-normal");
 
@@ -360,11 +359,11 @@ function openChest() {
     if (loot > 10) {
         SETTINGS.data.itemLimit > _game.character.itemPotion ? _game.character.itemPotion++ : limited = true;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.chestPotion + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.chestPotion + '.</p>';
 
         if (limited) {
-            get("#screen").innerHTML += '<p>' + CONTENT.events.chestLimit + '.</p>';
+            get("#game").innerHTML += '<p>' + CONTENT.events.chestLimit + '.</p>';
         }
     }
 
@@ -372,11 +371,11 @@ function openChest() {
     else if (loot > 5) {
         SETTINGS.data.itemLimit > _game.character.itemScroll ? _game.character.itemScroll++ : limited = true;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.chestScroll + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.chestScroll + '.</p>';
 
         if (limited) {
-            get("#screen").innerHTML += '<p>' + CONTENT.events.chestLimit + '.</p>';
+            get("#game").innerHTML += '<p>' + CONTENT.events.chestLimit + '.</p>';
         }
     } 
 
@@ -384,11 +383,11 @@ function openChest() {
     else if (loot > 1) { 
         SETTINGS.data.itemLimit > _game.character.itemMineral ? _game.character.itemMineral++ : limited = true;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.chestMineral + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.chestMineral + '.</p>';
 
         if (limited) {
-            get("#screen").innerHTML += '<p>' + CONTENT.events.chestLimit + '.</p>';
+            get("#game").innerHTML += '<p>' + CONTENT.events.chestLimit + '.</p>';
         }
     } 
 
@@ -398,9 +397,9 @@ function openChest() {
         const damage = rand(1, _game.character.health / 5);
         _game.character.health = _game.character.health - damage;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.chestTrap_part1 + ' !</p>';
-        get("#screen").innerHTML += '<p class="red">' + CONTENT.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.chestTrap_part3 + '.</p>';
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chestOpen + '" alt=""></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.chestTrap_part1 + ' !</p>';
+        get("#game").innerHTML += '<p class="badInformation">' + CONTENT.events.chestTrap_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.chestTrap_part3 + '.</p>';
     }
 }
 
@@ -411,16 +410,15 @@ function openChest() {
 function closeChest() {
     _game.events.subAction = "chestOver";
     _game.stats.chestNotOpened++;
-    playVibrate(10);
     changeDisplay("chest-to-normal");
 
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chest + '" alt=""></div>';
-    get("#screen").innerHTML += '<p>' + CONTENT.events.chest + ' !</p>';
-    get("#screen").innerHTML += '<p>' + CONTENT.events.chest_notOpened + '.</p>';
+    get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + SETTINGS.images.chest + '" alt=""></div>';
+    get("#game").innerHTML += '<p>' + CONTENT.events.chest + ' !</p>';
+    get("#game").innerHTML += '<p>' + CONTENT.events.chest_notOpened + '.</p>';
 }
 
 // =================================================
-// ============ FIGHT EVENTS
+// ============ SPECIAL EVENT : FIGHT
 
 /**
  * Initialize the fight event : allow attack, magic or escaping
@@ -431,9 +429,9 @@ function fight() {
     _game.events.monster = bestiary();
     changeDisplay("normal-to-fight");
 
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _game.events.monster[3] + '" alt="' + _game.events.monster[2] + '"></div>';
-    get("#screen").innerHTML += '<p><strong>' + _game.events.monster[2] + '</strong> ' + CONTENT.events.fightStart + ' !</p>';
-    get("#screen").innerHTML += '<p>' + CONTENT.vocabulary.health + ' : <strong>' + _game.events.monster[0] + '</strong> / ' + CONTENT.vocabulary.power + ' : <strong>'  + _game.events.monster[1] + '</strong></p>';
+    get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + _game.events.monster[3] + '" alt="' + _game.events.monster[2] + '"></div>';
+    get("#game").innerHTML += '<p><strong>' + _game.events.monster[2] + '</strong> ' + CONTENT.events.fightStart + ' !</p>';
+    get("#game").innerHTML += '<p>' + CONTENT.vocabulary.health + ' : <strong>' + _game.events.monster[0] + '</strong> / ' + CONTENT.vocabulary.power + ' : <strong>'  + _game.events.monster[1] + '</strong></p>';
 }
 
 /**
@@ -475,7 +473,6 @@ function bestiary() {
 function attack() {
     _game.events.subAction = "fightOver";
     _game.stats.fightVictory++;
-    playVibrate(10);
     playSound("Attack");
     changeDisplay("fight-to-normal");
 
@@ -494,13 +491,13 @@ function attack() {
     const xp = rand(parseInt(_game.character.xpTo / 10), parseInt(_game.character.xpTo / 8));
     _game.character.xp = _game.character.xp + xp;
 
-    get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _game.events.monster[3] + '" alt="' + _game.events.monster[2] + '"></div>';
-    get("#screen").innerHTML += '<p><strong>' + _game.events.monster[2] + '</strong> ' + CONTENT.events.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, CONTENT.vocabulary.hit_singular, CONTENT.vocabulary.hit_plural) + ' !</p>';
-    get("#screen").innerHTML += '<p class="red">' + CONTENT.events.fightWin_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + ' ' + CONTENT.events.fightWin_part3 + '.</p>';
+    get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + _game.events.monster[3] + '" alt="' + _game.events.monster[2] + '"></div>';
+    get("#game").innerHTML += '<p><strong>' + _game.events.monster[2] + '</strong> ' + CONTENT.events.fightWin_part1 + '<strong>' + nbHit+ '</strong> ' + plural(nbHit, CONTENT.vocabulary.hit_singular, CONTENT.vocabulary.hit_plural) + ' !</p>';
+    get("#game").innerHTML += '<p class="badInformation">' + CONTENT.events.fightWin_part2 + '<strong>' + damage + '</strong> ' + plural(damage, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + ' ' + CONTENT.events.fightWin_part3 + '.</p>';
     
     if (_game.character.health > 0) {
         // Displayed only if still alive
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.fightWin_part4 + ".</p>";
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.fightWin_part4 + ".</p>";
     }
 }
 
@@ -513,7 +510,6 @@ function useScroll() {
         _game.events.subAction = "fightOver"; 
         _game.character.itemScroll--;
         _game.stats.fightVictory++; 
-        playVibrate(10);
         playSound("Scroll");
         changeDisplay("fight-to-normal");
 
@@ -521,20 +517,17 @@ function useScroll() {
         const xp = parseInt(_game.character.xpTo / 10);
         _game.character.xp = _game.character.xp + xp;
 
-        get("#screen").innerHTML = '<div id="containerImage"><img src="assets/image/' + _game.events.monster[3] + '" alt="' + _game.events.monster[2] + '"></div>';
-        get("#screen").innerHTML += '<p>' + CONTENT.events.fightMagic + ".</p>";
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.fightWin_part4 + ".</p>";
-    }
-    else {
-        playVibrate(250);
+        get("#game").innerHTML = '<div id="containerImage"><img src="assets/image/' + _game.events.monster[3] + '" alt="' + _game.events.monster[2] + '"></div>';
+        get("#game").innerHTML += '<p>' + CONTENT.events.fightMagic + ".</p>";
+        get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.fightWin_part5 + '<strong>' + xp + '</strong> ' + plural(xp, CONTENT.vocabulary.point_singular, CONTENT.vocabulary.point_plural) + CONTENT.events.fightWin_part4 + ".</p>";
     }
 }
 
 // =================================================
-// ============ DISPLAY
+// ============ GAME DISPLAY
 
 /**
- * Display all the informations, check death and save game
+ * Main function : check death, then display all informations and check experience, items, score and save game
  **/
 
 function displayGame() {
@@ -542,17 +535,84 @@ function displayGame() {
         gameOver();
     }
     else {
-        // Check everything and display values
-        checkExperience();
-        checkInfo();
-        checkItems();
-        checkScore();
-
-        // Save content and save all data
-        if (get("#screen").innerHTML != "") {
-            _game.events.currentEvent = get("#screen").innerHTML;
+        // == Experience and level ==
+        if (_game.character.xp >= _game.character.xpTo) {
+            // Level up
+            _game.character.level++;
+            _game.character.power =  _game.character.power + SETTINGS.data.lvlUpPower;
+            _game.character.stamina =  _game.character.stamina + SETTINGS.data.lvlUpStamina;
+            _game.character.healthMax =  _game.character.healthMax + SETTINGS.data.lvlUpHealth;
+    
+            // Heal and reset of the experience
+            _game.character.health = _game.character.healthMax;
+            _game.character.xp = 0;
+            _game.character.xpTo = parseInt(_game.character.xpTo * 1.25);
+    
+            get("#game").innerHTML += '<hr><p class="goodInformation"><strong>' + CONTENT.events.levelUp_part1 + '</strong> !</p>';
+            get("#game").innerHTML += '<p class="goodInformation">' + CONTENT.events.levelUp_part2 + '.</p>';
         }
 
+        // == Main stats ==
+        // Floor and room
+        get('#tower').innerHTML = CONTENT.vocabulary.floor + ' ' + _game.character.floor + " - " + CONTENT.vocabulary.room + ' ' + _game.character.room;
+
+        // Progress bars for health
+        get("#healthData").innerHTML = _game.character.health + ' / ' + _game.character.healthMax;
+        get("#health").style.width = ((_game.character.health * 100) / _game.character.healthMax) + "%";
+    
+        // Progress bars for experience
+        get("#level").innerHTML = CONTENT.vocabulary.level + ' ' + _game.character.level;
+        get("#xp").style.width = ((_game.character.xp * 100) / _game.character.xpTo) + "%";
+    
+        // Stats
+        get("#power").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconPower + '" alt="">  ' + _game.character.power;
+        get("#stamina").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconStamina + '" alt="">  ' + _game.character.stamina;
+
+        // Items
+        get("#potion").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconPotion + '" alt=""> ' + _game.character.itemPotion;
+        get("#scroll").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconScroll + '" alt=""> ' + _game.character.itemScroll;
+        get("#mineral").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconMineral + '" alt="">  ' + _game.character.itemMineral;
+
+        // == Items availability ==
+        // Potion -> heal button
+        if (_game.character.itemPotion > 0 && _game.character.health != _game.character.healthMax) {
+            get("#usePotion").classList.remove("disabled")
+        }
+        else {
+            get("#usePotion").classList.add("disabled");
+        }
+
+        // Scroll -> magic button
+        if (_game.character.itemScroll > 0) {
+            get("#useScroll").classList.remove("disabled")
+        }
+        else {
+            get("#useScroll").classList.add("disabled");
+        }
+        
+        // == Scores ==
+        // Main score
+        _game.character.score = (((_game.character.power + _game.character.stamina + _game.character.healthMax) * _game.character.level) * _game.character.floor) - 30;
+
+        // If the score is superior to the one old
+        if (_game.character.score > _game.stats.bestScore) {
+            _game.stats.bestScore = _game.character.score;
+        }
+
+        // If the floor is higher to the old one
+        if (_game.character.floor > _game.stats.bestFloor) {
+            _game.stats.bestFloor = _game.character.floor;
+        }
+
+        // If the max level is higher to the old one
+        if (_game.character.level > _game.stats.maxLevel) {
+            _game.stats.maxLevel = _game.character.level;
+        }
+
+        // == Save content and save all data ==
+        if (get("#game").innerHTML != "") {
+            _game.events.currentEvent = get("#game").innerHTML;
+        }
         setStorage("TOWER-save", JSON.stringify(_game))
     }
 }
@@ -563,13 +623,12 @@ function displayGame() {
 
 function gameOver() {
     clearInterval(_refreshDisplay);
-    playVibrate(500);
 
-    changeDisplay("screen-to-message");
-    get("#message").style.backgroundColor = getVariableCSS("background-gameover");
-    get('#message').innerHTML = "<p>" + CONTENT.events.gameover_part1  + _game.character.floor + ".</p>";
-    get('#message').innerHTML += '<p class="bigger">' + CONTENT.events.gameover_part2  + _game.character.score + '</p>';
-    get('#message').innerHTML += "<button class=\"button buttonAction\" id=\"restart\">" + CONTENT.events.gameoverButton + "</button>";
+    changeDisplay("game-to-info");
+    get("#information").style.backgroundColor = getVariableCSS("background-gameover");
+    get('#information').innerHTML = "<p>" + CONTENT.events.gameover_part1  + _game.character.floor + ".</p>";
+    get('#information').innerHTML += '<p class="important">' + CONTENT.events.gameover_part2  + _game.character.score + '</p>';
+    get('#information').innerHTML += "<button class=\"button buttonAction\" id=\"restart\">" + CONTENT.events.gameoverButton + "</button>";
     get('#restart').addEventListener("click", () => { location.reload(); });
 
     resetGame();
@@ -582,200 +641,53 @@ function gameOver() {
 
 function changeDisplay(set) {
     // Classic game mode
-    if (set == "normal-game") {
+    if (set === "normal-game") {
         get("#chestMode").style.display = "none";
         get("#merchantMode").style.display = "none";
         get("#fightMode").style.display = "none";
     }
 
     // Chest event
-    if (set == "normal-to-chest") {
+    if (set === "normal-to-chest") {
         get("#classicMode").style.display = "none";
         get("#chestMode").style.display = "flex";
     }
-    if (set == "chest-to-normal") {
+    if (set === "chest-to-normal") {
         get("#classicMode").style.display = "flex";
         get("#chestMode").style.display = "none";
     }
 
     // Merchant event
-    if (set == "normal-to-merchant") {
+    if (set === "normal-to-merchant") {
         get("#classicMode").style.display = "none";
         get("#merchantMode").style.display = "flex";
     }
-    if (set == "merchant-to-normal") {
+    if (set === "merchant-to-normal") {
         get("#classicMode").style.display = "flex";
         get("#merchantMode").style.display = "none";
     }
 
     // Fight event
-    if (set == "normal-to-fight") {
+    if (set === "normal-to-fight") {
         get("#classicMode").style.display = "none";
         get("#fightMode").style.display = "flex";
     }
-    if (set == "fight-to-normal") {
+    if (set === "fight-to-normal") {
         get("#classicMode").style.display = "flex";
         get("#fightMode").style.display = "none";
     }
 
-    // Screen message
-    if (set == "screen-to-message") {
+    // Information screen
+    if (set === "game-to-info") {
         get('~header').style.display = "none";
-        get('#game').style.display = "none";
-        get('#message').style.display = "flex";
+        get('#board').style.display = "none";
+        get('#information').style.display = "flex";
     }
-    if (set == "message-to-screen") {
+    if (set === "info-to-game") {
         get('~header').style.display = "flex";
-        get('#game').style.display = "flex";
-        get('#message').style.display = "none";
+        get('#board').style.display = "flex";
+        get('#information').style.display = "none";
     }
-}
-
-// =================================================
-// ============ CHECKS
-
-/**
- * Check the hero's stats and the floor
- **/
-
-function checkInfo() {
-    get('#headerTitle').innerHTML = CONTENT.vocabulary.floor + ' ' + _game.character.floor + " - " + CONTENT.vocabulary.room + ' ' + _game.character.room;
-
-    // Progress bars for health
-    get("#healthData").innerHTML = _game.character.health + ' / ' + _game.character.healthMax;
-    get("#health").style.width = ((_game.character.health * 100) / _game.character.healthMax) + "%";
-
-        // Progress bars for experience
-    get("#level").innerHTML = CONTENT.vocabulary.level + ' ' + _game.character.level;
-    get("#xp").style.width = ((_game.character.xp * 100) / _game.character.xpTo) + "%";
-
-    // Power and stamina 
-    get("#power").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconPower + '" alt="">  ' + _game.character.power;
-    get("#stamina").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconStamina + '" alt="">  ' + _game.character.stamina;
-}
-
-/**
- * Check numbers and availability of the items
- **/
-
-function checkItems() {
-    // Heal button
-    if (_game.character.itemPotion > 0 && _game.character.health != _game.character.healthMax) {
-        get("#usePotion").classList.remove("disabled")
-    }
-    else {
-        get("#usePotion").classList.add("disabled");
-    }
-
-    // Button magic
-    if (_game.character.itemScroll > 0) {
-        get("#useScroll").classList.remove("disabled")
-    }
-    else {
-        get("#useScroll").classList.add("disabled");
-    }
-
-    // Pictures and texts
-    get("#potion").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconPotion + '" alt=""> ' + _game.character.itemPotion;
-    get("#scroll").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconScroll + '" alt=""> ' + _game.character.itemScroll;
-    get("#mineral").innerHTML = '<img src="assets/image/' + SETTINGS.images.iconMineral + '" alt="">  ' + _game.character.itemMineral;
-}
-
-/**
- * Check experience and level of the character
- **/
-
-function checkExperience() {
-    if (_game.character.xp >= _game.character.xpTo) {
-        // Level up
-        _game.character.level++;
-        _game.character.power =  _game.character.power + SETTINGS.data.lvlUpPower;
-        _game.character.stamina =  _game.character.stamina + SETTINGS.data.lvlUpStamina;
-        _game.character.healthMax =  _game.character.healthMax + SETTINGS.data.lvlUpHealth;
-
-        // Heal and reset of the experience
-        _game.character.health = _game.character.healthMax;
-        _game.character.xp = 0;
-        _game.character.xpTo = parseInt(_game.character.xpTo * 1.25);
-
-        get("#screen").innerHTML += '<hr><p class="green"><strong>' + CONTENT.events.levelUp_part1 + '</strong> !</p>';
-        get("#screen").innerHTML += '<p class="green">' + CONTENT.events.levelUp_part2 + '.</p>';
-    }
-}
-
-/**
- * Check all the scores (best score, best floor, best level)
- **/
-
-function checkScore() {
-    // Calculate new score
-    _game.character.score = (((_game.character.power + _game.character.stamina + _game.character.healthMax) * _game.character.level) * _game.character.floor) - 30;
-
-    // If the score is superior to the one old
-    if (_game.character.score > _game.stats.bestScore) {
-        _game.stats.bestScore = _game.character.score;
-    }
-
-    // If the floor is higher to the old one
-    if (_game.character.floor > _game.stats.bestFloor) {
-        _game.stats.bestFloor = _game.character.floor;
-    }
-
-    // If the max level is higher to the old one
-    if (_game.character.level > _game.stats.maxLevel) {
-        _game.stats.maxLevel = _game.character.level;
-    }
-}
-
-/**
- * Check the activation of the volume (+ button)
- **/
-
-function checkSound() {
-    if (_game.core.sound) {
-        _game.core.sound = false;
-        get("#volumeButton").innerHTML = SETTINGS.icons.soundOff;
-        get("#volumeButton").style.opacity = 0.5;
-    } 
-    else {
-        _game.core.sound = true;
-        get("#volumeButton").innerHTML = SETTINGS.icons.soundOn;
-        get("#volumeButton").style.opacity = 1;
-    }
-}
-
-/**
- * Check the activation of the vibration (+ button)
- **/
-
-function checkVibrate() {
-    if (_game.core.vibrate) {
-        _game.core.vibrate = false;
-        get("#vibrateButton").innerHTML = SETTINGS.icons.vibrateOff;
-        get("#vibrateButton").style.opacity = 0.5;
-    }
-    else {
-        _game.core.vibrate = true;
-        get("#vibrateButton").innerHTML = SETTINGS.icons.vibrateOn;
-        get("#vibrateButton").style.opacity = 1;
-    }
-}
-
-/**
- * Check and display the stats in the menu
- **/
-
-function checkStats() {
-    const titles = Object.values(CONTENT.stats), values = Object.values(_game.stats);
-
-    titles.forEach((title, index) => {
-        if (index === 0) {
-            get('#listStats').innerHTML = "<li>" + title + values[index] + "</li>"
-        }
-        else {
-            get('#listStats').innerHTML += "<li>" + title + values[index] + "</li>"
-        }
-    })
 }
 
 // =================================================
@@ -807,10 +719,10 @@ function checkVersion() {
 }
 
 /**
- * Create the menu (allow opening, closing, restarting etc)
+ * Create the menu and its actions (records, volume, restart, reset etc.).
  **/
 
-function createMenu() {
+function createActionMenu() {
     // Open/close menu
     get("#openMenu").addEventListener("click", () => {
         if (get("#menu").style.display == "" || get("#menu").style.display == "none") {
@@ -818,13 +730,45 @@ function createMenu() {
             get("#menu").style.display = "flex";
             get("#openMenu").style.zIndex = "50";
             get("#openMenuImg").src = SETTINGS.images.menuOpened;
-            checkStats();
+            
+            // Display records
+            Object.values(CONTENT.stats).forEach((title, index) => {
+                if (index == 0) {
+                    get('#listStats').innerHTML = "<li>" + title + Object.values(_game.stats)[index] + "</li>";
+                }
+                else {
+                    get('#listStats').innerHTML += "<li>" + title + Object.values(_game.stats)[index] + "</li>";
+                }
+            });
         }
         else {
             get("#blankMenu").style.display = "none";
             get("#menu").style.display = "none";
             get("#openMenu").style.zIndex = "5";
             get("#openMenuImg").src = SETTINGS.images.menuClosed;
+        }
+    });
+
+    // Inside menu - volume (1/2)
+    if (!_game.core.sound) {
+        get("#volumeButton").innerHTML = SETTINGS.icons.soundOff;
+        get("#volumeButton").style.opacity = 0.5;
+    } 
+    else {
+        get("#volumeButton").innerHTML = SETTINGS.icons.soundOn;
+    }
+
+    // Inside menu - volume (2/2)
+    get("#volumeButton").addEventListener("click", () => {
+        if (_game.core.sound) {
+            _game.core.sound = false;
+            get("#volumeButton").innerHTML = SETTINGS.icons.soundOff;
+            get("#volumeButton").style.opacity = 0.5;
+        } 
+        else {
+            _game.core.sound = true;
+            get("#volumeButton").innerHTML = SETTINGS.icons.soundOn;
+            get("#volumeButton").style.opacity = 1;
         }
     });
 
@@ -867,32 +811,14 @@ function createMenu() {
 }
 
 /**
- * Create the buttons (action, fight, chest, system etc)
+ * Create the buttons and theirs actions (menu, actions)
  **/
 
-function createButtons() {
+function createActionButton() {
     // Menu
     get("#openMenu").style.display = "block";
     get("#openMenu").style.visibility = "visible";
-    get("#openMenuImg").src =   SETTINGS.images.menuClosed;
-    get("#volumeButton").addEventListener("click", checkSound);
-    get("#vibrateButton").addEventListener("click", checkVibrate);
-
-    if (!_game.core.sound) {
-        get("#volumeButton").innerHTML = SETTINGS.icons.soundOff;
-        get("#volumeButton").style.opacity = 0.5;
-    } 
-    else {
-        get("#volumeButton").innerHTML = SETTINGS.icons.soundOn;
-    }
-
-    if (!_game.core.vibrate) {
-        get("#vibrateButton").innerHTML = SETTINGS.icons.vibrateOff;
-        get("#vibrateButton").style.opacity = 0.5;
-    } 
-    else {
-        get("#vibrateButton").innerHTML = SETTINGS.icons.vibrateOn;
-    }
+    get("#openMenuImg").src = SETTINGS.images.menuClosed;
 
     // Actions
     get("#attack").addEventListener("click", attack);
@@ -902,15 +828,30 @@ function createButtons() {
     get("#closeChest").addEventListener("click", closeChest);
     get("#acceptOffer").addEventListener("click", acceptMerchant);
     get("#refuseOffer").addEventListener("click", refuseMerchant);
-    get("#move").addEventListener("click", () => {
-        playVibrate(50);
-        playTurn();
-    });
+    get("#move").addEventListener("click", playTurn);
+}
+
+/**
+ * Add all the sources sounds into the HTML
+ **/
+
+function addSound() {    
+    Object.keys(SETTINGS.sounds).forEach(sound => {
+        const audio = document.createElement("audio");
+        audio.id = sound;
+        audio.preload = "auto";
+        get("~body").appendChild(audio);
+
+        const source = document.createElement("source");
+        source.src = "assets/sound/" + SETTINGS.sounds[sound] + ".mp3";
+        source.type = "audio/mpeg";
+        get("#" + sound).appendChild(source);
+    })
 }
 
 /**
  * Play sound if it's enabled
- * @param {string} value the "id" of the sound
+ * @param {string} value sound ID
  **/
 
 function playSound(value) {
@@ -920,18 +861,7 @@ function playSound(value) {
 }
 
 /**
- * Play vibration if it's enabled
- * @param {string} value the "length" of the vibration
- **/
-
-function playVibrate(length) {
-    if (_game.core.vibrate == true) {
-        navigator.vibrate(length);
-    }
-}
-
-/**
- * Reset the game (reinitialize stats and floor)
+ * Reset the game
  **/
 
 function resetGame() {

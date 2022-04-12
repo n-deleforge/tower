@@ -21,7 +21,7 @@ You can try the application directly in your browser [here](https://nicolas-dele
 If you want to selfhost **Tower** :
 - Clone the repository.
 - Download [littleJS](https://github.com/n-deleforge/littleJS) and include it in the `assets/js` folder.
-- Edit `index.html` and replace the line 155 with `<script src="assets/littleJS.min.js"></script>`.
+- Edit `index.html` and replace the line 124 with `<script src="assets/littleJS.min.js"></script>`.
 
 # Ressources
 
@@ -31,6 +31,7 @@ All the sprites and icons comes from two itch.io pack :
 
 # Changelog
 
+- 2.1.60 : Modification of the application structure, vibration removed, OGG files removed, much CSS and JS cleaning.
 - 2.1.52 : Some rewriting in the JS code, new menu mecanic, some aestethic changes
 - 2.1.51 : A lot of game balancing. Rewriting some JS parts. New sounds, new sprites. Merchant added.
 - 2.01 : I decided to change almost every sprites. Some CSS fixes too.

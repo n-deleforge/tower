@@ -1,11 +1,13 @@
 // =================================================
 // ============ CORE VARIABLES
 
-const VERSION = "2.1.52";
+const VERSION = "2.1.60";
 const GITHUB = "<a href=\"https://github.com/n-deleforge/tower\" target=\"_blank\">GitHub</a>";
 const FOOTER = "V. " + VERSION + " | © 2020-22 | " + GITHUB + " |  <a id=\"switchLanguage\"></a>";
-const FOOTER_INGAME = "V. " + VERSION + " | © 2020-22 | " + GITHUB;
-let _game, _refreshDisplay, _refreshInterval;
+
+let _game, 
+    _refreshDisplay,
+    _refreshInterval;
 
 const SETTINGS = {
     'data' : {
@@ -31,10 +33,17 @@ const SETTINGS = {
         'spiritStamina' : 1,
     },
     'icons' : {
-        'soundOn' : "<i class=\"fas fa-volume-up\"></i>",
-        'soundOff' : "<i class=\"fas fa-volume-mute\"></i>",
-        'vibrateOn' : "<i class=\"fas fa-bell\"></i>",
-        'vibrateOff' : "<i class=\"fas fa-bell-slash\"></i>",
+        'soundOn' : "<i class='fas fa-volume-up'></i>",
+        'soundOff' : "<i class='fas fa-volume-mute'></i>",
+    },
+    'sounds' : {
+        'soundAttack' : "attack",
+        'soundScroll' : "scroll",
+        'soundMerchant' : "merchant",
+        'soundChest' : "chest",
+        'soundPotion' : "potion",
+        'soundRoom' : "room",
+        'soundFloor' : "floor",
     },
     'images' : {
         // ux
@@ -80,12 +89,12 @@ const SETTINGS = {
 const FRENCH = {
     'main' : {
         'title' : "La Tour",
-        'headerTitle' : "La Tour",
-        'startTitle' : "Bienvenue aventurier",
-        'nameCharacterPlaceholder' : "Quel est ton nom ?",
+        'tower' : "La Tour",
+        'titleText' : "Bienvenue aventurier",
+        'titleCharacterPlaceholder' : "Quel est ton nom ?",
         'play' : "Entrer",
-        'startFooter' : FOOTER,
-        'gameFooter' : FOOTER_INGAME,
+        'titleFooter' : FOOTER,
+        'menuFooter' : FOOTER,
         'move' : "Avancer",
         'usePotion' : "Utiliser une potion",
         'attack' : "Attaque",
@@ -207,13 +216,13 @@ const FRENCH = {
         "Lorsque la santé de votre personnage tombe à 0, la partie est terminée. Cependant, un gain de niveau ou une potion restaure la totalité des points de santé.",
         "La statistique de bouclier permet de réduire les dégâts lors d'une attaque dans un combat. Elle est uniquement augmentée par l'esprit de la terre.",
         "Les combats se déroulent automatiquement alors veillez à bien choisir votre action de combat entre attaque et sortilège.",
-        "Chaque monstre nécessite un nombre de coups pour être vaincu qui est calculé de la manière suivante : <em>\"santé du monstre / force du héros\"</em>",
-        "Les dégâts d'un monstre sont calculés selon la formule suivante : <em>\"(nombre de coups pour être vaincu * force du monstre) - le bouclier du héros\"</em>",
+        "Chaque monstre nécessite un nombre de coups pour être vaincu qui est calculé de la manière suivante : santé du monstre / force du héros.",
+        "Les dégâts d'un monstre sont calculés selon la formule suivante : (nombre de coups pour être vaincu * force du monstre) - le bouclier du héros.",
         "Vaincre un monstre avec un sort rapporte peu de points d'expérience mais peut éviter une morte certaine ou de très gros dégâts.",
         "La Tour est peuplée de divers esprits, la plupart d'entre eux vous aideront grandement lors de votre quête.",
         "Lorsque vous ouvrez un coffre, vous avez une chance de tomber sur un monstre qui vous infligera des dégâts qui ignorent votre statistique de bouclier.",
         "La Tour est divisé par étages. Chaque étage est lui-même composé de 10 salles. A chaque étage, les monstres deviennent plus puissants.",
-        "Pour les plus curieux, le score de fin de partie est calculé selon la formule suivante : <em>\"((bouclier + force + santé maximale) * niveau) * étage\"</em>",
+        "Pour les plus curieux, le score de fin de partie est calculé selon la formule suivante : ((bouclier + force + santé maximale) * niveau) * étage.",
         "Chaque objet que vous pouvez récupérer est limité à une certaine quantité. Il faut faire attention à ne pas trop les utiliser et à ne pas trop les accumuler.",
         "Un étrange marchand habite dans la Tour, il est possible qu'il vous propose une transaction contre des pierres précieuses"
     ]
@@ -222,12 +231,12 @@ const FRENCH = {
 const ENGLISH = {
     'main' : {
         'title' : "The Tower",
-        'headerTitle' : "The Tower",
-        'startTitle' : "Welcome adventurer",
-        'nameCharacterPlaceholder' : "What's your name ?",
+        'tower' : "The Tower",
+        'titleText' : "Welcome adventurer",
+        'titleCharacterPlaceholder' : "What's your name ?",
         'play' : "Enter",
-        'startFooter' : FOOTER,
-        'gameFooter' : FOOTER_INGAME,
+        'titleFooter' : FOOTER,
+        'menuFooter' : FOOTER,
         'move' : "Move",
         'usePotion' : "Use a potion",
         'attack' : "Attack",
@@ -349,13 +358,13 @@ const ENGLISH = {
         "When the hero's health drops to 0, the game is over. However, leveling up or a potion restores all health points.",
         "The shield stat is used to reduce damage when attacked in combat. It can only be increased by the spirit of the earth.",
         "The fights take place automatically so be sure to choose your fight action.",
-        "Each monster requires a number of hits to be defeated which is calculated as follows: <em>\" monster health / hero strength \"</em>",
-        "The damage of a monster is calculated according to the following formula: <em>\" (number of hits to be defeated * strength of the monster) - hero's shield \"</em>",
+        "Each monster requires a number of hits to be defeated which is calculated as follows: monster health / hero strength.",
+        "The damage of a monster is calculated according to the following formula: (number of hits to be defeated * strength of the monster) - hero's shield.",
         "Defeating a monster with a spell doesn't grant much experience points but can prevent certain death or very large damage.",
         "The Tower is populated by various spirits. Most of them will help you greatly on your quest.",
         "When you open a chest, you have a chance to stumble upon a monster that will deal damage to you that ignores your shield stat.",
         "The Tower is divided by floors. Each floor itself is made up of 10 rooms. On each floor, the monsters become more powerful.",
-        "For the more curious, the end-of-game score is calculated according to the following formula: <em>\" ((shield + strength + maximum health) * level) * floor \"</em>",
+        "For the more curious, the end-of-game score is calculated according to the following formula: ((shield + strength + maximum health) * level) * floor.",
         "At the start of the game, each item you can collect is limited to a certain quantity. Later, you can keep more.",
         "A mysterious merchant lives in the Tower, it is possible that he offers you a transaction for gemstones" 
     ]
@@ -371,7 +380,6 @@ if (!getStorage("TOWER-save")) {
             'ongoing' : false, 
             'name' : null, 
             'sound' : true,
-            'vibrate' : true,
             'version' : VERSION,
             'language' : "EN",
         },

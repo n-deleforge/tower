@@ -19,29 +19,29 @@
     <div id="app">
 
         <header>
-            <span id="headerTitle"></span>
+            <span id="tower"></span>
             <button class="button" id="openMenu"><img id="openMenuImg"></button>
         </header>
         
-        <!-- START -->
-        <div id="start" class="container">
-            <img id="startLogo" src="assets/image/event/tower.png">
-            <h1 id="startTitle"></h1>
+        <!-- TITLESCREEN -->
+        <div id="titleScreen" class="container">
+            <img id="titleLogo" src="assets/image/event/tower.png">
+            <h1 id="titleText"></h1>
 
             <form>
-                <input type="text" id="nameCharacter" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$">
-                <button type='submit' id="play" class="button" onclick="return false"></button>
+                <input type="text" id="titleCharacter" pattern="^[[A-ZÀ-Ýa-zà-ý '-]{2,25}([ -]{1}[[A-ZÀ-Ýa-zà-ý '-]*)?$" required>
+                <button type='submit' id="play" onclick="return false"></button>
             </form>
 
-            <p id="displayTip"></p>
-            <p id="startFooter"></p>
+            <p id="titleTip"></p>
+            <p id="titleFooter"></p>
         </div>
-        <!-- // START -->
+        <!-- // TITLESCREEN -->
 
-        <!-- GAME -->
-        <div id="message" class="container"></div>
+        <!-- GAME SCREEN -->
+        <div id="information" class="container"></div>
 
-        <div id="game" class="container">
+        <div id="board" class="container">
             <div id="character">
                 <div class="characterLine">
                     <div class="progress" id="healthBar">
@@ -64,28 +64,28 @@
                 </div>
             </div>
 
-            <div id="screen"></div>
+            <div id="game"></div>
     
             <div id="actions">
                 <div class="actionsLine" id="classicMode">
-                    <button class="button buttonAction" id="move"></button>
-                    <button class="button buttonAction" id="usePotion"></button>
+                    <button class="buttonAction" id="move"></button>
+                    <button class="buttonAction" id="usePotion"></button>
                 </div>
                 <div class="actionsLine" id="chestMode">
-                    <button class="button buttonAction" id="openChest"></button>
-                    <button class="button buttonAction" id="closeChest"></button>
+                    <button class="buttonAction" id="openChest"></button>
+                    <button class="buttonAction" id="closeChest"></button>
                 </div>
                 <div class="actionsLine" id="merchantMode">
-                    <button class="button buttonAction" id="acceptOffer"></button>
-                    <button class="button buttonAction" id="refuseOffer"></button>
+                    <button class="buttonAction" id="acceptOffer"></button>
+                    <button class="buttonAction" id="refuseOffer"></button>
                 </div>
                 <div class="actionsLine" id="fightMode">
-                    <button class="button buttonAction" id="attack"></button>
-                    <button class="button buttonAction" id="useScroll"></button>
+                    <button class="buttonAction" id="attack"></button>
+                    <button class="buttonAction" id="useScroll"></button>
                 </div>
             </div>
         </div>
-        <!-- // GAME-->
+        <!-- // GAME SCREEN -->
 
     </div>
     <!-- // MAIN CONTAINER -->
@@ -95,16 +95,15 @@
     <div id="menu">
         <h1 id="settingsTitle" class="menuTitle"></h1>
             <div class="buttonList buttonListMenu">
-                <button class="button iconButton" id="volumeButton"></button>
-                <button class="button iconButton" id="vibrateButton"></button>     
-                <button class="button iconButton" id="confirmRestart"><i class="fas fa-fast-backward"></i></button>
-                <button class="button iconButton" id="confirmDelete"><i class="fas fa-sign-out-alt"></i></button>
+                <button class="menuButton" id="volumeButton"></button>
+                <button class="menuButton" id="confirmRestart"><i class="fas fa-fast-backward"></i></button>
+                <button class="menuButton" id="confirmDelete"><i class="fas fa-sign-out-alt"></i></button>
             </div>
 
         <h1 id="statsTitle" class="menuTitle"></h1>
             <ul id="listStats"></ul>
 
-        <p id="gameFooter" class="center"></p>
+        <p id="menuFooter"></p>
     </div>
     <!-- // MENU -->
 
@@ -116,42 +115,11 @@
             <p id="popupText"></p>
         </div>
         <div class="buttonList">
-            <button class="button buttonLarge" id="popupAccept"></button>
-            <button class="button buttonLarge" id="popupCancel"></button>
+            <button class="popupButton" id="popupAccept"></button>
+            <button class="popupButton" id="popupCancel"></button>
         </div>
     </div>
     <!-- // POPUP -->
-    
-    <!-- SOUNDS -->
-    <audio preload id="soundAttack">
-        <source src="assets/sound/attack.ogg" type="audio/ogg">
-        <source src="assets/sound/attack.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundScroll">
-        <source src="assets/sound/scroll.ogg" type="audio/ogg">
-        <source src="assets/sound/scroll.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundMerchant">
-        <source src="assets/sound/merchant.ogg" type="audio/ogg">
-        <source src="assets/sound/merchant.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundChest">
-        <source src="assets/sound/chest.ogg" type="audio/ogg">
-        <source src="assets/sound/chest.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundPotion">
-        <source src="assets/sound/potion.ogg" type="audio/ogg">
-        <source src="assets/sound/potion.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundRoom">
-        <source src="assets/sound/room.ogg" type="audio/ogg">
-        <source src="assets/sound/room.mp3" type="audio/mp3">
-    </audio>
-    <audio preload id="soundFloor">
-        <source src="assets/sound/floor.ogg" type="audio/ogg">
-        <source src="assets/sound/floor.mp3" type="audio/mp3">
-    </audio>
-    <!-- // SOUNDS -->
 
     <!-- <script src="path/to/LittleJS"></script> -->
     <script src="assets/js/core.min.js"></script>
